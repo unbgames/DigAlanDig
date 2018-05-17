@@ -1,11 +1,6 @@
 #include "TitleState.h"
 #include <stdio.h>
-#include "Alien.h"
 #include "Camera.h"
-#include "Collider.h"
-#include "Collision.h"
-#include "Face.h"
-#include "PenguinBody.h"
 #include "SDL2/SDL.h"
 #include "Sound.h"
 #include "Sprite.h"

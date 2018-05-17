@@ -1,8 +1,6 @@
 #include "State.h"
 #include <stdio.h>
 #include "Camera.h"
-#include "Collider.h"
-#include "Collision.h"
 #include "Common.h"
 #include "Game.h"
 #include "SDL2/SDL.h"
