@@ -52,6 +52,7 @@ void StageState::Start() {
 void StageState::Update(float dt) {
     Camera::Update(dt);
     UpdateArray(dt);
+    RhythmUpdate();
 
     bool hasAlien = false;
     bool hasPenguin = false;

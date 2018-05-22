@@ -29,6 +29,9 @@ void TitleState::LoadAssets() {
     gm->AddComponent(new Text(*gm, "assets/font/Call me maybe.ttf", 72,
                               Text::TextStyle::BLENDED, "Press Space to begin",
                               {0, 0, 0, 255}, 1));
+
+    auto music = new Music("assets/audio/100bpm.ogg");
+    music->Play(2);
 }
 
 void TitleState::Start() {

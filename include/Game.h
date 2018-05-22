@@ -36,6 +36,14 @@ class Game {
     float dt;
     void CalculateDeltaTime();
 
+    // TODO move to a configuration file
+    static constexpr float bpm = 100;
+    static const int adjust = 300;
+
+    static const int beatTime = (60 * 1000) / bpm;
+    int beatCounter = 0;
+    bool shouldRhythmUpdate = false;
+
     Game(const std::string& title, int width, int height);
 
     InputManager& input;

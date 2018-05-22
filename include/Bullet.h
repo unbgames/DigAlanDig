@@ -9,6 +9,7 @@ class Bullet : public Component {
            float maxDistance, std::string sprite, int frameCount = 1,
            float frameTime = 1);
     void Update(float dt);
+    void RhythmUpdate() {}
     void Render() const {}
     bool Is(const std::string& type) const { return !type.compare("Bullet"); }
 

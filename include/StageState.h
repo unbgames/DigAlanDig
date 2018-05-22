@@ -16,6 +16,7 @@ class StageState : public State {
     ~StageState() { delete music; }
     void LoadAssets();
     void Update(float dt);
+    void RhythmUpdate() { RhythmUpdateArray(); }
     void Render() const;
     void Start();
     void Pause() {}

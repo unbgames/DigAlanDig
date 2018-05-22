@@ -17,6 +17,7 @@ class Collider : public Component {
     Rect box;
 
     void Update(float dt);
+    void RhythmUpdate() {}
     void Render() const;
     bool Is(const std::string& type) const { return !type.compare("Collider"); }
 

@@ -14,6 +14,7 @@ class PenguinCannon : public Component {
                   std::weak_ptr<GameObject> penguinbody);
 
     void Update(float dt);
+    void RhythmUpdate() {}
     void Render() const {}
     bool Is(const std::string& type) const {
         return !type.compare("PenguinCannon");

@@ -18,6 +18,10 @@ void GameObject::Update(float dt) {
     for (Component* component : components) component->Update(dt);
 }
 
+void GameObject::RhythmUpdate() {
+    for (Component* component : components) component->RhythmUpdate();
+}
+
 void GameObject::Render() {
     for (Component* component : components) component->Render();
 }

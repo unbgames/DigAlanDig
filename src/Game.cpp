@@ -25,6 +25,14 @@ void Game::CalculateDeltaTime() {
     dt = ticks - frameStart;
     dt /= 1000;
     frameStart = ticks;
+
+    int newBeatCounter = (ticks - adjust) / beatTime;
+    if (newBeatCounter != beatCounter) {
+        beatCounter = newBeatCounter;
+        shouldRhythmUpdate = true;
+    } else {
+        shouldRhythmUpdate = false;
+    }
 }
 
 void Game::Run() {
@@ -38,6 +46,11 @@ void Game::Run() {
         CalculateDeltaTime();
         input.Update();
         stateStack.top()->Update(dt);
+        if (shouldRhythmUpdate) {
+            stateStack.top()->RhythmUpdate();
+            std::cout << "." << std::endl;
+        }
+
         stateStack.top()->Render();
         SDL_RenderPresent(renderer);
 
@@ -53,7 +66,7 @@ void Game::Run() {
             stateStack.top()->Start();
             storedState = nullptr;
         }
-        SDL_Delay(33);
+        SDL_Delay(10);
     }
 }
 

@@ -82,6 +82,10 @@ void State::UpdateArray(float dt) {
         quitRequested = true;
 }
 
+void State::RhythmUpdateArray() {
+    for (auto obj : objectArray) obj->RhythmUpdate();
+}
+
 void State::RenderArray() const {
     for (auto obj : objectArray) obj->Render();
 }

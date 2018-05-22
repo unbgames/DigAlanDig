@@ -8,6 +8,7 @@ class EndState : public State {
     ~EndState() { delete music; }
     void LoadAssets();
     void Update(float dt);
+    void RhythmUpdate() {}
     void Render() const;
     void Start();
     void Pause() {}

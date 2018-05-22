@@ -14,6 +14,10 @@ class Text : public Component {
     ~Text();
 
     void Update(float dt);
+    void RhythmUpdate() {
+        display = !display;
+        std::cout << ", ";
+    }
     void Render() const;
     bool Is(const std::string& type) const { return !type.compare("Text"); }
 

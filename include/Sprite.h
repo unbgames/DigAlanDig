@@ -28,6 +28,7 @@ class Sprite : public Component {
     bool IsOpen() const { return static_cast<bool>(Sprite::texture); }
 
     void Update(float dt);
+    void RhythmUpdate() {}
     void Render() const;
     bool Is(const std::string& type) const { return !type.compare("Sprite"); }
 

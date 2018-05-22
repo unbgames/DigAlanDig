@@ -25,7 +25,7 @@ void Text::Update(float dt) {
 
     timer.Update(dt);
     if (timer.Get() >= totalTime) {
-        display = !display;
+        // display = !display;
         timer.Restart();
     }
 }

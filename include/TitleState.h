@@ -18,6 +18,7 @@ class TitleState : public State {
     void LoadAssets();
     void Update(float dt);
     void Render() const;
+    void RhythmUpdate() { RhythmUpdateArray(); }
     void Start();
     void Pause() {}
     void Resume() {}

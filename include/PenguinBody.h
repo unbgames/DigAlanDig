@@ -15,6 +15,7 @@ class PenguinBody : public Component {
 
     void Start();
     void Update(float dt);
+    void RhythmUpdate() { associated.box.x += 100; }
     void Render() const {}
     bool Is(const std::string& type) const {
         return !type.compare("PenguinBody");

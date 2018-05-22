@@ -17,6 +17,7 @@ class Alien : public Component {
 
     void Start();
     void Update(float dt);
+    void RhythmUpdate() {}
     void Render() const {}
     bool Is(const std::string& type) const { return !type.compare("Alien"); }
 

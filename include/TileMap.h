@@ -17,6 +17,7 @@ class TileMap : public Component {
     int At(int x, int y, int z = 0) const { return tileMatrix[z][x][y]; }
 
     void Update(float dt) {}
+    void RhythmUpdate() {}
     void Render() const;
     bool Is(const std::string& type) const { return !type.compare("TileMap"); }
 
