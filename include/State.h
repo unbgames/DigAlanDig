@@ -55,6 +55,9 @@ class State {
     Music music;
     bool musicPlaying = false;
     TileSet* tileSet = nullptr;
+
+  private:
+    void RenderLight() const;
 };
 
 #endif

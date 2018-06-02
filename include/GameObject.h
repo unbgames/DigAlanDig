@@ -11,16 +11,16 @@ class Component;
 
 class GameObject {
   public:
-    GameObject() : isDead(false) {}
+    GameObject(Common::Layer layer = Common::Layer::DEFAULT)
+        : layer(layer), isDead(false) {}
     ~GameObject();
 
     void Update(float dt);
     void RhythmUpdate();
     void RhythmReset();
-    void Render() const;
 
     void RenderOrder(Common::Layer layer) const;
-    // REMOVE
+
     bool CanEnd() const;
 
     bool IsDead() const { return isDead; }
@@ -48,6 +48,7 @@ class GameObject {
     bool fromPlayer = false;
     bool started = false;
     double angleDeg = 0;
+    Common::Layer layer = Common::Layer::DEFAULT;
 
   private:
     std::vector<Component *> components;

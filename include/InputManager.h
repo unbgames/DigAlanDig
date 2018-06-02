@@ -47,7 +47,7 @@ class InputManager {
         return input;
     }
 
-    float GetDeltaRhythm() { return deltaRhythm; }
+    float GetDeltaRhythm() const { return deltaRhythm; }
 
   private:
     // Disallow compiler generated ctor, dtor and copy

@@ -17,19 +17,18 @@
 TitleState::TitleState() {}
 
 void TitleState::LoadAssets() {
-    GameObject* gm = new GameObject();
+    GameObject* gm = new GameObject(Common::Layer::HUD);
     gm->worldReference = false;
     objectArray.emplace_back(gm);
     gm->AddComponent(new Sprite(*gm, "assets/img/title.jpg"));
 
-    gm = new GameObject();
+    gm = new GameObject(Common::Layer::HUD);
     gm->box.SetCenter(Camera::Center());
     gm->worldReference = false;
     objectArray.emplace_back(gm);
     gm->AddComponent(new Text(*gm, "assets/font/Call me maybe.ttf", 72,
                               Text::TextStyle::BLENDED, "Press Space to begin",
                               {0, 0, 0, 255}, 1));
-
 }
 
 void TitleState::Start() {

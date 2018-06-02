@@ -18,8 +18,6 @@ class Component {
     virtual bool Is(const std::string& type) const = 0;
     virtual void Start() {}
 
-    virtual void RenderOrder(Common::Layer layer) const {}
-
     virtual void NotifyCollision(std::shared_ptr<GameObject> other) {}
 
   protected:

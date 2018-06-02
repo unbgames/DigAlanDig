@@ -51,11 +51,14 @@ void StageState::LoadAssets() {
     Alan *lilAlan = new Alan(*alan, gp, 100, 100);
     alan->AddComponent(lilAlan);
     alan->box.pos = gp * 100;
-    alan->AddComponent(new Light(*alan));
+
+    GameObject *alanL = new GameObject(Common::Layer::LIGHT);
+    objectArray.emplace_back(alanL);
+    alanL->AddComponent(new Light(*alanL, alan));
 
     Camera::Follow(alan);
 
-    GameObject *MiniMapTile = new GameObject();
+    GameObject *MiniMapTile = new GameObject(Common::Layer::HUD);
     MiniMapTile->box.pos = {858, 84};
     TileSet *minitileSet =
         new TileSet(20, 20, "assets/img/GroundhogAlanMap.png");
@@ -65,7 +68,7 @@ void StageState::LoadAssets() {
     MiniMapTile->AddComponent(miniTilemap);
     objectArray.emplace_back(MiniMapTile);
 
-    GameObject *bigAlan = new GameObject();
+    GameObject *bigAlan = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(bigAlan);
     bigAlan->AddComponent(new Sprite(*bigAlan, "assets/img/alan.png"));
     bigAlan->AddComponent(new BigAlan(*bigAlan));

@@ -1,11 +1,7 @@
 #include "GameObject.h"
 #include "Sound.h"
 
-bool GameObject::CanEnd() const {
-    //    if (Sound* sound = (Sound*)GetComponent("Sound")) return
-    //    sound->CanEnd(); return false;
-    return true;
-}
+bool GameObject::CanEnd() const { return true; }
 
 GameObject::~GameObject() {
     for (Component* component : components) delete (component);
@@ -14,7 +10,6 @@ GameObject::~GameObject() {
 }
 
 void GameObject::Update(float dt) {
-    // TODO: parallel_for, opemmp fop_each
     for (Component* component : components) component->Update(dt);
 }
 
@@ -26,12 +21,10 @@ void GameObject::RhythmReset() {
     for (Component* component : components) component->RhythmReset();
 }
 
-void GameObject::Render() const {
-    for (Component* component : components) component->Render();
-}
-
 void GameObject::RenderOrder(Common::Layer layer) const {
-    for (Component* component : components) component->RenderOrder(layer);
+    if (this->layer != layer) return;
+
+    for (Component* component : components) component->Render();
 }
 
 void GameObject::NotifyCollision(std::shared_ptr<GameObject> other) {
@@ -39,7 +32,6 @@ void GameObject::NotifyCollision(std::shared_ptr<GameObject> other) {
 }
 
 void GameObject::RemoveComponent(Component* cpt) {
-    // CHECK: delete cpt?
     components.erase(std::remove(components.begin(), components.end(), cpt),
                      components.end());
 }

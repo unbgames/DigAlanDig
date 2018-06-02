@@ -18,7 +18,6 @@ std::weak_ptr<GameObject> State::AddObject(GameObject* go) {
     objectArray.emplace_back(ptr);
     if (started) ptr->Start();
 
-    // std::weak_ptr a = prt;
     return ptr;
 }
 
@@ -69,11 +68,7 @@ void State::RhythmResetArray() {
     for (auto obj : objectArray) obj->RhythmReset();
 }
 
-void State::RenderArray() const {
-    for (auto obj : objectArray) {
-        obj->Render();
-    }
-
+void State::RenderLight() const {
     SDL_Renderer* renderer = Game::GetInstance()->GetRenderer();
     static SDL_Texture* texTarget = SDL_CreateTexture(
         renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
@@ -81,7 +76,8 @@ void State::RenderArray() const {
 
     // Rendering to texture (Lights to an intermediary texture)
     SDL_SetRenderTarget(renderer, texTarget);
-    SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
+
+    SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
     for (auto obj : objectArray) {
@@ -94,7 +90,18 @@ void State::RenderArray() const {
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_MOD);
     SDL_SetTextureBlendMode(texTarget, SDL_BLENDMODE_MOD);
     SDL_RenderCopy(renderer, texTarget, NULL, NULL);
-    // SDL_DestroyTexture(texTarget);
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+}
+
+void State::RenderArray() const {
+    for (auto obj : objectArray) {
+        obj->RenderOrder(Common::Layer::DEFAULT);
+    }
+
+    RenderLight();
+
+    for (auto obj : objectArray) {
+        obj->RenderOrder(Common::Layer::HUD);
+    }
 }

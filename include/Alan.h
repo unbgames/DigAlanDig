@@ -30,7 +30,7 @@ class Alan : public Component {
         return !type.compare("PenguinBody");
     }
 
-    Vec2 GetGridPosition() { return gridPosition; }
+    Vec2 GetGridPosition() const { return gridPosition; }
 
   private:
     enum Direction { NONE = 0, UP, DOWN, LEFT, RIGHT };

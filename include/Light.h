@@ -6,35 +6,28 @@
 
 class Light : public Component {
   public:
-    explicit Light(GameObject& associated)
+    Light(GameObject& associated, GameObject* follow)
         : Component(associated),
-          box(associated.box),
+          follow(follow),
           sprite(new Sprite(associated, "assets/img/light.png")) {
         sprite->SetBlendMode(SDL_BLENDMODE_ADD);
-        associated.box = box;
     }
     void Open(const std::string& file);
 
     ~Light() { delete sprite; };
 
-    void Update(float dt) { sprite->Update(dt); }
-
-    void RhythmUpdate() {}
-    void Render() const {}
-    bool Is(const std::string& type) const { return !type.compare("Light"); }
-
-    void RenderOrder(Common::Layer layer) const {
-        if (layer == Common::Layer::LIGHT) {
-            box = associated.box;
-            associated.box.size = {400, 400};
-            associated.box.SetCenter(box.Center());
-            sprite->Render();
-            associated.box = box;
-        }
+    void Update(float dt) {
+        associated.box.SetCenter(follow->box.Center());
+        sprite->Update(dt);
     }
 
+    void RhythmUpdate() {}
+    void Render() const { sprite->Render(); }
+
+    bool Is(const std::string& type) const { return !type.compare("Light"); }
+
   private:
-    mutable Rect box;
+    GameObject* follow;
     Sprite* sprite;
 };
 

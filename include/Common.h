@@ -2,6 +2,6 @@
 #define COMMON_H
 
 namespace Common {
-enum Layer { LIGHT, HUD };
+enum Layer { BG, DEFAULT, FG, LIGHT, HUD };
 }  // namespace Common
 #endif  // COMMON_H
