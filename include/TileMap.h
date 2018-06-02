@@ -8,13 +8,14 @@ class TileMap : public Component {
   public:
     TileMap(GameObject& associated, const std::string& file, TileSet* tileSet)
         : Component(associated), tileSet(tileSet) {
+        TileMapGenerator();
         Load(file);
     }
     ~TileMap();
 
     void Load(const std::string& file);
     void SetTileSet(TileSet* tileSet) { this->tileSet = tileSet; }
-    int At(int x, int y, int z = 0) const { return tileMatrix[z][x][y]; }
+    int At(int x, int y, int z = 0) const;
 
     void Update(float dt) {}
     void RhythmUpdate() {}
@@ -24,13 +25,17 @@ class TileMap : public Component {
     void RenderLayer(int layer, int cameraX = 0, int cameraY = 0) const;
 
     int GetWidth() const { return width; }
-    int GeHeight() const { return height; }
+    int GetHeight() const { return height; }
     int GetDepth() const { return depth; }
+
+    void TileMapGenerator();
+    void GetDamageGround(int damage, Vec2 posDamage);
 
   private:
     int*** tileMatrix;
     TileSet* tileSet;
     int width, height, depth;
+    const int groundLayer = 0;
 };
 
 #endif  // TILEMAP_H

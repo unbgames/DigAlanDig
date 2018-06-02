@@ -1,7 +1,7 @@
 #include "TileSet.h"
 #include "Game.h"
 
-TileSet::TileSet(int tileWidth, int tileHeight, std::string file)
+TileSet::TileSet(int tileWidth, int tileHeight, const std::string& file)
     : tileSet(nullptr), tileWidth(tileWidth), tileHeight(tileHeight) {
     tileSet = IMG_LoadTexture(Game::GetInstance()->GetRenderer(), file.c_str());
     if (!tileSet) {
@@ -16,7 +16,7 @@ TileSet::TileSet(int tileWidth, int tileHeight, std::string file)
 }
 
 void TileSet::RenderTile(unsigned index, float x, float y) const {
-    if (index == 0) return;
+    if (index <= 0) return;
     /*Tiled index starts at 1*/
     index--;
     if ((int)index >= (rows * columns)) {

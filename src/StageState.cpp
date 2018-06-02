@@ -1,5 +1,6 @@
 #include "StageState.h"
 #include <stdio.h>
+#include "Alan.h"
 #include "Alien.h"
 #include "Camera.h"
 #include "Collider.h"
@@ -7,40 +8,47 @@
 #include "Endstate.h"
 #include "Face.h"
 #include "Game.h"
+#include "MiniTileMap.h"
 #include "PenguinBody.h"
 #include "SDL2/SDL.h"
-#include "Sound.h"
 #include "Sprite.h"
-#include "TileMap.h"
 #include "Vec2.h"
 
 StageState::StageState() {}
 
 void StageState::LoadAssets() {
-    GameObject* gm = new GameObject();
-    gm->worldReference = false;
+    Camera::pos.Set(-(Camera::screenSize.x - 600) / 2, 0);
+
+    GameObject *gm = new GameObject();
     objectArray.emplace_back(gm);
-    gm->AddComponent(new Sprite(*gm, "assets/img/ocean.jpg"));
-    tileSet = new TileSet(64, 64, "assets/img/tileset.png");
-    gm->AddComponent(new TileMap(*gm, "assets/map/tileMap.txt", tileSet));
+    tileSet =
+        new TileSet(100, 100, "assets/img/GroundhogAlanBackgroundSample.png");
+    tileMap = new TileMap(*gm, "assets/map/tileMapGroundhog.txt", tileSet);
+    gm->AddComponent(tileMap);
 
-    GameObject* gm3 = new GameObject();
-    gm3->box.pos.Set(704, 640);
-    objectArray.emplace_back(gm3);
-    gm3->AddComponent(new PenguinBody(*gm3));
+    GameObject *alan = new GameObject();
+    objectArray.emplace_back(alan);
+    alan->AddComponent(new Sprite(*alan, "assets/img/GroundhogAlan.png", 6));
+    Vec2 gp(3, 0);
+    alan->AddComponent(new Alan(*alan, gp, 100, 100));
+    alan->box.pos = gp * 100;
 
-    for (int i = 0; i < 6; i++) {
-        GameObject* gm2 = new GameObject();
-        gm2->box.SetCenter(Vec2(500, 0).Rotate(i * (360 / 6)) +
-                           gm3->box.Center());
-        objectArray.emplace_back(gm2);
-        gm2->AddComponent(new Alien(*gm2, 6, 3 + 0.5 * i));
-    }
+    Camera::Follow(alan);
 
-    Camera::Follow(gm3);
+    /*
+    GameObject *MiniMapTile = new GameObject();
+    MiniMapTile->box.pos = {980, 0};
+    TileSet *minitileSet =
+        new TileSet(20, 20, "assets/img/GroundhogAlanMap.png");
 
-    music = new Music("assets/audio/stageState.ogg");
-    music->Play(2);
+    MiniTileMap *miniTilemap =
+        new MiniTileMap(*MiniMapTile, minitileSet, tilemap, lilAlan);
+    MiniMapTile->AddComponent(miniTilemap);
+    objectArray.emplace_back(MiniMapTile);
+    */
+
+    music.Open("assets/audio/100bpm.ogg");
+    music.Play();
 }
 
 void StageState::Start() {
@@ -53,21 +61,6 @@ void StageState::Update(float dt) {
     Camera::Update(dt);
     UpdateArray(dt);
     RhythmUpdate();
-
-    bool hasAlien = false;
-    bool hasPenguin = false;
-    for (auto obj : objectArray) {
-        if (obj->GetComponent<Alien*>())
-            hasAlien = true;
-        else if (obj->GetComponent<PenguinBody*>())
-            hasPenguin = true;
-    }
-
-    if (!hasPenguin || !hasAlien) {
-        Game::GetInstance()->playerVictory = hasPenguin;
-        popRequested = true;
-        Game::GetInstance()->Push(new EndState());
-    }
 }
 
 void StageState::Render() const { RenderArray(); }

@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
     std::cerr.rdbuf(err.rdbuf());
 #endif
 
-    Game* game = Game::GetInstance("Pedro Henrique 100119191", 1024, 600);
+    Game* game = Game::GetInstance("Groundhod Dig", 1024, 768);
     game->Push(new TitleState());
     game->Run();
 

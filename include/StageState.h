@@ -6,14 +6,12 @@
 #include <vector>
 #include "GameObject.h"
 #include "InputManager.h"
-#include "Music.h"
 #include "State.h"
-#include "TileSet.h"
 
 class StageState : public State {
   public:
     StageState();
-    ~StageState() { delete music; }
+    ~StageState() {}
     void LoadAssets();
     void Update(float dt);
     void RhythmUpdate() { RhythmUpdateArray(); }
@@ -21,10 +19,6 @@ class StageState : public State {
     void Start();
     void Pause() {}
     void Resume() {}
-
-  private:
-    Music* music = nullptr;
-    TileSet* tileSet = nullptr;
 };
 
 #endif

@@ -67,6 +67,7 @@ void Game::Run() {
             storedState = nullptr;
         }
         SDL_Delay(10);
+        SDL_RenderClear(renderer);
     }
 }
 

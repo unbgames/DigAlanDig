@@ -13,7 +13,10 @@ Vec2 Camera::Center() { return pos + screenSize / 2; }
 
 void Camera::Update(float dt) {
     if (focus) {
-        pos = focus->box.Center() - screenSize / 2;
+        // pos = focus->box.Center() - screenSize / 2;
+        if (focus->box.y >= screenSize.y / 2) {
+            pos.y = -(screenSize.y / 2) + focus->box.y;
+        }
         return;
     }
     if (InputManager::GetInstance().IsKeyDown(SDL_SCANCODE_RIGHT)) {

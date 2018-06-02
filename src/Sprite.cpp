@@ -49,7 +49,7 @@ void Sprite::Update(float dt) {
         return;
     }
 
-    if ((currentFrame + 1) * frameTime <= timeElapsed) {
-        SetFrame(floor(timeElapsed / frameTime));
-    }
+    //    if ((currentFrame + 1) * frameTime <= timeElapsed) {
+    //        SetFrame(floor(timeElapsed / frameTime));
+    //    }
 }

@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "InputManager.h"
 #include "Music.h"
+#include "TileMap.h"
 #include "TileSet.h"
 
 class State {
@@ -34,6 +35,8 @@ class State {
     bool PopRequested() const { return popRequested; }
     bool QuitRequested() const { return quitRequested; }
 
+    TileMap* tileMap = nullptr;
+
   protected:
     bool popRequested = false;
     bool quitRequested = false;
@@ -42,6 +45,8 @@ class State {
     std::vector<std::shared_ptr<GameObject>> objectArray;
 
     InputManager& input;
+    Music music;
+    TileSet* tileSet = nullptr;
 };
 
 #endif
