@@ -36,7 +36,7 @@ class Alan : public Component {
     enum Direction { NONE = 0, UP, DOWN, LEFT, RIGHT };
     int gridSizeWidth;
     int gridSizeHeight;
-    Direction movementDirection;
+    Direction movementDirection = Direction::NONE;
 
     Vec2 gridPosition;
     int frameNumber = 0;

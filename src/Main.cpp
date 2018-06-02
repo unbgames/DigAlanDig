@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include "Game.h"
+#include "StageState.h"
 #include "TitleState.h"
 
 int main(int argc, char** argv) {
@@ -13,7 +14,7 @@ int main(int argc, char** argv) {
     std::cerr.rdbuf(err.rdbuf());
 #endif
 
-    Game* game = Game::GetInstance("Groundhod Dig", 1024, 768);
+    Game* game = Game::GetInstance("Groundhog Dig", 1024, 768);
     game->Push(new TitleState());
     game->Run();
 

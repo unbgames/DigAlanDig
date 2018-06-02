@@ -24,7 +24,8 @@ class Game {
     // static std::unordered_map<std::string, int> idata;
     // static std::unordered_map<std::string, std::string> data;
     bool playerVictory = false;
-    void fixTiming() { adjust = inicialAdjust; }
+    void FixTiming() { adjust = inicialAdjust; }
+    void UpdateBeatTime(int timeRhythm);
 
   private:
     static Game* _instance;
@@ -39,12 +40,14 @@ class Game {
 
     // TODO move to a configuration file
     static constexpr float bpm = 120;
+    static constexpr float bitRate = 44100;
     int adjust = 0;
-    static const int inicialAdjust = 200;
+    static const int inicialAdjust = 40;
 
     static const int beatTime = (60 * 1000) / bpm;
     static const int halfBeatTime = beatTime / 2;
     int halfBeatCounter = 0;
+    int tickCounter = 0;
     bool offBeat = false;
     bool shouldRhythmUpdate = false;
 

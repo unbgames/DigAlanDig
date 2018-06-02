@@ -19,6 +19,12 @@ class StageState : public State {
     void Start();
     void Pause() {}
     void Resume() {}
+
+  private:
+    static void noEffect(void *udata, Uint8 *stream, int len);
+    static int count;
+    static bool beat;
+    static int timeRhythm;
 };
 
 #endif

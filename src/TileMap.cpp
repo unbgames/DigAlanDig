@@ -20,6 +20,7 @@ void TileMap::TileMapGenerator() {
 
     tileMap << "6,30,1,\n\n";
 
+    srand(time(NULL));
     for (int y = 0; y < 30; y++) {
         for (int x = 0; x < 6; x++) {
             if (y == 0) {

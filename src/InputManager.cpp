@@ -21,8 +21,7 @@ float fixRange(float value, float fix) {
 void InputManager::Update(float deltaRhythm) {
     frame++;
     quitRequested = false;
-    this->deltaRhythm = deltaRhythm;
-    // std::cout << deltaRhythm << ' ';
+    this->deltaRhythm = fixRange(deltaRhythm, 0.6);
 
     SDL_GetMouseState(&mouseX, &mouseY);
     SDL_Event event;

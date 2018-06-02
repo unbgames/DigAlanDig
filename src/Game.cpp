@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include "Camera.h"
+#include "Common.h"
 
 Game* Game::_instance = nullptr;
 
@@ -21,11 +22,16 @@ Game* Game::GetInstance(const std::string& title, int w, int h) {
     return _instance;
 }
 
+void Game::UpdateBeatTime(int timeRhythm) {
+    tickCounter = tickCounter * 0.9 + timeRhythm * 0.1;
+}
+
 void Game::CalculateDeltaTime() {
     int ticks = static_cast<int>(SDL_GetTicks());
     dt = ticks - frameStart;
+    tickCounter += dt;
     dt /= 1000;
-    frameStart = ticks;
+    frameStart = tickCounter;
 
     if (input.KeyPress(SDL_SCANCODE_EQUALS)) {
         adjust += 10;
@@ -36,7 +42,7 @@ void Game::CalculateDeltaTime() {
         std::cout << "Adjust = " << adjust << "ms\n";
     }
 
-    int fixedTicks = ticks + adjust;
+    int fixedTicks = tickCounter + adjust;
     int newHalfBeatCounter = fixedTicks / halfBeatTime;
     if (newHalfBeatCounter > halfBeatCounter) {
         halfBeatCounter = newHalfBeatCounter;
@@ -64,8 +70,9 @@ void Game::Run() {
     while (!stateStack.empty()) {
         CalculateDeltaTime();
         input.Update(deltaRhythm);
-        stateStack.top()->Update(dt);
+
         if (shouldRhythmUpdate) {
+            shouldRhythmUpdate = false;
             if (!offBeat)
                 stateStack.top()->RhythmUpdate();
             else
@@ -73,6 +80,7 @@ void Game::Run() {
             std::cout << "." << offBeat << "." << std::endl;
         }
 
+        stateStack.top()->Update(dt);
         stateStack.top()->Render();
         SDL_RenderPresent(renderer);
 
@@ -108,7 +116,7 @@ Game::Game(const std::string& title, int width, int height)
         exit(EXIT_SUCCESS);
     }
 
-    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+    if (Mix_OpenAudio(bitRate, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
         std::cerr << "Mix_OpenAudio: " << Mix_GetError() << std::endl;
         exit(EXIT_SUCCESS);
     }

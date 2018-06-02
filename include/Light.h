@@ -6,7 +6,7 @@
 
 class Light : public Component {
   public:
-    Light(GameObject& associated)
+    explicit Light(GameObject& associated)
         : Component(associated),
           box(associated.box),
           sprite(new Sprite(associated, "assets/img/light.png")) {

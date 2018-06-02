@@ -42,6 +42,8 @@ class State {
 
     TileMap* tileMap = nullptr;
 
+    Music* GetMusic() { return &music; }
+
   protected:
     bool popRequested = false;
     bool quitRequested = false;

@@ -4,7 +4,7 @@
 
 class BigAlan : public Component {
   public:
-    BigAlan(GameObject& associated) : Component(associated) {}
+    explicit BigAlan(GameObject& associated) : Component(associated) {}
 
     void Update(float dt) {}
     void RhythmUpdate() {

@@ -31,7 +31,10 @@ void Alan::GetMovement() {
     }
 
     if (movementDirection) {
-        if (input.GetDeltaRhythm() > 0.5) {
+        float duty = 0.5;
+        float dR = input.GetDeltaRhythm();
+        dR = (dR > 0) ? dR : -dR;
+        if (dR < duty) {
             movementDirection = Direction::NONE;
             std::cout << "\n\nMiss: " << input.GetDeltaRhythm() << "\n\n";
         } else

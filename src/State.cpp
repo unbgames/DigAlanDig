@@ -81,7 +81,7 @@ void State::RenderArray() const {
 
     // Rendering to texture (Lights to an intermediary texture)
     SDL_SetRenderTarget(renderer, texTarget);
-    SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
+    SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
     for (auto obj : objectArray) {
@@ -91,12 +91,9 @@ void State::RenderArray() const {
     // Rendering the texture to screen (multiply light texture to screen)
     SDL_SetRenderTarget(renderer, NULL);
 
-    SDL_Rect srcR = Rect(Vec2(), Camera::screenSize);
-    SDL_Rect dstR = Rect(Camera::pos * -1, Camera::screenSize);
-
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_MOD);
     SDL_SetTextureBlendMode(texTarget, SDL_BLENDMODE_MOD);
-    SDL_RenderCopy(renderer, texTarget, NULL, NULL);  //&srcR, &dstR);
+    SDL_RenderCopy(renderer, texTarget, NULL, NULL);
     // SDL_DestroyTexture(texTarget);
 
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);

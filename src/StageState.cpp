@@ -18,6 +18,22 @@
 
 StageState::StageState() {}
 
+int StageState::count = 0;
+int StageState::timeRhythm = 0;
+bool StageState::beat = false;
+
+void StageState::noEffect(void *udata, Uint8 *stream, int len) {
+    static constexpr float bitPBeat = 44100 * (120 / 60);
+    static constexpr float halfBitPBeat = bitPBeat / 2;
+
+    count += len;
+    if (count >= halfBitPBeat) {
+        beat = true;
+        count -= halfBitPBeat;
+        timeRhythm = SDL_GetTicks();
+    }
+}
+
 void StageState::LoadAssets() {
     Camera::pos.Set(-(Camera::screenSize.x - 600) / 2, 0);
 
@@ -57,6 +73,7 @@ void StageState::LoadAssets() {
     bigAlan->box.pos = {-5, 510};
 
     music.Open("assets/audio/marmota.ogg");
+    Mix_SetPostMix(noEffect, NULL);
 }
 
 void StageState::Start() {
@@ -67,6 +84,10 @@ void StageState::Start() {
 
 void StageState::Update(float dt) {
     Camera::Update(dt);
+
+    if (beat) {
+        Game::GetInstance()->UpdateBeatTime(timeRhythm);
+    }
     UpdateArray(dt);
 }
 
@@ -74,7 +95,6 @@ void StageState::RhythmUpdate() {
     if (!musicPlaying) {
         music.Play();
         musicPlaying = true;
-        Game::GetInstance()->fixTiming();
     }
     RhythmUpdateArray();
 }
