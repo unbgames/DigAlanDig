@@ -13,7 +13,10 @@
 class State {
   public:
     State();
-    virtual ~State() { objectArray.clear(); }
+    virtual ~State() {
+        music.Stop();
+        objectArray.clear();
+    }
 
     virtual void LoadAssets() = 0;
     virtual void Update(float dt) = 0;

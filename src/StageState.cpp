@@ -47,7 +47,7 @@ void StageState::LoadAssets() {
     objectArray.emplace_back(MiniMapTile);
     */
 
-    music.Open("assets/audio/100bpm.ogg");
+    music.Open("assets/audio/marmota.ogg");
     music.Play();
 }
 
