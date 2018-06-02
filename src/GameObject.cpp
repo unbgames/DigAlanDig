@@ -26,8 +26,12 @@ void GameObject::RhythmReset() {
     for (Component* component : components) component->RhythmReset();
 }
 
-void GameObject::Render() {
+void GameObject::Render() const {
     for (Component* component : components) component->Render();
+}
+
+void GameObject::RenderOrder(Common::Layer layer) const {
+    for (Component* component : components) component->RenderOrder(layer);
 }
 
 void GameObject::NotifyCollision(std::shared_ptr<GameObject> other) {

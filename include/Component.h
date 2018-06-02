@@ -1,6 +1,7 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 #include <string>
+#include "Common.h"
 #include "GameObject.h"
 
 class GameObject;
@@ -16,6 +17,8 @@ class Component {
     virtual void Render() const = 0;
     virtual bool Is(const std::string& type) const = 0;
     virtual void Start() {}
+
+    virtual void RenderOrder(Common::Layer layer) const {}
 
     virtual void NotifyCollision(std::shared_ptr<GameObject> other) {}
 

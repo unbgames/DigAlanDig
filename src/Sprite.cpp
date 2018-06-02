@@ -28,7 +28,7 @@ void Sprite::Render() const {
     if (IsOpen()) {
         Vec2 offset;
         if (associated.worldReference) offset = Camera::pos;
-        Rect dst(associated.box.pos - offset, associated.box.size);
+        Rect dst(associated.box.pos - offset, {(double)width, (double)height});
 
         if (scale.x != 1 || scale.y != 1) dst.Scale(scale);
 

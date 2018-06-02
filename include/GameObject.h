@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include "Common.h"
 #include "Component.h"
 #include "Rect.h"
 
@@ -16,7 +17,9 @@ class GameObject {
     void Update(float dt);
     void RhythmUpdate();
     void RhythmReset();
-    void Render();
+    void Render() const;
+
+    void RenderOrder(Common::Layer layer) const;
     // REMOVE
     bool CanEnd() const;
 

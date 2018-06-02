@@ -40,15 +40,19 @@ class Sprite : public Component {
     void SetFrameCount(int frameCount) { this->frameCount = frameCount; }
     void SetFrameTime(float frameTime) { this->frameTime = frameTime; }
 
+    void SetBlendMode(SDL_BlendMode mode) {
+        SDL_SetTextureBlendMode(texture.get(), mode);
+    }
+
   private:
     std::shared_ptr<SDL_Texture> texture = nullptr;
     int width = 0;
     int height = 0;
-    int frameCount = 0;
-    float frameTime = 0;
+    int frameCount = 1;
+    float frameTime = 1;
     int currentFrame = 0;
     float timeElapsed = 0;
-    float secondsToSelfDestruct = 1;
+    float secondsToSelfDestruct = 0;
     Timer selfDestructCount;
 
     SDL_Rect clipRect;

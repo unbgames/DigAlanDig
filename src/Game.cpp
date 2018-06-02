@@ -137,7 +137,8 @@ Game::Game(const std::string& title, int width, int height)
     }
     Camera::screenSize.Set(width, height);
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(
+        window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
     if (!renderer) {
         std::cerr << "SDL_CreateRenderer: " << SDL_GetError() << std::endl;
         exit(EXIT_SUCCESS);

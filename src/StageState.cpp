@@ -9,6 +9,7 @@
 #include "Endstate.h"
 #include "Face.h"
 #include "Game.h"
+#include "Light.h"
 #include "MiniTileMap.h"
 #include "PenguinBody.h"
 #include "SDL2/SDL.h"
@@ -34,6 +35,7 @@ void StageState::LoadAssets() {
     Alan *lilAlan = new Alan(*alan, gp, 100, 100);
     alan->AddComponent(lilAlan);
     alan->box.pos = gp * 100;
+    alan->AddComponent(new Light(*alan));
 
     Camera::Follow(alan);
 

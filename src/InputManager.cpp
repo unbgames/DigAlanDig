@@ -22,7 +22,7 @@ void InputManager::Update(float deltaRhythm) {
     frame++;
     quitRequested = false;
     this->deltaRhythm = deltaRhythm;
-    std::cout << deltaRhythm << ' ';
+    // std::cout << deltaRhythm << ' ';
 
     SDL_GetMouseState(&mouseX, &mouseY);
     SDL_Event event;

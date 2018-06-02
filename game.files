@@ -5,12 +5,14 @@ include/Bullet.h
 include/Camera.h
 include/Collider.h
 include/Collision.h
+include/Common.h
 include/Component.h
 include/Endstate.h
 include/Face.h
 include/Game.h
 include/GameObject.h
 include/InputManager.h
+include/Light.h
 include/Minion.h
 include/MiniTileMap.h
 include/Music.h
@@ -42,6 +44,7 @@ src/Face.cpp
 src/Game.cpp
 src/GameObject.cpp
 src/InputManager.cpp
+src/Light.cpp
 src/Main.cpp
 src/Minion.cpp
 src/MiniTileMap.cpp

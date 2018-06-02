@@ -3,6 +3,8 @@
 #include "Camera.h"
 #include "Collider.h"
 #include "Collision.h"
+#include "Common.h"
+#include "Game.h"
 #include "SDL2/SDL.h"
 #include "Sound.h"
 #include "Sprite.h"
@@ -68,5 +70,34 @@ void State::RhythmResetArray() {
 }
 
 void State::RenderArray() const {
-    for (auto obj : objectArray) obj->Render();
+    for (auto obj : objectArray) {
+        obj->Render();
+    }
+
+    SDL_Renderer* renderer = Game::GetInstance()->GetRenderer();
+    static SDL_Texture* texTarget = SDL_CreateTexture(
+        renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
+        Camera::screenSize.x, Camera::screenSize.y);
+
+    // Rendering to texture (Lights to an intermediary texture)
+    SDL_SetRenderTarget(renderer, texTarget);
+    SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
+    for (auto obj : objectArray) {
+        obj->RenderOrder(Common::Layer::LIGHT);
+    }
+
+    // Rendering the texture to screen (multiply light texture to screen)
+    SDL_SetRenderTarget(renderer, NULL);
+
+    SDL_Rect srcR = Rect(Vec2(), Camera::screenSize);
+    SDL_Rect dstR = Rect(Camera::pos * -1, Camera::screenSize);
+
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_MOD);
+    SDL_SetTextureBlendMode(texTarget, SDL_BLENDMODE_MOD);
+    SDL_RenderCopy(renderer, texTarget, NULL, NULL);  //&srcR, &dstR);
+    // SDL_DestroyTexture(texTarget);
+
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 }
