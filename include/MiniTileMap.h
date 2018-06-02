@@ -11,13 +11,6 @@
 #include "TileSet.h"
 
 class MiniTileMap : public Component {
-  private:
-    TileMap *tileMap;
-    TileSet *tileSet;
-    Alan *alan;
-    int mapWidth;
-    int mapHeight;
-
   public:
     MiniTileMap(GameObject &associated, TileSet *tileSet, TileMap *tileMap,
                 Alan *alan);
@@ -26,11 +19,17 @@ class MiniTileMap : public Component {
 
     void RenderLayer(int posX, int posY);
 
-    void Render();
+    void Update(float dt) {}
+    void RhythmUpdate() {}
+    void Render() const;
+    bool Is(const std::string &type) const {
+        return !type.compare("MiniTileMap");
+    }
 
-    void Update(float dt);
-
-    bool Is(std::string type);
+  private:
+    TileMap *tileMap;
+    TileSet *tileSet;
+    Alan *alan;
 };
 
 #endif  // MINITILEMAP

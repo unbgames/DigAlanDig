@@ -41,7 +41,7 @@ class Alan : public Component {
     int frameNumber = 0;
 
     InputManager& input;
-    TileMap* tileMap;
+    TileMap* tileMap = nullptr;
 };
 
 #endif  // ALAN_H

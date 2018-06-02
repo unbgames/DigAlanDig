@@ -13,9 +13,6 @@ class EndState : public State {
     void Start();
     void Pause() {}
     void Resume() {}
-
-  private:
-    Music* music = nullptr;
 };
 
 #endif  // ENDSTATE_H

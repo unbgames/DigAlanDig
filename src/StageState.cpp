@@ -30,22 +30,21 @@ void StageState::LoadAssets() {
     objectArray.emplace_back(alan);
     alan->AddComponent(new Sprite(*alan, "assets/img/GroundhogAlan.png", 6));
     Vec2 gp(3, 0);
-    alan->AddComponent(new Alan(*alan, gp, 100, 100));
+    Alan *lilAlan = new Alan(*alan, gp, 100, 100);
+    alan->AddComponent(lilAlan);
     alan->box.pos = gp * 100;
 
     Camera::Follow(alan);
 
-    /*
     GameObject *MiniMapTile = new GameObject();
-    MiniMapTile->box.pos = {980, 0};
+    MiniMapTile->box.pos = {838, 64};
     TileSet *minitileSet =
         new TileSet(20, 20, "assets/img/GroundhogAlanMap.png");
 
     MiniTileMap *miniTilemap =
-        new MiniTileMap(*MiniMapTile, minitileSet, tilemap, lilAlan);
+        new MiniTileMap(*MiniMapTile, minitileSet, tileMap, lilAlan);
     MiniMapTile->AddComponent(miniTilemap);
     objectArray.emplace_back(MiniMapTile);
-    */
 
     music.Open("assets/audio/marmota.ogg");
     music.Play();
