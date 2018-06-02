@@ -25,7 +25,7 @@ RFLAGS = -O3 -mtune=native
 # Diretivas extras para release com simbolos de debug
 RDFLAGS = -O3 -mtune=native -ggdb -DDEBUG
 # Diretivas extras para release com otimizacoes mais agressivas
-RFFLAGS = -Ofast -flto -mtune=native
+RFFLAGS = -Ofast -flto -mtune=native -s
 
 INC_PATH = include
 SRC_PATH = src
