@@ -5,7 +5,6 @@
 class EndState : public State {
   public:
     EndState();
-    ~EndState() { delete music; }
     void LoadAssets();
     void Update(float dt);
     void RhythmUpdate() {}

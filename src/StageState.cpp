@@ -37,7 +37,7 @@ void StageState::LoadAssets() {
     Camera::Follow(alan);
 
     GameObject *MiniMapTile = new GameObject();
-    MiniMapTile->box.pos = {838, 64};
+    MiniMapTile->box.pos = {858, 84};
     TileSet *minitileSet =
         new TileSet(20, 20, "assets/img/GroundhogAlanMap.png");
 
