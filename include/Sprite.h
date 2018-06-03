@@ -44,6 +44,10 @@ class Sprite : public Component {
         SDL_SetTextureBlendMode(texture.get(), mode);
     }
 
+    void SetColor(int r, int g, int b) {
+        SDL_SetTextureColorMod(texture.get(), r, g, b);
+    }
+
   private:
     std::shared_ptr<SDL_Texture> texture = nullptr;
     int width = 0;

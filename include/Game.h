@@ -27,6 +27,8 @@ class Game {
     void FixTiming() { adjust = inicialAdjust; }
     void UpdateBeatTime(int timeRhythm);
 
+    int combo = 0;
+
   private:
     static Game* _instance;
     SDL_Window* window;

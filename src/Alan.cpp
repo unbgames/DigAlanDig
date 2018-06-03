@@ -37,8 +37,11 @@ void Alan::GetMovement() {
         if (dR < duty) {
             movementDirection = Direction::NONE;
             std::cout << "\n\nMiss: " << input.GetDeltaRhythm() << "\n\n";
-        } else
+            Game::GetInstance()->combo = 0;
+        } else {
             std::cout << "\n\nHit: " << input.GetDeltaRhythm() << "\n\n";
+            Game::GetInstance()->combo++;
+        }
     }
 }
 

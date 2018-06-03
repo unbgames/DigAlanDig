@@ -68,6 +68,12 @@ void State::RhythmResetArray() {
     for (auto obj : objectArray) obj->RhythmReset();
 }
 
+int PulseColor(float dtR, int combo) {
+    dtR = (dtR > 0) ? 0.01 : -dtR;
+    combo = (combo > 10) ? 10 : combo;
+    return dtR * 2 * (combo + 1);
+}
+
 void State::RenderLight() const {
     SDL_Renderer* renderer = Game::GetInstance()->GetRenderer();
     static SDL_Texture* texTarget = SDL_CreateTexture(
@@ -77,7 +83,8 @@ void State::RenderLight() const {
     // Rendering to texture (Lights to an intermediary texture)
     SDL_SetRenderTarget(renderer, texTarget);
 
-    SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
+    int color = PulseColor(input.GetDeltaRhythm(), Game::GetInstance()->combo);
+    SDL_SetRenderDrawColor(renderer, color, color, color * 0.8, 255);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
     for (auto obj : objectArray) {

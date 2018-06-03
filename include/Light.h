@@ -11,6 +11,7 @@ class Light : public Component {
           follow(follow),
           sprite(new Sprite(associated, "assets/img/light.png")) {
         sprite->SetBlendMode(SDL_BLENDMODE_ADD);
+        sprite->SetColor(255, 255, 255 * 0.8);
     }
     void Open(const std::string& file);
 
