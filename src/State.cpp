@@ -70,7 +70,7 @@ void State::RhythmResetArray() {
 
 int PulseColor(float dtR, int combo) {
     dtR = (dtR > 0) ? 0.01 : -dtR;
-    combo = (combo > 10) ? 10 : combo;
+    combo = (combo > 15) ? 15 : combo;
     return dtR * 2 * (combo + 1);
 }
 

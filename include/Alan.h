@@ -8,6 +8,7 @@
 #include <queue>
 #include <string>
 #include "Component.h"
+#include "Game.h"
 #include "InputManager.h"
 #include "SDL_include.h"
 #include "TileMap.h"
@@ -24,11 +25,14 @@ class Alan : public Component {
 
     void Update(float dt);
     void RhythmUpdate() {}
-    void RhythmReset() { moved = false; }
-    void Render() const {}
-    bool Is(const std::string& type) const {
-        return !type.compare("PenguinBody");
+    void RhythmReset() {
+        if (!moved) {
+            Game::GetInstance()->combo /= 2;
+        }
+        moved = false;
     }
+    void Render() const {}
+    bool Is(const std::string& type) const { return !type.compare("Alan"); }
 
     Vec2 GetGridPosition() const { return gridPosition; }
 
