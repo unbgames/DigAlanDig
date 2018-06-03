@@ -1,4 +1,5 @@
 #include "TileMap.h"
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include "Camera.h"
