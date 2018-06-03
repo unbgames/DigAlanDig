@@ -27,3 +27,7 @@ JOGO
 # Zip for submission
 *.zip
 
+# Generated tilemap, cout and cerr
+tileMapGroundhog.txt
+cout.txt
+cerr.txt
