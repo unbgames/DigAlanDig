@@ -40,7 +40,7 @@ void StageState::LoadAssets() {
 
     GameObject *alan = new GameObject();
     objectArray.emplace_back(alan);
-    alan->AddComponent(new Sprite(*alan, "assets/img/GroundhogAlan.png", 6));
+    alan->AddComponent(new Sprite(*alan, "assets/img/GroundhogAlan.png", 15));
     Vec2 gp(3, 0);
     Alan *lilAlan = new Alan(*alan, gp, 100, 100);
     alan->AddComponent(lilAlan);
