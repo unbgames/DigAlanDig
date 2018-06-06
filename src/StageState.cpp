@@ -29,7 +29,7 @@ void StageState::noEffect(void *udata, Uint8 *stream, int len) {
 }
 
 void StageState::LoadAssets() {
-    Camera::pos.Set(-(Camera::screenSize.x - 600) / 2, 0);
+    Camera::pos.Set(-(Camera::screenSize.x - 600 - 140), 0);
 
     GameObject *gm = new GameObject();
     objectArray.emplace_back(gm);
@@ -53,7 +53,7 @@ void StageState::LoadAssets() {
     Camera::Follow(alan);
 
     GameObject *MiniMapTile = new GameObject(Common::Layer::HUD);
-    MiniMapTile->box.pos = {858, 84};
+    MiniMapTile->box.pos = {600 + 284 + 20, 84};
     TileSet *minitileSet =
         new TileSet(20, 20, "assets/img/GroundhogAlanMap.png");
 
@@ -64,10 +64,10 @@ void StageState::LoadAssets() {
 
     GameObject *bigAlan = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(bigAlan);
-    bigAlan->AddComponent(new Sprite(*bigAlan, "assets/img/alan.png"));
+    bigAlan->AddComponent(new Sprite(*bigAlan, "assets/img/mood2.png"));
     bigAlan->AddComponent(new BigAlan(*bigAlan));
     bigAlan->worldReference = false;
-    bigAlan->box.pos = {-5, 510};
+    bigAlan->box.pos = {-30, 370};
 
     music.Open("assets/audio/marmota.ogg");
     count = 0;

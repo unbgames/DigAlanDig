@@ -6,7 +6,7 @@ class BigAlan : public Component {
   public:
     explicit BigAlan(GameObject& associated) : Component(associated) {}
 
-    void Update(float dt) {}
+    void Update(float dt);
     void RhythmUpdate() {
         associated.box.y += offset;
         offset = -offset;
