@@ -69,7 +69,7 @@ void State::RhythmResetArray() {
 int PulseColor(float dtR, int combo) {
     dtR = (dtR > 0) ? 0 : -dtR;
     combo = (combo > 15) ? 15 : combo;
-    dtR = dtR * 2 * (combo + 2);
+    dtR = dtR * 2 * (combo * 20 + 10);
     dtR = (dtR < 0) ? 0 : dtR;
     return (dtR > 255) ? 255 : dtR;
 }
@@ -84,7 +84,7 @@ void State::RenderLight() const {
     SDL_SetRenderTarget(renderer, texTarget);
 
     int color =
-        50 + PulseColor(input.GetDeltaRhythm(), Game::GetInstance()->combo);
+        20 + PulseColor(input.GetDeltaRhythm(), Game::GetInstance()->combo);
     SDL_SetRenderDrawColor(renderer, color, color, color * 0.8, 255);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
