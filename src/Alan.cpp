@@ -35,7 +35,7 @@ void Alan::GetMovement() {
         float dR = input.GetDeltaRhythm();
         dR = (dR > 0) ? dR : -dR;
         if (dR < duty) {
-            //movementDirection = Direction::NONE;
+            movementDirection = Direction::NONE;
             std::cout << "\n\nMiss: " << input.GetDeltaRhythm() << "\n\n";
             Game::GetInstance()->combo = 0;
         } else {
@@ -59,7 +59,10 @@ void Alan::Update(float dt) {
     GetMovement();
 
     if (movementDirection == Direction::NONE) {
-        
+        if(!input.IsKeyDown(SDL_SCANCODE_A) && (frameNumber == 0 || frameNumber == 1)){
+            frameNumber = 0;
+            sprite->SetFrame(frameNumber);
+        }
         return;
     }
 
@@ -68,107 +71,119 @@ void Alan::Update(float dt) {
         if (movementDirection == Direction::UP) {
             // Verifica se a posição acima do grid é um espaço vazio e se a marmota já está na posição de escalada
             if(tileMap->At(gridPosition.x, gridPosition.y - 1) == 2 && frameNumber != 0){
-                if(frameNumber == 6 || frameNumber == 8){
-                    // Verifica se a escalada é a esquerda ou a direita
-                    if(frameNumber == 6){
-                        // Se a posição acima e a esquerda for vazia a marmota "sobe" na pedra
-                        if(tileMap->At(gridPosition.x - 1, gridPosition.y - 1) == 2){
-                            associated.box.y -= gridSizeHeight;
-                            associated.box.x -= gridSizeWidth;
-                            frameNumber = 0;
-                            sprite->SetFrame(frameNumber);
-                            movementDirection = Direction::NONE;
-                            gridPosition.x--;
-                            gridPosition.y--;
-                            return;
-                        }                             
-                    }else{
-                        // Se a posição acima e a direita for vazia a marmota "sobe" na pedra
-                        if(tileMap->At(gridPosition.x + 1, gridPosition.y - 1) == 2){
-                            associated.box.y -= gridSizeHeight;
-                            associated.box.x += gridSizeWidth;
-                            frameNumber = 0;
-                            sprite->SetFrame(frameNumber);
-                            movementDirection = Direction::NONE;
-                            gridPosition.x++;
-                            gridPosition.y--;
-                            return;
+                if (!sprite->FrameTimePassed()){
+                    if(frameNumber == 14 || frameNumber == 17){
+                        // Verifica se a escalada é a esquerda ou a direita
+                        if(frameNumber == 14){
+                            // Se a posição acima e a esquerda for vazia a marmota "sobe" na pedra
+                            if(tileMap->At(gridPosition.x - 1, gridPosition.y - 1) == 2){
+                                associated.box.y -= gridSizeHeight;
+                                associated.box.x -= gridSizeWidth;
+                                frameNumber = 0;
+                                sprite->SetFrame(frameNumber);
+                                movementDirection = Direction::NONE;
+                                gridPosition.x--;
+                                gridPosition.y--;
+                                return;
+                            }                             
+                        }else{
+                            // Se a posição acima e a direita for vazia a marmota "sobe" na pedra
+                            if(tileMap->At(gridPosition.x + 1, gridPosition.y - 1) == 2){
+                                associated.box.y -= gridSizeHeight;
+                                associated.box.x += gridSizeWidth;
+                                frameNumber = 0;
+                                sprite->SetFrame(frameNumber);
+                                movementDirection = Direction::NONE;
+                                gridPosition.x++;
+                                gridPosition.y--;
+                                return;
+                            }
                         }
+                        // Senão ela escala meia posição
+                        associated.box.y -= gridSizeHeight / 2;
+                        frameNumber--;
+                        sprite->SetFrame(frameNumber);
                     }
-                    // Senão ela escala meia posição
-                    associated.box.y -= gridSizeHeight / 2;
-                    frameNumber++;
-                    sprite->SetFrame(frameNumber);
-                }else{
-                    // Escala a outra metade da posição e atualiza a gridPosition 
-                    associated.box.y -= gridSizeHeight / 2;
-                    frameNumber--;
-                    sprite->SetFrame(frameNumber);
-                    movementDirection = Direction::NONE;
-                    gridPosition.y--;
+                    else{
+                        // Escala a outra metade da posição e atualiza a gridPosition 
+                        associated.box.y -= gridSizeHeight / 2;
+                        frameNumber++;
+                        sprite->SetFrame(frameNumber);
+                        movementDirection = Direction::NONE;
+                        gridPosition.y--;
+                        }
                 }
+            }
             // Verifica se a marmota está em posição de escalada 
-            }else if(frameNumber != 0){
-                // Se estiver e a posição diretamente acima for uma pedra ela da o hit
-                if (frameNumber == 6 || frameNumber == 8) {
-                    frameNumber++;
-                    sprite->SetFrame(frameNumber);
-                } else {
-                    frameNumber--;
-                    Vec2 damage = {gridPosition.x, gridPosition.y - 1};
-                    tileMap->GetDamageGround(1, damage);
-                    movementDirection = Direction::NONE;
-                    sprite->SetFrame(frameNumber);
+            else if(frameNumber != 0){
+                if (!sprite->FrameTimePassed()){
+                    // Se estiver e a posição diretamente acima for uma pedra ela da o hit
+                    if (frameNumber == 14 || frameNumber == 17) {
+                        frameNumber--;
+                        sprite->SetFrame(frameNumber);
+                    } else {
+                        frameNumber++;
+                        Vec2 damage = {gridPosition.x, gridPosition.y - 1};
+                        tileMap->GetDamageGround(1, damage);
+                        movementDirection = Direction::NONE;
+                        sprite->SetFrame(frameNumber);
+                    }
                 }
             }
         
         } else if (movementDirection == Direction::DOWN) {
             // Mesmo processo anterior para a baixo (quando a pedra abaixo do lado onde a marmota estiver escalando for vazia ela não faz nada)
             if(tileMap->At(gridPosition.x, gridPosition.y + 1) == 2 && frameNumber != 0){
-                if(frameNumber == 6 || frameNumber == 8){
-                    if(frameNumber == 6){
-                        if(tileMap->At(gridPosition.x - 1, gridPosition.y + 1) == 2){
-                            movementDirection = Direction::NONE;
-                            return;
+                if (!sprite->FrameTimePassed()){
+                    if(frameNumber == 6 || frameNumber == 8){
+                        if(frameNumber == 6){
+                            if(tileMap->At(gridPosition.x - 1, gridPosition.y + 1) == 2){
+                                movementDirection = Direction::NONE;
+                                return;
+                            }
+                                
+                        }else{
+                            if(tileMap->At(gridPosition.x + 1, gridPosition.y + 1) == 2){
+                                movementDirection = Direction::NONE;
+                                return;
+                            }
                         }
-                            
+                        associated.box.y += gridSizeHeight / 2;
+                        frameNumber++;
+                        sprite->SetFrame(frameNumber);
                     }else{
-                        if(tileMap->At(gridPosition.x + 1, gridPosition.y + 1) == 2){
-                            movementDirection = Direction::NONE;
-                            return;
-                        }
+                        associated.box.y += gridSizeHeight / 2;
+                        frameNumber--;
+                        sprite->SetFrame(frameNumber);
+                        movementDirection = Direction::NONE;
+                        gridPosition.y++;
                     }
-                    associated.box.y += gridSizeHeight / 2;
-                    frameNumber++;
-                    sprite->SetFrame(frameNumber);
-                }else{
-                    associated.box.y += gridSizeHeight / 2;
-                    frameNumber--;
-                    sprite->SetFrame(frameNumber);
-                    movementDirection = Direction::NONE;
-                    gridPosition.y++;
                 }
             }else if(frameNumber != 0){
-                if (frameNumber == 6 || frameNumber == 8) {
-                    frameNumber++;
-                    sprite->SetFrame(frameNumber);
-                } else {
-                    frameNumber--;
-                    Vec2 damage = {gridPosition.x, gridPosition.y + 1};
-                    tileMap->GetDamageGround(1, damage);
-                    movementDirection = Direction::NONE;
-                    sprite->SetFrame(frameNumber);
+                if (!sprite->FrameTimePassed()){
+                    if (frameNumber == 14 || frameNumber == 17) {
+                        frameNumber++;
+                        sprite->SetFrame(frameNumber);
+                    } else {
+                        frameNumber--;
+                        Vec2 damage = {gridPosition.x, gridPosition.y + 1};
+                        tileMap->GetDamageGround(1, damage);
+                        movementDirection = Direction::NONE;
+                        sprite->SetFrame(frameNumber);
+                    }
                 }
             }
         } else if (movementDirection == Direction::LEFT) {
             // Testa se o valor do grid a esquerda é uma pedra
             if (tileMap->At(gridPosition.x - 1, gridPosition.y) > 2) {
                 // Se for, entra em posição de escalada
-                if (frameNumber == 0) {
-                    frameNumber = 6;
-                    sprite->SetFrame(frameNumber);
-                } else{
-                    movementDirection = Direction::NONE;
+                if (!sprite->FrameTimePassed()){
+                    if (frameNumber == 0) {
+                        frameNumber = 14;
+                        sprite->SetFrame(frameNumber);
+                    } else{
+                        movementDirection = Direction::NONE;
+                    }
                 }
                 return;
             }
@@ -176,11 +191,13 @@ void Alan::Update(float dt) {
         } else {
             // Mesmo processo anterior para a direita
             if (tileMap->At(gridPosition.x + 1, gridPosition.y) > 2) {
-                if (frameNumber == 0) {
-                    frameNumber = 8;
-                    sprite->SetFrame(frameNumber);
-                } else{
-                    movementDirection = Direction::NONE;
+                if (!sprite->FrameTimePassed()){
+                    if (frameNumber == 0) {
+                        frameNumber = 17;
+                        sprite->SetFrame(frameNumber);
+                    } else{
+                        movementDirection = Direction::NONE;
+                    }
                 }
                 return;
             }
@@ -188,17 +205,20 @@ void Alan::Update(float dt) {
     }else{
         // Up bate na pedra acima dele se houver
         if (movementDirection == Direction::UP) {
-            if(tileMap->At(gridPosition.x, gridPosition.y - 1) > 2){
-                if (frameNumber == 0) {
-                    frameNumber = 10;
-                    sprite->SetFrame(frameNumber);
-                } else {
-                    frameNumber = 0;
-                    Vec2 damage = {gridPosition.x, gridPosition.y - 1};
-                    tileMap->GetDamageGround(1, damage);
-                    movementDirection = Direction::NONE;
-                    sprite->SetFrame(frameNumber);
+            if(tileMap->At(gridPosition.x, gridPosition.y - 1) > 2){   
+                if (!sprite->FrameTimePassed()) {
+                    if (frameNumber == 0 || frameNumber == 1) {
+                        frameNumber = 15;
+                        sprite->SetFrame(frameNumber);
+                    } else if (frameNumber == 15) {
+                        frameNumber = 0;
+                        sprite->SetFrame(frameNumber);
+                        Vec2 damage = {gridPosition.x, gridPosition.y - 1};
+                        tileMap->GetDamageGround(1, damage);
+                        movementDirection = Direction::NONE;    
+                    }
                 }
+                return;
             }else{
                 movementDirection = Direction::NONE;
             }

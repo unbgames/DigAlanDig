@@ -26,7 +26,7 @@ class Alan : public Component {
 
     void Update(float dt);
     void RhythmUpdate() {
-        if(movementDirection == Direction::NONE){
+        if(movementDirection == Direction::NONE && (frameNumber == 0 || frameNumber == 1)){
             Sprite *sprite = associated.GetComponent<Sprite *>();
             if(frameNumber == 0){
                 frameNumber = 1;

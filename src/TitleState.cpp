@@ -25,6 +25,8 @@ void TitleState::LoadAssets() {
                               Text::TextStyle::BLENDED, "Press Space to begin",
                               {0, 0, 0, 255}, 1));
     Game::GetInstance()->StartBeatTime();
+
+    music.Open("assets/audio/menu.ogg");
 }
 
 void TitleState::Start() {
@@ -40,3 +42,11 @@ void TitleState::Update(float dt) {
 }
 
 void TitleState::Render() const { RenderArray(); }
+
+void TitleState::RhythmUpdate() {
+    if (!musicPlaying) {
+        music.Play();
+        musicPlaying = true;
+    }
+    RhythmUpdateArray();
+}
