@@ -78,7 +78,7 @@ void Game::Run() {
                 stateStack.top()->RhythmUpdate();
             else
                 stateStack.top()->RhythmReset();
-            // std::cout << "." << offBeat << "." << std::endl;
+            std::cout << "." << offBeat << "." << std::endl;
         }
 
         stateStack.top()->Update(dt);

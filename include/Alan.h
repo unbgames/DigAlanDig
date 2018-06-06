@@ -8,6 +8,7 @@
 #include <queue>
 #include <string>
 #include "Component.h"
+#include "Sprite.h"
 #include "Game.h"
 #include "InputManager.h"
 #include "SDL_include.h"
@@ -24,11 +25,23 @@ class Alan : public Component {
     void GetMovement();
 
     void Update(float dt);
-    void RhythmUpdate() {}
+    void RhythmUpdate() {
+        if(movementDirection == Direction::NONE){
+            Sprite *sprite = associated.GetComponent<Sprite *>();
+            if(frameNumber == 0){
+                frameNumber = 1;
+                sprite->SetFrame(frameNumber);
+            }else{
+                frameNumber = 0;
+                sprite->SetFrame(frameNumber);
+            }
+        }
+    }
     void RhythmReset() {
         if (!moved) {
             Game::GetInstance()->combo /= 2;
         }
+
         moved = false;
     }
     void Render() const {}
