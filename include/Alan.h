@@ -44,6 +44,7 @@ class Alan : public Component {
 
     Vec2 gridPosition;
     int frameNumber = 0;
+    int frameCounter = 0;
 
     InputManager& input;
 

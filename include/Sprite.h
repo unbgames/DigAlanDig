@@ -19,7 +19,7 @@ class Sprite : public Component {
           scale(1, 1) {
         Sprite::Open(file);
     }
-    ~Sprite() {}
+    ~Sprite(){}
 
     void Open(const std::string& file);
     void SetClip(int x, int y, int w, int h) { clipRect = {x, y, w, h}; }
@@ -39,6 +39,15 @@ class Sprite : public Component {
     void SetFrame(int frame);
     void SetFrameCount(int frameCount) { this->frameCount = frameCount; }
     void SetFrameTime(float frameTime) { this->frameTime = frameTime; }
+
+    bool FrameTimePassed(){
+        if(timeElapsed < frameTime)
+            return true;
+        else{
+            timeElapsed = 0;
+            return false;
+        }
+    }
 
     void SetBlendMode(SDL_BlendMode mode) {
         SDL_SetTextureBlendMode(texture.get(), mode);
