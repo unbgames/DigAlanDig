@@ -23,8 +23,8 @@ Game* Game::GetInstance(const std::string& title, int w, int h) {
 }
 
 void Game::UpdateBeatTime(int timeRhythm) {
-    // std::cout << tickCounter << " ; " << timeRhythm << std::endl;
-    tickCounter = tickCounter * 0.9 + timeRhythm * 0.1;
+    std::cout << tickCounter << " ; " << timeRhythm << std::endl;
+    tickCounter = (tickCounter * 9 + timeRhythm) / 10;
 }
 
 void Game::CalculateDeltaTime() {

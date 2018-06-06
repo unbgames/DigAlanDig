@@ -25,6 +25,7 @@ class StageState : public State {
     static int count;
     static bool beat;
     static int timeRhythm;
+    int halfBeatCounter = 0;
 };
 
 #endif

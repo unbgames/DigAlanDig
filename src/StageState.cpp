@@ -70,6 +70,8 @@ void StageState::LoadAssets() {
     bigAlan->box.pos = {-5, 510};
 
     music.Open("assets/audio/marmota.ogg");
+    count = 0;
+    halfBeatCounter = 0;
     Mix_SetPostMix(noEffect, NULL);
 }
 
@@ -84,12 +86,12 @@ void StageState::Update(float dt) {
 
     if (beat) {
         beat = false;
-        static int halfBeatCounter = 0;
         static constexpr float bpm = 120;
         static const int beatTime = (60 * 1000) / bpm;
         static const int halfBeatTime = beatTime / 2;
 
         if (halfBeatCounter == 0) Game::GetInstance()->StartBeatTime();
+
         Game::GetInstance()->UpdateBeatTime(halfBeatCounter * halfBeatTime);
         halfBeatCounter++;
     }
