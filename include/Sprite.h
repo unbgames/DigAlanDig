@@ -19,7 +19,7 @@ class Sprite : public Component {
           scale(1, 1) {
         Sprite::Open(file);
     }
-    ~Sprite(){}
+    ~Sprite() {}
 
     void Open(const std::string& file);
     void SetClip(int x, int y, int w, int h) { clipRect = {x, y, w, h}; }
@@ -40,10 +40,10 @@ class Sprite : public Component {
     void SetFrameCount(int frameCount) { this->frameCount = frameCount; }
     void SetFrameTime(float frameTime) { this->frameTime = frameTime; }
 
-    bool FrameTimePassed(){
-        if(timeElapsed < frameTime)
+    bool FrameTimePassed() {
+        if (timeElapsed < frameTime)
             return true;
-        else{
+        else {
             timeElapsed = 0;
             return false;
         }

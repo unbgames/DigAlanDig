@@ -60,11 +60,11 @@ void Alan::Update(float dt) {
 
     if (movementDirection == Direction::NONE) {
         if(!input.IsKeyDown(SDL_SCANCODE_A)){
-            if(!sprite->FrameTimePassed()){
-                if(frameNumber == 0){
+            if (!sprite->FrameTimePassed()) {
+                if (frameNumber == 0) {
                     frameNumber = 1;
                     sprite->SetFrame(frameNumber);
-                }else{
+                } else {
                     frameNumber = 0;
                     sprite->SetFrame(frameNumber);
                 }
@@ -214,21 +214,22 @@ void Alan::Update(float dt) {
             }
         // Down bate na pedra embaixo dele
         } else if (movementDirection == Direction::DOWN) {
-            if(!sprite->FrameTimePassed()){
-                if(tileMap->At(gridPosition.x, gridPosition.y + 1)-2 == 1){
-                    if(frameNumber == 0 || frameNumber == 1){
+            if (!sprite->FrameTimePassed()) {
+                if (tileMap->At(gridPosition.x, gridPosition.y + 1) - 2 == 1) {
+                    if (frameNumber == 0 || frameNumber == 1) {
                         frameNumber = 10;
                         sprite->SetFrame(frameNumber);
-                        associated.box.y += gridSizeHeight/3;
-                    }else if(frameNumber == 10){
+                        associated.box.y += gridSizeHeight / 3;
+                    } else if (frameNumber == 10) {
                         frameNumber = 11;
                         sprite->SetFrame(frameNumber);
-                        associated.box.y += gridSizeHeight/3;
-                    }else if(frameNumber == 11){
+                        associated.box.y += gridSizeHeight / 3;
+                    } else if (frameNumber == 11) {
                         frameNumber = 12;
                         sprite->SetFrame(frameNumber);
-                        associated.box.y = (gridPosition.y+1)*gridSizeHeight;
-                    }else{
+                        associated.box.y =
+                            (gridPosition.y + 1) * gridSizeHeight;
+                    } else {
                         frameNumber = 0;
                         sprite->SetFrame(frameNumber);
                         Vec2 damage = {gridPosition.x, gridPosition.y + 1};
@@ -237,25 +238,25 @@ void Alan::Update(float dt) {
                         gridPosition.y++;
                     }
                 }
-            }else{
-                if(frameNumber == 0 || frameNumber == 1){
-                        frameNumber = 10;
-                        sprite->SetFrame(frameNumber);
-                        associated.box.y += gridSizeHeight/3;
-                    }else if(frameNumber == 10){
-                        frameNumber = 11;
-                        sprite->SetFrame(frameNumber);
-                    }else if(frameNumber == 11){
-                        frameNumber = 12;
-                        sprite->SetFrame(frameNumber);
-                        associated.box.y = (gridPosition.y)*gridSizeHeight;
-                    }else{
-                        frameNumber = 0;
-                        sprite->SetFrame(frameNumber);
-                        Vec2 damage = {gridPosition.x, gridPosition.y + 1};
-                        tileMap->GetDamageGround(1, damage);
-                        movementDirection = Direction::NONE;
-                    }
+            } else {
+                if (frameNumber == 0 || frameNumber == 1) {
+                    frameNumber = 10;
+                    sprite->SetFrame(frameNumber);
+                    associated.box.y += gridSizeHeight / 3;
+                } else if (frameNumber == 10) {
+                    frameNumber = 11;
+                    sprite->SetFrame(frameNumber);
+                } else if (frameNumber == 11) {
+                    frameNumber = 12;
+                    sprite->SetFrame(frameNumber);
+                    associated.box.y = (gridPosition.y) * gridSizeHeight;
+                } else {
+                    frameNumber = 0;
+                    sprite->SetFrame(frameNumber);
+                    Vec2 damage = {gridPosition.x, gridPosition.y + 1};
+                    tileMap->GetDamageGround(1, damage);
+                    movementDirection = Direction::NONE;
+                }
             }
         } else if (movementDirection == Direction::LEFT) {
             // Testa se o valor do grid a esquerda é uma pedra
