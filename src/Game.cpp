@@ -23,15 +23,16 @@ Game* Game::GetInstance(const std::string& title, int w, int h) {
 }
 
 void Game::UpdateBeatTime(int timeRhythm) {
+    // std::cout << tickCounter << " ; " << timeRhythm << std::endl;
     tickCounter = tickCounter * 0.9 + timeRhythm * 0.1;
 }
 
 void Game::CalculateDeltaTime() {
-    int ticks = static_cast<int>(SDL_GetTicks());
-    dt = ticks - frameStart;
+    int ticksTotal = static_cast<int>(SDL_GetTicks());
+    dt = ticksTotal - frameStart;
     tickCounter += dt;
     dt /= 1000;
-    frameStart = tickCounter;
+    frameStart = ticksTotal;
 
     if (input.KeyPress(SDL_SCANCODE_EQUALS)) {
         adjust += 10;
@@ -77,7 +78,7 @@ void Game::Run() {
                 stateStack.top()->RhythmUpdate();
             else
                 stateStack.top()->RhythmReset();
-            std::cout << "." << offBeat << "." << std::endl;
+            // std::cout << "." << offBeat << "." << std::endl;
         }
 
         stateStack.top()->Update(dt);
@@ -95,6 +96,7 @@ void Game::Run() {
             stateStack.emplace(storedState);
             stateStack.top()->Start();
             storedState = nullptr;
+            tickCounter = 0;
         }
         SDL_Delay(10);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);

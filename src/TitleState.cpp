@@ -24,6 +24,7 @@ void TitleState::LoadAssets() {
     gm->AddComponent(new Text(*gm, "assets/font/Roboto-Regular.ttf", 72,
                               Text::TextStyle::BLENDED, "Press Space to begin",
                               {0, 0, 0, 255}, 1));
+    Game::GetInstance()->StartBeatTime();
 }
 
 void TitleState::Start() {

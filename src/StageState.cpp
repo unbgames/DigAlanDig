@@ -83,7 +83,15 @@ void StageState::Update(float dt) {
     Camera::Update(dt);
 
     if (beat) {
-        Game::GetInstance()->UpdateBeatTime(timeRhythm);
+        beat = false;
+        static int halfBeatCounter = 0;
+        static constexpr float bpm = 120;
+        static const int beatTime = (60 * 1000) / bpm;
+        static const int halfBeatTime = beatTime / 2;
+
+        if (halfBeatCounter == 0) Game::GetInstance()->StartBeatTime();
+        Game::GetInstance()->UpdateBeatTime(halfBeatCounter * halfBeatTime);
+        halfBeatCounter++;
     }
     UpdateArray(dt);
 }

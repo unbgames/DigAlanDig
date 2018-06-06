@@ -26,6 +26,11 @@ class Game {
     bool playerVictory = false;
     void FixTiming() { adjust = inicialAdjust; }
     void UpdateBeatTime(int timeRhythm);
+    void StartBeatTime() {
+        halfBeatCounter = 0;
+        tickCounter = 0;
+        frameStart = static_cast<int>(SDL_GetTicks());
+    }
 
     int combo = 0;
 
