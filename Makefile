@@ -14,7 +14,7 @@ DEP_FLAGS = -MM -MT $@ -MT $(BIN_PATH)/$(*F).o -MP -MF $@
 # Bibliotecas a serem linkadas
 LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm 
 # Caminho dos includes
-INC_PATHS = -I$(INC_PATH) $(addprefix -I,$(SDL_INC_PATH))
+INC_PATHS = -I$(INC_PATH) -I$(EXT_PATH) $(addprefix -I,$(SDL_INC_PATH))
 
 # Diretivas de compilacao
 FLAGS = -std=c++11 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self
@@ -28,6 +28,7 @@ RDFLAGS = -O3 -mtune=native -ggdb -DDEBUG
 RFFLAGS = -Ofast -flto -mtune=native -s
 
 INC_PATH = include
+EXT_PATH = extern
 SRC_PATH = src
 BIN_PATH = bin
 DEP_PATH = dep
