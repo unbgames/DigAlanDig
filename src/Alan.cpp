@@ -59,7 +59,7 @@ void Alan::Update(float dt) {
     GetMovement();
 
     if (movementDirection == Direction::NONE) {
-        if(!input.IsKeyDown(SDL_SCANCODE_A) && (frameNumber == 0 || frameNumber == 1)){
+        if(!input.IsKeyDown(SDL_SCANCODE_A) && (frameNumber != 0 && frameNumber != 1)){
             frameNumber = 0;
             sprite->SetFrame(frameNumber);
         }
