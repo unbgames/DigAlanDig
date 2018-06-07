@@ -50,6 +50,8 @@ class Alan : public Component {
 
     Vec2 GetGridPosition() const { return gridPosition; }
 
+    void Fallin(float dt);
+
   private:
     enum Direction { NONE = 0, UP, DOWN, LEFT, RIGHT };
     int gridSizeWidth;
@@ -58,7 +60,9 @@ class Alan : public Component {
 
     Vec2 gridPosition;
     int frameNumber = 0;
-    int countTimeStanding = 0;
+    int gridsLeft = 0;
+    bool climbPermited = true;
+
 
     InputManager& input;
 

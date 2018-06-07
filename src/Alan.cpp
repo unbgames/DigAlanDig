@@ -45,16 +45,46 @@ void Alan::GetMovement() {
     }
 }
 
+void Alan::Fallin(float dt){
+    
+    associated.box.y += 400*dt;
+
+    if(associated.box.y > (gridPosition.y + 1)*gridSizeHeight){
+        gridPosition.y++;
+        gridsLeft--;
+    }
+    
+}
+
 void Alan::Update(float dt) {
     TileMap *tileMap = Game::GetInstance()->GetCurrentState().tileMap;
     Sprite *sprite = associated.GetComponent<Sprite *>();
     // Testa se a marmota deve "cair" ou ficar na posição atual
-    if (tileMap->At(gridPosition.x, gridPosition.y + 1) == 2 &&
-        !input.IsKeyDown(SDL_SCANCODE_A)) {
-        frameNumber = 0;
-        sprite->SetFrame(frameNumber);
-        associated.box.y += gridSizeHeight;
-        gridPosition.y++;
+    if (gridsLeft || (tileMap->At(gridPosition.x, gridPosition.y + 1) == 2 &&
+        !input.IsKeyDown(SDL_SCANCODE_A))) {
+        
+
+        if(gridsLeft == 0){
+            int y = gridPosition.y+1;
+            while(tileMap->At(gridPosition.x, y) == 2){
+                gridsLeft++;
+                y++;
+            }
+        }
+        
+        Fallin(dt);
+        
+        float difDist = (gridPosition.y + 1)*gridSizeHeight - associated.box.y;
+
+        if(difDist > gridSizeHeight/2 ){
+            frameNumber = 11;
+            sprite->SetFrame(frameNumber);
+        }else{
+            frameNumber = 12;
+            sprite->SetFrame(frameNumber);
+        }
+        climbPermited = true;
+        return;
     }
 
     GetMovement();
@@ -65,11 +95,12 @@ void Alan::Update(float dt) {
             frameNumber = 0;
             sprite->SetFrame(frameNumber);
         }
+        
         return;
     }
 
     // 'A' apertado indica que o movimento é de escalada
-    if (input.IsKeyDown(SDL_SCANCODE_A)) {
+    if (input.IsKeyDown(SDL_SCANCODE_A) && climbPermited) {
         if (movementDirection == Direction::UP) {
             // Verifica se a posição acima do grid é um espaço vazio e se a
             // marmota já está na posição de escalada
@@ -230,12 +261,14 @@ void Alan::Update(float dt) {
                     if (frameNumber == 0 || frameNumber == 1) {
                         frameNumber = 15;
                         sprite->SetFrame(frameNumber);
+                        climbPermited = false;
                     } else if (frameNumber == 15) {
                         frameNumber = 0;
                         sprite->SetFrame(frameNumber);
                         Vec2 damage = {gridPosition.x, gridPosition.y - 1};
                         tileMap->GetDamageGround(1, damage);
                         movementDirection = Direction::NONE;
+                        climbPermited = true;
                     }
                 }
                 return;
@@ -250,6 +283,7 @@ void Alan::Update(float dt) {
                         frameNumber = 10;
                         sprite->SetFrame(frameNumber);
                         associated.box.y += gridSizeHeight / 3;
+                        climbPermited = false;
                     } else if (frameNumber == 10) {
                         frameNumber = 11;
                         sprite->SetFrame(frameNumber);
@@ -266,12 +300,14 @@ void Alan::Update(float dt) {
                         tileMap->GetDamageGround(1, damage);
                         movementDirection = Direction::NONE;
                         gridPosition.y++;
+                        climbPermited = true;
                     }
                 } else {
                     if (frameNumber == 0 || frameNumber == 1) {
                         frameNumber = 10;
                         sprite->SetFrame(frameNumber);
                         associated.box.y += gridSizeHeight / 3;
+                        climbPermited = false;
                     } else if (frameNumber == 10) {
                         frameNumber = 11;
                         sprite->SetFrame(frameNumber);
@@ -285,6 +321,7 @@ void Alan::Update(float dt) {
                         tileMap->GetDamageGround(1, damage);
                         associated.box.y = (gridPosition.y) * gridSizeHeight;
                         movementDirection = Direction::NONE;
+                        climbPermited = true;
                     }
                 }
             }
@@ -295,12 +332,14 @@ void Alan::Update(float dt) {
                     if (frameNumber == 0 || frameNumber == 1) {
                         frameNumber = 8;
                         sprite->SetFrame(frameNumber);
+                        climbPermited = false;
                     } else if (frameNumber == 8) {
                         frameNumber = 0;
                         sprite->SetFrame(frameNumber);
                         Vec2 damage = {gridPosition.x - 1, gridPosition.y};
                         tileMap->GetDamageGround(1, damage);
                         movementDirection = Direction::NONE;
+                        climbPermited = true;
                     }
                 }
                 return;
@@ -313,6 +352,7 @@ void Alan::Update(float dt) {
                         frameNumber = 2;
                         sprite->SetFrame(frameNumber);
                         associated.box.x -= gridSizeWidth / 3;
+                        climbPermited = false;
                     } else if (frameNumber == 2) {
                         frameNumber = 3;
                         sprite->SetFrame(frameNumber);
@@ -331,6 +371,7 @@ void Alan::Update(float dt) {
                         frameNumber = 2;
                         sprite->SetFrame(frameNumber);
                         associated.box.x -= gridSizeWidth / 3;
+                        climbPermited = false;
                     } else if (frameNumber == 2) {
                         frameNumber = 3;
                         sprite->SetFrame(frameNumber);
@@ -344,6 +385,7 @@ void Alan::Update(float dt) {
                         sprite->SetFrame(frameNumber);
                         movementDirection = Direction::NONE;
                         gridPosition.x--;
+                        climbPermited = true;
                     }
                 }
             }
@@ -354,12 +396,14 @@ void Alan::Update(float dt) {
                     if (frameNumber == 0 || frameNumber == 1) {
                         frameNumber = 9;
                         sprite->SetFrame(frameNumber);
+                        climbPermited = false;
                     } else if (frameNumber == 9) {
                         frameNumber = 0;
                         sprite->SetFrame(frameNumber);
                         Vec2 damage = {gridPosition.x + 1, gridPosition.y};
                         tileMap->GetDamageGround(1, damage);
                         movementDirection = Direction::NONE;
+                        climbPermited = true;
                     }
                 }
                 return;
@@ -372,6 +416,7 @@ void Alan::Update(float dt) {
                         frameNumber = 5;
                         sprite->SetFrame(frameNumber);
                         associated.box.x += gridSizeWidth / 3;
+                        climbPermited = false;
                     } else if (frameNumber == 5) {
                         frameNumber = 6;
                         sprite->SetFrame(frameNumber);
@@ -390,6 +435,7 @@ void Alan::Update(float dt) {
                         frameNumber = 5;
                         sprite->SetFrame(frameNumber);
                         associated.box.x += gridSizeWidth / 3;
+                        climbPermited = false;
                     } else if (frameNumber == 5) {
                         frameNumber = 6;
                         sprite->SetFrame(frameNumber);
@@ -403,6 +449,7 @@ void Alan::Update(float dt) {
                         sprite->SetFrame(frameNumber);
                         movementDirection = Direction::NONE;
                         gridPosition.x++;
+                        climbPermited = true;
                     }
                 }
             }
