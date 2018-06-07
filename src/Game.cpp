@@ -101,10 +101,21 @@ void Game::Run() {
         SDL_Delay(10);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
+
+        if (input.IsKeyDown(SDL_SCANCODE_LCTRL) &&
+            input.KeyPress(SDL_SCANCODE_F))
+            ToggleFullScreen();
     }
 }
 
-/* Private */
+void Game::ToggleFullScreen() {
+    static bool fullscreen = true;
+    unsigned flag = (fullscreen) ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0;
+    fullscreen = !fullscreen;
+
+    SDL_SetWindowFullscreen(window, flag);
+}
+
 Game::Game(const std::string& title, int width, int height)
     : input(InputManager::GetInstance()) {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0) {
@@ -140,7 +151,8 @@ Game::Game(const std::string& title, int width, int height)
     }
 
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, width, height, 0);
+                              SDL_WINDOWPOS_CENTERED, width, height,
+                              SDL_WINDOW_RESIZABLE);
     if (!window) {
         std::cerr << "SDL_CreateWindow: " << SDL_GetError() << std::endl;
         exit(EXIT_SUCCESS);
@@ -153,4 +165,7 @@ Game::Game(const std::string& title, int width, int height)
         std::cerr << "SDL_CreateRenderer: " << SDL_GetError() << std::endl;
         exit(EXIT_SUCCESS);
     }
+
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+    SDL_RenderSetLogicalSize(renderer, width, height);
 }

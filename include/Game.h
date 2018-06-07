@@ -44,6 +44,7 @@ class Game {
     int frameStart;
     float dt;
     void CalculateDeltaTime();
+    void ToggleFullScreen();
 
     // TODO move to a configuration file
     static constexpr float bpm = 120;
