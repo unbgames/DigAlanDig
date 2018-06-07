@@ -8,10 +8,10 @@
 #include <queue>
 #include <string>
 #include "Component.h"
-#include "Sprite.h"
 #include "Game.h"
 #include "InputManager.h"
 #include "SDL_include.h"
+#include "Sprite.h"
 #include "TileMap.h"
 #include "Vec2.h"
 
@@ -26,12 +26,13 @@ class Alan : public Component {
 
     void Update(float dt);
     void RhythmUpdate() {
-        if(movementDirection == Direction::NONE && (frameNumber == 0 || frameNumber == 1)){
-            Sprite *sprite = associated.GetComponent<Sprite *>();
-            if(frameNumber == 0){
+        if (movementDirection == Direction::NONE &&
+            (frameNumber == 0 || frameNumber == 1)) {
+            Sprite* sprite = associated.GetComponent<Sprite*>();
+            if (frameNumber == 0) {
                 frameNumber = 1;
                 sprite->SetFrame(frameNumber);
-            }else{
+            } else {
                 frameNumber = 0;
                 sprite->SetFrame(frameNumber);
             }
