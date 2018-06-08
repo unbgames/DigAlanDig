@@ -1,2 +1,4 @@
 include
 src
+extern
+/usr/include/SDL2

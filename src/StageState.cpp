@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "Light.h"
 #include "MiniTileMap.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "Sprite.h"
 #include "Vec2.h"
 

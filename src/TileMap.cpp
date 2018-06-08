@@ -14,48 +14,38 @@ TileMap::~TileMap() {
     free(tileMatrix);
 }
 
-void TileMap::TileMapGenerator() {
-    std::ofstream tileMap;
-    tileMap.open("assets/map/tileMapGroundhog.txt",
-                 std::ios::out | std::ios::trunc);
-
-    tileMap << "6,30,1,\n\n";
-
-    srand(time(NULL));
-    for (int y = 0; y < 30; y++) {
-        for (int x = 0; x < 6; x++) {
-            if (y == 0) {
-                tileMap << "2,";
-            } else if (y == 1) {
-                { tileMap << rand() % 2 + 3 << ","; }
-            } else {
-                tileMap << rand() % 3 + 2 << ",";
-            }
-        }
-        tileMap << "\n";
-    }
-}
+void TileMap::TileMapGenerator() { return; }
 
 void TileMap::Load(const std::string &file) {
-    std::ifstream input("assets/map/tileMapGroundhog.txt");
+    // SDL_RWFromFile
+    //    std::ifstream input("assets/map/tileMapGroundhog.txt");
 
-    if (!input.is_open()) {
-        std::cout << "Unable to open tileMap" << std::endl;
-        exit(EXIT_SUCCESS);
-    }
+    //    if (!input.is_open()) {
+    //        std::cout << "Unable to open tileMap" << std::endl;
+    //        exit(EXIT_SUCCESS);
+    //    }
 
     char tmp;
-    input >> width >> tmp;
-    input >> height >> tmp;
-    input >> depth >> tmp;
+    width = 6;
+    height = 30;
+    depth = 1;
 
     tileMatrix = (int ***)malloc(depth * sizeof(int **));
     for (int d = 0; d < depth; ++d) {
         tileMatrix[d] = (int **)malloc(height * sizeof(int *));
         for (int h = 0; h < height; ++h) {
             tileMatrix[d][h] = (int *)malloc(width * sizeof(int));
-            for (int w = 0; w < width; ++w) {
-                input >> tileMatrix[d][h][w] >> tmp;
+        }
+    }
+
+    for (int y = 0; y < 30; y++) {
+        for (int x = 0; x < 6; x++) {
+            if (y == 0) {
+                tileMatrix[0][y][x] = 2;
+            } else if (y == 1) {
+                tileMatrix[0][y][x] = rand() % 2 + 3;
+            } else {
+                tileMatrix[0][y][x] = rand() % 3 + 2;
             }
         }
     }

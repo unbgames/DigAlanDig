@@ -1,7 +1,7 @@
 #include "TitleState.h"
+#include <SDL.h>
 #include <stdio.h>
 #include "Camera.h"
-#include "SDL2/SDL.h"
 #include "Sound.h"
 #include "Sprite.h"
 #include "StageState.h"
@@ -36,7 +36,8 @@ void TitleState::Start() {
 }
 
 void TitleState::Update(float dt) {
-    if (input.KeyPress(SDL_SCANCODE_SPACE))
+    if (input.KeyPress(SDL_SCANCODE_SPACE) ||
+        input.MousePress(InputManager::mouseKey::LEFT))
         Game::GetInstance()->Push(new StageState());
     UpdateArray(dt);
 }

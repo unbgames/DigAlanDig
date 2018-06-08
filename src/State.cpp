@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include "Common.h"
 #include "Game.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 #include "Sound.h"
 #include "Sprite.h"
 #include "TileMap.h"

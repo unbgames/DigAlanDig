@@ -12,12 +12,12 @@ RM = rm -f
 # "Flags" para geração automática de dependências
 DEP_FLAGS = -MM -MT $@ -MT $(BIN_PATH)/$(*F).o -MP -MF $@
 # Bibliotecas a serem linkadas
-LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm 
+LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
 # Caminho dos includes
 INC_PATHS = -I$(INC_PATH) -I$(EXT_PATH) $(addprefix -I,$(SDL_INC_PATH))
 
 # Diretivas de compilacao
-FLAGS = -std=c++11 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self
+FLAGS = -std=c++11 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self -I/usr/include/SDL2
 # Diretivas extras para debug
 DFLAGS = -ggdb -O0 -DDEBUG
 # Diretivas extras para release
@@ -59,7 +59,7 @@ RM = del /q
 
 # Possíveis Path da SDL. Caso seja possível ter mais de um local, adicione com espaço entre eles
 # Por ex.: SDL_PATHs = C:/SDL2 D:/Tools/SDL2 C:/dev-tools/SDL2
-SDL_PATHS = C:/SDL2/x86_64-w64-mingw32 C:/Tools/msys64/mingw64
+SDL_PATHS = C:/x86_64-w64-mingw32 C:/Tools/msys64/mingw64
 
 SDL_INC_PATH += $(addsuffix /include,$(SDL_PATHS))
 LINK_PATH = $(addprefix -L,$(addsuffix /lib,$(SDL_PATHS)))

@@ -17,7 +17,8 @@ void Alan::GetMovement() {
     if (input.KeyPress(SDL_SCANCODE_UP)) {
         movementDirection = Direction::UP;
     }
-    if (input.KeyPress(SDL_SCANCODE_DOWN)) {
+    if (input.KeyPress(SDL_SCANCODE_DOWN) ||
+        input.MousePress(InputManager::mouseKey::LEFT)) {
         movementDirection = Direction::DOWN;
         moved = true;
     }
@@ -45,15 +46,13 @@ void Alan::GetMovement() {
     }
 }
 
-void Alan::Fallin(float dt){
-    
-    associated.box.y += 400*dt;
+void Alan::Fallin(float dt) {
+    associated.box.y += 400 * dt;
 
-    if(associated.box.y > (gridPosition.y + 1)*gridSizeHeight){
+    if (associated.box.y > (gridPosition.y + 1) * gridSizeHeight) {
         gridPosition.y++;
         gridsLeft--;
     }
-    
 }
 
 void Alan::Update(float dt) {
@@ -61,25 +60,24 @@ void Alan::Update(float dt) {
     Sprite *sprite = associated.GetComponent<Sprite *>();
     // Testa se a marmota deve "cair" ou ficar na posição atual
     if (gridsLeft || (tileMap->At(gridPosition.x, gridPosition.y + 1) == 2 &&
-        !input.IsKeyDown(SDL_SCANCODE_A))) {
-        
-
-        if(gridsLeft == 0){
-            int y = gridPosition.y+1;
-            while(tileMap->At(gridPosition.x, y) == 2){
+                      !input.IsKeyDown(SDL_SCANCODE_A))) {
+        if (gridsLeft == 0) {
+            int y = gridPosition.y + 1;
+            while (tileMap->At(gridPosition.x, y) == 2) {
                 gridsLeft++;
                 y++;
             }
         }
-        
-        Fallin(dt);
-        
-        float difDist = (gridPosition.y + 1)*gridSizeHeight - associated.box.y;
 
-        if(difDist > gridSizeHeight/2 ){
+        Fallin(dt);
+
+        float difDist =
+            (gridPosition.y + 1) * gridSizeHeight - associated.box.y;
+
+        if (difDist > gridSizeHeight / 2) {
             frameNumber = 11;
             sprite->SetFrame(frameNumber);
-        }else{
+        } else {
             frameNumber = 12;
             sprite->SetFrame(frameNumber);
         }
@@ -95,7 +93,7 @@ void Alan::Update(float dt) {
             frameNumber = 0;
             sprite->SetFrame(frameNumber);
         }
-        
+
         return;
     }
 
@@ -104,7 +102,8 @@ void Alan::Update(float dt) {
         if (movementDirection == Direction::UP) {
             // Verifica se a posição acima do grid é um espaço vazio e se a
             // marmota já está na posição de escalada
-            if (tileMap->At(gridPosition.x, gridPosition.y - 1) == 2 && (frameNumber != 0 && frameNumber != 1)) {
+            if (tileMap->At(gridPosition.x, gridPosition.y - 1) == 2 &&
+                (frameNumber != 0 && frameNumber != 1)) {
                 if (!sprite->FrameTimePassed()) {
                     if (frameNumber == 14 || frameNumber == 17) {
                         // Verifica se a escalada é a esquerda ou a direita
@@ -168,7 +167,7 @@ void Alan::Update(float dt) {
                         sprite->SetFrame(frameNumber);
                     }
                 }
-            }else {
+            } else {
                 movementDirection = Direction::NONE;
             }
 
@@ -233,7 +232,7 @@ void Alan::Update(float dt) {
                     }
                 }
                 return;
-            }else {
+            } else {
                 movementDirection = Direction::NONE;
             }
 
@@ -249,7 +248,7 @@ void Alan::Update(float dt) {
                     }
                 }
                 return;
-            }else {
+            } else {
                 movementDirection = Direction::NONE;
             }
         }

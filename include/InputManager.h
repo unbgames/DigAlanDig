@@ -2,7 +2,7 @@
 #define INPUTMANAGER_H
 
 #include "Camera.h"
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 class InputManager {
   public:
