@@ -1,8 +1,9 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 #define INCLUDE_SDL
-#include "Component.h"
 #include "SDL_include.h"
+
+#include "Component.h"
 #include "Timer.h"
 
 class Sprite : public Component {

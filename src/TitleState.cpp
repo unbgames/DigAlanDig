@@ -1,5 +1,7 @@
 #include "TitleState.h"
-#include <SDL.h>
+#define INCLUDE_SDL
+#include "SDL_include.h"
+
 #include <stdio.h>
 #include "Camera.h"
 #include "Sound.h"

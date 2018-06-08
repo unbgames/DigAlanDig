@@ -1,6 +1,8 @@
 #ifndef TEXT_H
 #define TEXT_H
-#include <SDL_ttf.h>
+#define INCLUDE_SDL_TTF
+#include "SDL_include.h"
+
 #include <memory>
 #include "Component.h"
 #include "Timer.h"

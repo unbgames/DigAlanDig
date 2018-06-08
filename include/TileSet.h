@@ -1,8 +1,9 @@
 #ifndef TILESET_H
 #define TILESET_H
-#include <string>
 #define INCLUDE_SDL
 #include "SDL_include.h"
+
+#include <string>
 
 class TileSet {
   public:

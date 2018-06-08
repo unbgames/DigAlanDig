@@ -1,4 +1,7 @@
 #include "StageState.h"
+#define INCLUDE_SDL
+#include "SDL_include.h"
+
 #include <stdio.h>
 #include "Alan.h"
 #include "BigAlan.h"
@@ -6,7 +9,6 @@
 #include "Game.h"
 #include "Light.h"
 #include "MiniTileMap.h"
-#include "SDL.h"
 #include "Sprite.h"
 #include "Vec2.h"
 

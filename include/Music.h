@@ -2,11 +2,11 @@
 #define MUSIC_H
 #define INCLUDE_SDL
 #define INCLUDE_SDL_MIXER
-#include "Resources.h"
 #include "SDL_include.h"
 
 #include <iostream>
 #include <string>
+#include "Resources.h"
 
 class Music {
   public:

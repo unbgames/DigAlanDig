@@ -1,7 +1,9 @@
 #ifndef RECT_H
 #define RECT_H
+#define INCLUDE_SDL
+#include "SDL_include.h"
+
 #include <iostream>
-#include "SDL.h"
 #include "Vec2.h"
 
 class Rect {

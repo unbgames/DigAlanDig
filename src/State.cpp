@@ -1,9 +1,11 @@
 #include "State.h"
+#define INCLUDE_SDL
+#include "SDL_include.h"
+
 #include <stdio.h>
 #include "Camera.h"
 #include "Common.h"
 #include "Game.h"
-#include "SDL.h"
 #include "Sound.h"
 #include "Sprite.h"
 #include "TileMap.h"

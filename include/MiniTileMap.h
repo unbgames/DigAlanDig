@@ -1,12 +1,13 @@
 #ifndef MINITILEMAP
 #define MINITILEMAP
 #define INCLUDE_SDL_IMAGE
+#include "SDL_include.h"
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include "Alan.h"
 #include "Component.h"
-#include "SDL_include.h"
 #include "TileMap.h"
 #include "TileSet.h"
 

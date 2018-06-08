@@ -1,8 +1,9 @@
 #ifndef INPUTMANAGER_H
 #define INPUTMANAGER_H
+#define INCLUDE_SDL
+#include "SDL_include.h"
 
 #include "Camera.h"
-#include "SDL.h"
 
 class InputManager {
   public:

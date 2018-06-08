@@ -4,13 +4,14 @@
 #define INCLUDE_SDL_IMAGE
 #define INCLUDE_SDL_TTF
 #define INCLUDE_SDL_MIXER
+#include "SDL_include.h"
+
 #include <iostream>
 #include <queue>
 #include <string>
 #include "Component.h"
 #include "Game.h"
 #include "InputManager.h"
-#include "SDL_include.h"
 #include "Sprite.h"
 #include "TileMap.h"
 #include "Vec2.h"
@@ -62,7 +63,6 @@ class Alan : public Component {
     int frameNumber = 0;
     int gridsLeft = 0;
     bool climbPermited = true;
-
 
     InputManager& input;
 
