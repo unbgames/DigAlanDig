@@ -3,52 +3,51 @@
 #include <fstream>
 #include <iostream>
 #include "Camera.h"
+#include "json.hpp"
 
-TileMap::~TileMap() {
-    for (int d = 0; d < depth; ++d) {
-        for (int h = 0; h < height; ++h) {
-            free(tileMatrix[d][h]);
-        }
-        free(tileMatrix[d]);
-    }
-    free(tileMatrix);
-}
+using json = nlohmann::json;
+
+TileMap::~TileMap() {}
 
 void TileMap::TileMapGenerator() { return; }
 
+// From SDL wiki
+char *file_read(const char *filename) {
+    SDL_RWops *rw = SDL_RWFromFile(filename, "rb");
+    if (rw == nullptr) return nullptr;
+
+    Sint64 res_size = SDL_RWsize(rw);
+    char *res = (char *)malloc(res_size + 1);
+
+    Sint64 nb_read_total = 0, nb_read = 1;
+    char *buf = res;
+    while (nb_read_total < res_size && nb_read != 0) {
+        nb_read = SDL_RWread(rw, buf, 1, (res_size - nb_read_total));
+        nb_read_total += nb_read;
+        buf += nb_read;
+    }
+    SDL_RWclose(rw);
+    if (nb_read_total != res_size) {
+        free(res);
+        return nullptr;
+    }
+
+    res[nb_read_total] = '\0';
+    return res;
+}
+
 void TileMap::Load(const std::string &file) {
-    // SDL_RWFromFile
-    //    std::ifstream input("assets/map/tileMapGroundhog.txt");
+    char *data = file_read(file.c_str());
+    if (data == nullptr) exit(0);
 
-    //    if (!input.is_open()) {
-    //        std::cout << "Unable to open tileMap" << std::endl;
-    //        exit(EXIT_SUCCESS);
-    //    }
+    json test = json::parse(data, data + strlen(data));
+    // test.
+    width = test.at("width");
+    height = test.at("height");
+    depth = test.at("layers").size();
 
-    char tmp;
-    width = 6;
-    height = 30;
-    depth = 1;
-
-    tileMatrix = (int ***)malloc(depth * sizeof(int **));
-    for (int d = 0; d < depth; ++d) {
-        tileMatrix[d] = (int **)malloc(height * sizeof(int *));
-        for (int h = 0; h < height; ++h) {
-            tileMatrix[d][h] = (int *)malloc(width * sizeof(int));
-        }
-    }
-
-    for (int y = 0; y < 30; y++) {
-        for (int x = 0; x < 6; x++) {
-            if (y == 0) {
-                tileMatrix[0][y][x] = 2;
-            } else if (y == 1) {
-                tileMatrix[0][y][x] = rand() % 2 + 3;
-            } else {
-                tileMatrix[0][y][x] = rand() % 3 + 2;
-            }
-        }
-    }
+    for (int i = 0; i < depth; i++)
+        tileMat.push_back(test.at("layers").at(i).at("data"));
 }
 
 inline int inRange(int value, int min, int max) {
@@ -72,14 +71,14 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY) const {
 
     for (int line = linit; line < lmax; ++line)
         for (int col = cinit; col < cmax; ++col)
-            tileSet->RenderTile(tileMatrix[layer][line][col], col * w - cameraX,
-                                line * h - cameraY);
+            tileSet->RenderTile(tileMat[layer][line * width + col],
+                                col * w - cameraX, line * h - cameraY);
 }
 
 int TileMap::At(int x, int y, int z) const {
     bool valid = (x >= 0) && (x < width) && (y >= 0) && (y < height) &&
                  (z >= 0) && (z < depth);
-    return (valid) ? tileMatrix[z][y][x] : 1;
+    return (valid) ? tileMat[z][y * width + x] : 1;
 }
 
 void TileMap::Render() const {
@@ -91,7 +90,7 @@ void TileMap::GetDamageGround(int damage, Vec2 posDamage) {
     int valPos = At(posDamage.x, posDamage.y);
     if (valPos == 1) return;
 
-    if (--tileMatrix[groundLayer][(int)posDamage.y][(int)posDamage.x] < 2)
-        tileMatrix[groundLayer][(int)posDamage.y][(int)posDamage.x] = 2;
+    if (--tileMat[groundLayer][(int)(posDamage.y * width + posDamage.x)] < 2)
+        tileMat[groundLayer][(int)(posDamage.y * width + posDamage.x)] = 2;
     // tileSet->RenderTile(valPos - 1, posDamage.x, posDamage.y);
 }

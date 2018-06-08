@@ -32,7 +32,7 @@ class TileMap : public Component {
     void GetDamageGround(int damage, Vec2 posDamage);
 
   private:
-    int*** tileMatrix;
+    std::vector<std::vector<int>> tileMat;
     TileSet* tileSet;
     int width, height, depth;
     const int groundLayer = 0;

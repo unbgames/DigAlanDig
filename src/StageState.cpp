@@ -37,7 +37,7 @@ void StageState::LoadAssets() {
     objectArray.emplace_back(gm);
     tileSet =
         new TileSet(100, 100, "assets/img/GroundhogAlanBackgroundSample.png");
-    tileMap = new TileMap(*gm, "assets/map/tileMapGroundhog.txt", tileSet);
+    tileMap = new TileMap(*gm, "assets/map/stage1.json", tileSet);
     gm->AddComponent(tileMap);
 
     GameObject *alan = new GameObject();
