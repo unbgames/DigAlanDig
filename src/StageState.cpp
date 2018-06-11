@@ -32,6 +32,8 @@ void StageState::noEffect(void *udata, Uint8 *stream, int len) {
 
 void StageState::LoadAssets() {
     Camera::offset.Set(-(Camera::screenSize.x - 600 - 120), 0);
+    input.title = false;
+
     GameObject *gm =
         new GameObject(Common::Layer::DEFAULT | Common::Layer::LIGHT);
     objectArray.emplace_back(gm);

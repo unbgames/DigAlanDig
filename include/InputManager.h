@@ -30,12 +30,12 @@ class InputManager {
         return (frame == keyUpdate[key]) && !keyState[key];
     }
 
-    bool MouseDown(int button) const { return mouseState[button]; }
+    bool MouseDown(int button) const { return fingerState[button]; }
     bool MousePress(int button) const {
-        return (frame == mouseUpdate[button]) && mouseState[button];
+        return (frame == fingerUpdate[button]) && fingerState[button];
     }
     bool MouseRelease(int button) const {
-        return (frame == mouseUpdate[button]) && !mouseState[button];
+        return (frame == fingerUpdate[button]) && !fingerState[button];
     }
 
     bool GamepadDown(int button) const { return gamepadState[button]; }
@@ -53,6 +53,8 @@ class InputManager {
     bool ActionRelease(Action button) const {
         return (frame == actionUpdate[button]) && !actionState[button];
     }
+
+    int finger2action(const Vec2& v);
 
     enum mouseKey {
         LEFT = SDL_BUTTON_LEFT,
@@ -78,6 +80,7 @@ class InputManager {
     }
 
     float GetDeltaRhythm() const { return deltaRhythm; }
+    bool title = true;
 
   private:
     // Disallow compiler generated ctor, dtor and copy
@@ -96,8 +99,8 @@ class InputManager {
     bool keyState[SDL_NUM_SCANCODES] = {0};
     int keyUpdate[SDL_NUM_SCANCODES] = {0};
 
-    bool mouseState[6] = {0};
-    int mouseUpdate[6] = {0};
+    bool fingerState[6] = {0};
+    int fingerUpdate[6] = {0};
 
     bool quitRequested = 0;
     int updateCounter = 0;

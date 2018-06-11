@@ -27,6 +27,15 @@ InputManager::InputManager() {
     gamepad2action[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER] = Action::FULLSCREEN;
 }
 
+int InputManager::finger2action(const Vec2 &v) {
+    if (title) return Action::ENTER;
+    if (v.x < 0.15) return Action::DIG_LEFT;
+    if (v.x > 0.85) return Action::DIG_RIGHT;
+    if (v.y > 0.5) return Action::DIG_DOWN;
+    if (v.y > 0.1) return Action::DIG_UP;
+    return Action::ESCAPE;
+}
+
 inline void InputManager::UpdateKey(int &update, bool &state,
                                     bool newValue) const {
     if (state != newValue) {
@@ -51,6 +60,7 @@ void InputManager::Update(float deltaRhythm) {
     this->deltaRhythm = fixRange(deltaRhythm, 0.6);
 
     SDL_GetMouseState(&mouseX, &mouseY);
+    int id;
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         // Se o evento for quit, setar a flag para terminação
@@ -69,11 +79,11 @@ void InputManager::Update(float deltaRhythm) {
                           event.type == SDL_KEYDOWN);
                 break;
 
-            case SDL_MOUSEBUTTONDOWN:
-            case SDL_MOUSEBUTTONUP:
-                UpdateKey(mouseUpdate[event.button.button],
-                          mouseState[event.button.button],
-                          event.type == SDL_MOUSEBUTTONDOWN);
+            case SDL_FINGERDOWN:
+            case SDL_FINGERUP:
+                id = finger2action(Vec2(event.tfinger.x, event.tfinger.y));
+                UpdateKey(actionUpdate[id], actionState[id],
+                          event.type == SDL_FINGERDOWN);
                 break;
 
             case SDL_CONTROLLERBUTTONDOWN:

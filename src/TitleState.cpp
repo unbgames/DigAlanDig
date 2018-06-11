@@ -51,4 +51,5 @@ void TitleState::RhythmUpdate() {
         musicPlaying = true;
     }
     RhythmUpdateArray();
+    input.title = true;
 }
