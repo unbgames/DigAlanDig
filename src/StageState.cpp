@@ -31,7 +31,7 @@ void StageState::noEffect(void *udata, Uint8 *stream, int len) {
 }
 
 void StageState::LoadAssets() {
-    Camera::pos.Set(-(Camera::screenSize.x - 600 - 120), 0);
+    Camera::offset.Set(-(Camera::screenSize.x - 600 - 120), 0);
     GameObject *gm =
         new GameObject(Common::Layer::DEFAULT | Common::Layer::LIGHT);
     objectArray.emplace_back(gm);

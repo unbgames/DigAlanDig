@@ -9,6 +9,7 @@
 class InputManager {
   public:
     enum Action {
+        NONE,
         DIG_DOWN,
         DIG_LEFT,
         DIG_RIGHT,

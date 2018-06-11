@@ -1,12 +1,5 @@
 #include "InputManager.h"
 InputManager::InputManager() {
-    for (int i = 0; i < SDL_NumJoysticks(); i++) {
-        if (AddController(i)) {
-            std::cout << "Joystick" << i << "connected!" << std::endl;
-            break;
-        }
-    }
-
     key2action[SDL_SCANCODE_ESCAPE] = Action::ESCAPE;
     gamepad2action[SDL_CONTROLLER_BUTTON_BACK] = Action::ESCAPE;
 
@@ -105,6 +98,9 @@ void InputManager::Update(float deltaRhythm) {
                 break;
         }
     }
+
+    if (GamepadPress(SDL_CONTROLLER_BUTTON_LEFTSTICK)) Camera::Shake(4, 0.1);
+    if (KeyPress(SDL_SCANCODE_5)) Camera::Shake(4, 0.1);
 
     if (KeyPress(SDL_SCANCODE_0)) {
         keyAdjust += 0.05;
