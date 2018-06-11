@@ -37,6 +37,7 @@ class Sprite : public Component {
     bool Is(const std::string& type) const { return !type.compare("Sprite"); }
 
     void SetScaleX(double scaleX, double scaleY);
+    void SetScaleX(double s) { SetScaleX(s, s); }
     void SetScaleX(const Vec2& v) { SetScaleX(v.x, v.y); }
     Vec2 GetScale() const { return scale; }
 

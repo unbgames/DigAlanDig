@@ -13,9 +13,8 @@ class Light : public Component {
         sprite->SetBlendMode(SDL_BLENDMODE_ADD);
         sprite->SetColor(255, 255, 255 * 0.8);
     }
-    void Open(const std::string& file);
 
-    ~Light() { delete sprite; };
+    ~Light() { delete sprite; }
 
     void Update(float dt) {
         associated.box.SetCenter(follow->box.Center());
@@ -24,6 +23,12 @@ class Light : public Component {
 
     void RhythmUpdate() {}
     void Render() const { sprite->Render(); }
+
+    void SetSize(int size) {
+        sprite->SetScaleX((double)size / sprite->GetHeight());
+    }
+
+    int GetSize() { return sprite->GetScale().x * sprite->GetHeight(); }
 
     bool Is(const std::string& type) const { return !type.compare("Light"); }
 
