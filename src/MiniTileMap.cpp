@@ -7,8 +7,6 @@ MiniTileMap::MiniTileMap(GameObject &associated, TileSet *tileSet,
 
 MiniTileMap::~MiniTileMap() {}
 
-void MiniTileMap::RenderLayer(int initX, int initY) {}
-
 /*
     Renderiza as camadas do mapa.
 */

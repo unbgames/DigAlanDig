@@ -11,7 +11,7 @@ class Component;
 
 class GameObject {
   public:
-    GameObject(unsigned int layer = Common::Layer::DEFAULT)
+    explicit GameObject(unsigned int layer = Common::Layer::DEFAULT)
         : layer(layer), isDead(false) {}
     ~GameObject();
 

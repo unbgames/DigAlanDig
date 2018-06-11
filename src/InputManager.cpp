@@ -27,7 +27,7 @@ InputManager::InputManager() {
     gamepad2action[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER] = Action::FULLSCREEN;
 }
 
-int InputManager::finger2action(const Vec2 &v) {
+int InputManager::finger2action(const Vec2 &v) const {
     if (title) return Action::ENTER;
     if (v.x < 0.15) return Action::DIG_LEFT;
     if (v.x > 0.85) return Action::DIG_RIGHT;

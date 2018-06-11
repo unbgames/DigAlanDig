@@ -54,7 +54,7 @@ class InputManager {
         return (frame == actionUpdate[button]) && !actionState[button];
     }
 
-    int finger2action(const Vec2& v);
+    int finger2action(const Vec2& v) const;
 
     enum mouseKey {
         LEFT = SDL_BUTTON_LEFT,

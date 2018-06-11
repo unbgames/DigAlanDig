@@ -20,6 +20,7 @@
 
 # Executables
 *.exe
+*.apk
 *.out
 *.app
 JOGO
@@ -31,3 +32,4 @@ JOGO
 tileMapGroundhog.txt
 cout.txt
 cerr.txt
+creator.user

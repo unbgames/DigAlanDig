@@ -29,7 +29,7 @@ class Light : public Component {
         sprite->SetScaleX((double)size / sprite->GetHeight());
     }
 
-    int GetSize() { return sprite->GetScale().x * sprite->GetHeight(); }
+    int GetSize() const { return sprite->GetScale().x * sprite->GetHeight(); }
 
   private:
     GameObject* follow;

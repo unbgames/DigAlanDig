@@ -8,7 +8,6 @@ class TileMap : public Component {
   public:
     TileMap(GameObject& associated, const std::string& file)
         : Component(associated) {
-        TileMapGenerator();
         Load(file);
     }
     ~TileMap();
@@ -27,7 +26,6 @@ class TileMap : public Component {
     int GetHeight() const { return height; }
     int GetDepth() const { return depth; }
 
-    void TileMapGenerator();
     void GetDamageGround(int damage, Vec2 posDamage);
 
   private:

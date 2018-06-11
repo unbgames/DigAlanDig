@@ -9,8 +9,6 @@ using json = nlohmann::json;
 
 TileMap::~TileMap() {}
 
-void TileMap::TileMapGenerator() { return; }
-
 void TileMap::Load(const std::string &file) {
     json j;
     Common::read_Json(j, file);

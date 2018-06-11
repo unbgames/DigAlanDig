@@ -8,7 +8,7 @@
 
 class TileSet {
   public:
-    TileSet(const std::string& file);
+    explicit TileSet(const std::string& file);
 
     void RenderTile(unsigned index, float x, float y) const;
     int GetTileWidth() const { return tileWidth; }

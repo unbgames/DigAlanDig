@@ -18,8 +18,6 @@ class MiniTileMap : public Component {
 
     ~MiniTileMap();
 
-    void RenderLayer(int posX, int posY);
-
     void Update(float dt) {}
     void RhythmUpdate() {}
     void Render(Common::Layer layer) const;
