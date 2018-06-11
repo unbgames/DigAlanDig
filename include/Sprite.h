@@ -34,7 +34,6 @@ class Sprite : public Component {
     }
     void RhythmReset() {}
     void Render() const;
-    bool Is(const std::string& type) const { return !type.compare("Sprite"); }
 
     void SetScaleX(double scaleX, double scaleY);
     void SetScaleX(double s) { SetScaleX(s, s); }

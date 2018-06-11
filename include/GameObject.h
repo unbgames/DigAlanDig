@@ -28,7 +28,6 @@ class GameObject {
     void AddComponent(Component *cpt);
     void RemoveComponent(Component *cpt);
 
-    Component *GetComponent(const std::string &type) const;
     void Start();
     void NotifyCollision(std::shared_ptr<GameObject> other);
     void CopyPosition(const GameObject &go);

@@ -15,7 +15,6 @@ class Component {
     virtual void RhythmUpdate() = 0;
     virtual void RhythmReset() {}
     virtual void Render() const = 0;
-    virtual bool Is(const std::string& type) const = 0;
     virtual void Start() {}
 
     virtual void NotifyCollision(std::shared_ptr<GameObject> other) {}

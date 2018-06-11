@@ -18,7 +18,6 @@ class Text : public Component {
     void Update(float dt);
     void RhythmUpdate() { display = !display; }
     void Render() const;
-    bool Is(const std::string& type) const { return !type.compare("Text"); }
 
     void SetFontFile(const std::string& fontFile);
     void SetFontSize(int fontSize);

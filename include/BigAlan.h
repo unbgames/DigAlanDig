@@ -12,7 +12,6 @@ class BigAlan : public Component {
         offset = -offset;
     }
     void Render() const {}
-    bool Is(const std::string& type) const { return !type.compare("BigAlan"); }
 
   private:
     int offset = 0;

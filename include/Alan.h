@@ -47,7 +47,6 @@ class Alan : public Component {
         moved = false;
     }
     void Render() const {}
-    bool Is(const std::string& type) const { return !type.compare("Alan"); }
 
     Vec2 GetGridPosition() const { return gridPosition; }
 

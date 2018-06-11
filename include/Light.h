@@ -30,8 +30,6 @@ class Light : public Component {
 
     int GetSize() { return sprite->GetScale().x * sprite->GetHeight(); }
 
-    bool Is(const std::string& type) const { return !type.compare("Light"); }
-
   private:
     GameObject* follow;
     Sprite* sprite;

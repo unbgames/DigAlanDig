@@ -36,13 +36,6 @@ void GameObject::RemoveComponent(Component* cpt) {
                      components.end());
 }
 
-Component* GameObject::GetComponent(const std::string& type) const {
-    for (Component* component : components)
-        if (component->Is(type)) return component;
-
-    return nullptr;
-}
-
 void GameObject::AddComponent(Component* cpt) { components.emplace_back(cpt); }
 
 void GameObject::CopyPosition(const GameObject& go) {
