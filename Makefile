@@ -127,6 +127,7 @@ clean:
 	-$(RMDIR) $(DEP_PATH)
 	-$(RMDIR) $(BIN_PATH)
 	-$(RM) $(EXEC)
+	-$(RM) cout.txt cerr.txt
 
 release: FLAGS += $(RFLAGS)
 release: $(EXEC)
@@ -147,6 +148,13 @@ ifeq ($(OS), Windows_NT)
 else
 	@mkdir -p $(DEP_PATH) $(BIN_PATH) $(INC_PATH) $(SRC_PATH)
 endif
+
+android:
+	cp src/* ../org.pedro.marmota/app/jni/src/
+	cp include/* ../org.pedro.marmota/app/jni/src/
+	cp extern/* ../org.pedro.marmota/app/jni/src/
+	cd ../org.pedro.marmota && ./gradlew assembleDebug
+	cp ../org.pedro.marmota/app/build/outputs/apk/app-debug.apk $(EXEC).apk
 
 # Regra pra debug
 print-% : ; @echo $* = $($*)
