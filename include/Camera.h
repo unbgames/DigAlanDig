@@ -13,6 +13,9 @@ class Camera {
 
     static Vec2 pos, speed, screenSize, offset;
 
+    enum Movement { ATTACHED = 1, CONSTSCROLL, FRIENDLYSCROLL, NONE };
+    static Movement currentMove;
+
   private:
     static GameObject* focus;
     static Vec2 shake;

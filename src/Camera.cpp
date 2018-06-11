@@ -2,8 +2,9 @@
 #include <iostream>
 #include "InputManager.h"
 
-Vec2 Camera::pos, Camera::shake, Camera::speed(200, 200), Camera::screenSize;
+Vec2 Camera::pos, Camera::shake, Camera::speed(40, 40), Camera::screenSize;
 Vec2 Camera::offset;
+Camera::Movement Camera::currentMove = Camera::CONSTSCROLL;
 
 GameObject* Camera::focus = nullptr;
 int Camera::shakeIntensity = 0;
@@ -24,25 +25,53 @@ void Camera::Update(float dt) {
         shake = {0, 0};
     }
 
-    if (focus) {
-        if (focus->box.y >= screenSize.y / 2) {
-            offset.y = -(screenSize.y / 2) + focus->box.y;
-        }
-        pos = shake + offset;
+    if (!focus) currentMove = Camera::NONE;
 
-        return;
+    switch (Camera::currentMove) {
+        case ATTACHED:
+            if (focus->box.y >= screenSize.y / 2) {
+                offset.y = -(screenSize.y / 2) + focus->box.y;
+            }
+            break;
+
+        case Camera::CONSTSCROLL:
+            offset.y += speed.y * dt;
+            break;
+
+        case Camera::FRIENDLYSCROLL:
+            // half the speed when close to the top
+            // double the speed when close to the bottom
+            offset.y += speed.y * dt *
+                        (1.5 * (focus->box.y - pos.y) / screenSize.y + 0.5);
+            break;
+
+        case Camera::NONE:
+            if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_RIGHT)) {
+                offset.x += speed.x * dt;
+            }
+            if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_LEFT)) {
+                offset.x -= speed.x * dt;
+            }
+            if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_UP)) {
+                offset.y -= speed.y * dt;
+            }
+            if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_DOWN)) {
+                offset.y += speed.y * dt;
+            }
+            break;
     }
-    if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_RIGHT)) {
-        pos.x += speed.x * dt;
+    pos = shake + offset;
+
+    static int acc = 30;
+    if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_COMMA)) {
+        speed.y -= acc * dt;
     }
-    if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_LEFT)) {
-        pos.x -= speed.x * dt;
+    if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_PERIOD)) {
+        speed.y += acc * dt;
     }
-    if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_UP)) {
-        pos.y -= speed.y * dt;
-    }
-    if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_DOWN)) {
-        pos.y += speed.y * dt;
+    if (InputManager::GetInstance().KeyPress(SDL_SCANCODE_C)) {
+        currentMove = (Movement)(currentMove + 1);
+        if (currentMove > Camera::NONE) currentMove = Camera::ATTACHED;
     }
 }
 
