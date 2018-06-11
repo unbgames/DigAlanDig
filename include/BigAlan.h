@@ -15,7 +15,7 @@ class BigAlan : public Component {
     bool Is(const std::string& type) const { return !type.compare("BigAlan"); }
 
   private:
-    int offset = 20;
+    int offset = 0;
 };
 
 #endif  // BIGALAN_H
