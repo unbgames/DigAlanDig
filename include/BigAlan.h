@@ -11,7 +11,7 @@ class BigAlan : public Component {
         associated.box.y += offset;
         offset = -offset;
     }
-    void Render() const {}
+    void Render(Common::Layer layer) const {}
 
   private:
     int offset = 0;

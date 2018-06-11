@@ -24,7 +24,7 @@ void Sprite::SetFrame(int frame) {
     clipRect = Rect(pos, size);
 }
 
-void Sprite::Render() const {
+void Sprite::Render(Common::Layer layer) const {
     if (IsOpen()) {
         Vec2 offset;
         if (associated.worldReference) offset = Camera::pos;

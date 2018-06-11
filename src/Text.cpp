@@ -30,7 +30,7 @@ void Text::Update(float dt) {
     }
 }
 
-void Text::Render() const {
+void Text::Render(Common::Layer layer) const {
     if (!texture) return;
 
     Vec2 offset;

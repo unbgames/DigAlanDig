@@ -14,8 +14,13 @@ class TileSet {
     int GetTileWidth() const { return tileWidth; }
     int GetTileHeight() const { return tileHeight; }
 
+    void setTileSetDefault() { tileSet = tileSet_d.get(); }
+    void setTileSetLight() { tileSet = tileSet_l.get(); }
+
   private:
-    std::shared_ptr<SDL_Texture> tileSet = nullptr;
+    SDL_Texture* tileSet = nullptr;
+    std::shared_ptr<SDL_Texture> tileSet_d = nullptr;
+    std::shared_ptr<SDL_Texture> tileSet_l = nullptr;
 
     int rows = 0, columns = 0;
     int tileWidth = 100, tileHeight = 100;

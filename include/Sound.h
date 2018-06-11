@@ -28,7 +28,7 @@ class Sound : public Component {
 
     void Update(float dt) {}
     void RhythmUpdate() {}
-    void Render() const {}
+    void Render(Common::Layer layer) const {}
 
   private:
     std::shared_ptr<Mix_Chunk> chunk;

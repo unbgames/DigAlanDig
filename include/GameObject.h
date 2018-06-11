@@ -11,7 +11,7 @@ class Component;
 
 class GameObject {
   public:
-    GameObject(Common::Layer layer = Common::Layer::DEFAULT)
+    GameObject(unsigned int layer = Common::Layer::DEFAULT)
         : layer(layer), isDead(false) {}
     ~GameObject();
 
@@ -29,7 +29,6 @@ class GameObject {
     void RemoveComponent(Component *cpt);
 
     void Start();
-    void NotifyCollision(std::shared_ptr<GameObject> other);
     void CopyPosition(const GameObject &go);
 
     double AngleRad() const { return angleDeg * M_PI / 180; }
@@ -47,7 +46,7 @@ class GameObject {
     bool fromPlayer = false;
     bool started = false;
     double angleDeg = 0;
-    Common::Layer layer = Common::Layer::DEFAULT;
+    unsigned int layer;
 
   private:
     std::vector<Component *> components;

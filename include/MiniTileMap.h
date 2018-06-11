@@ -22,7 +22,7 @@ class MiniTileMap : public Component {
 
     void Update(float dt) {}
     void RhythmUpdate() {}
-    void Render() const;
+    void Render(Common::Layer layer) const;
 
   private:
     TileMap *tileMap;

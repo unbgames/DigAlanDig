@@ -19,7 +19,7 @@ class TileMap : public Component {
 
     void Update(float dt) {}
     void RhythmUpdate() {}
-    void Render() const;
+    void Render(Common::Layer layer) const;
 
     void RenderLayer(int layer, int cameraX = 0, int cameraY = 0) const;
 

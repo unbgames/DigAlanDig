@@ -17,7 +17,7 @@ class Text : public Component {
 
     void Update(float dt);
     void RhythmUpdate() { display = !display; }
-    void Render() const;
+    void Render(Common::Layer layer) const;
 
     void SetFontFile(const std::string& fontFile);
     void SetFontSize(int fontSize);

@@ -22,13 +22,9 @@ void GameObject::RhythmReset() {
 }
 
 void GameObject::RenderOrder(Common::Layer layer) const {
-    if (this->layer != layer) return;
+    if (!(this->layer & layer)) return;
 
-    for (Component* component : components) component->Render();
-}
-
-void GameObject::NotifyCollision(std::shared_ptr<GameObject> other) {
-    for (Component* component : components) component->NotifyCollision(other);
+    for (Component* component : components) component->Render(layer);
 }
 
 void GameObject::RemoveComponent(Component* cpt) {

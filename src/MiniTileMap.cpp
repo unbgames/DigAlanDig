@@ -12,7 +12,7 @@ void MiniTileMap::RenderLayer(int initX, int initY) {}
 /*
     Renderiza as camadas do mapa.
 */
-void MiniTileMap::Render() const {
+void MiniTileMap::Render(Common::Layer layer) const {
     int x = associated.box.x;
     int y = associated.box.y;
     int valPos;

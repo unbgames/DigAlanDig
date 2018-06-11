@@ -58,7 +58,12 @@ int TileMap::At(int x, int y, int z) const {
     return (valid) ? tileMat[z][y * width + x] : 1;
 }
 
-void TileMap::Render() const {
+void TileMap::Render(Common::Layer layer) const {
+    if (layer == Common::Layer::DEFAULT)
+        tileSet->setTileSetDefault();
+    else
+        tileSet->setTileSetLight();
+
     for (int i = 0; i < depth; ++i)
         RenderLayer(i, Camera::pos.x, Camera::pos.y);
 }

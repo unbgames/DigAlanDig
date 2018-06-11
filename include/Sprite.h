@@ -33,7 +33,7 @@ class Sprite : public Component {
         if (frameTime == -1) SetFrame(currentFrame = !currentFrame);
     }
     void RhythmReset() {}
-    void Render() const;
+    void Render(Common::Layer layer) const;
 
     void SetScaleX(double scaleX, double scaleY);
     void SetScaleX(double s) { SetScaleX(s, s); }

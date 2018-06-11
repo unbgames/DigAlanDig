@@ -7,7 +7,7 @@
 using json = nlohmann::json;
 
 namespace Common {
-enum Layer { BG, DEFAULT, FG, LIGHT, HUD };
+enum Layer { BG = 1, DEFAULT = 2, FG = 4, LIGHT = 8, HUD = 16 };
 
 // From SDL wiki
 char *file_read(const char *filename);

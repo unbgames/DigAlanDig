@@ -8,13 +8,17 @@ TileSet::TileSet(const std::string& file) {
 
     std::string imgFile = j.at("image");
     imgFile.replace(imgFile.begin(), imgFile.begin() + 3, "assets/");
-    tileSet = Resources::GetImage(imgFile);
+    tileSet_d = Resources::GetImage(imgFile);
+    imgFile.replace(imgFile.end() - 4, imgFile.end() - 4, "_light");
+    tileSet_l = Resources::GetImage(imgFile);
+    SDL_SetTextureBlendMode(tileSet_l.get(), SDL_BLENDMODE_ADD);
+    setTileSetDefault();
 
     tileHeight = j.at("tileheight");
     tileWidth = j.at("tilewidth");
 
     int width, height;
-    SDL_QueryTexture(tileSet.get(), nullptr, nullptr, &width, &height);
+    SDL_QueryTexture(tileSet, nullptr, nullptr, &width, &height);
     columns = width / tileWidth;
     rows = height / tileHeight;
 
@@ -38,6 +42,5 @@ void TileSet::RenderTile(unsigned index, float x, float y) const {
                      tileHeight * ((int)index / columns), tileWidth,
                      tileHeight};
 
-    SDL_RenderCopy(Game::GetInstance()->GetRenderer(), tileSet.get(), &clip,
-                   &pos);
+    SDL_RenderCopy(Game::GetInstance()->GetRenderer(), tileSet, &clip, &pos);
 }

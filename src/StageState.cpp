@@ -32,7 +32,8 @@ void StageState::noEffect(void *udata, Uint8 *stream, int len) {
 
 void StageState::LoadAssets() {
     Camera::pos.Set(-(Camera::screenSize.x - 600 - 120), 0);
-    GameObject *gm = new GameObject();
+    GameObject *gm =
+        new GameObject(Common::Layer::DEFAULT | Common::Layer::LIGHT);
     objectArray.emplace_back(gm);
     tileMap = new TileMap(*gm, "assets/map/stage1.json");
     gm->AddComponent(tileMap);

@@ -46,7 +46,7 @@ class Alan : public Component {
 
         moved = false;
     }
-    void Render() const {}
+    void Render(Common::Layer layer) const {}
 
     Vec2 GetGridPosition() const { return gridPosition; }
 

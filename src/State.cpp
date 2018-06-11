@@ -86,7 +86,7 @@ void State::RenderLight() const {
     SDL_SetRenderTarget(renderer, texTarget);
 
     int color =
-        50 + PulseColor(input.GetDeltaRhythm(), Game::GetInstance()->combo);
+        70 + PulseColor(input.GetDeltaRhythm(), Game::GetInstance()->combo);
     SDL_SetRenderDrawColor(renderer, color, color, color * 0.8, 255);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
