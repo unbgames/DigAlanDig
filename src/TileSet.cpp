@@ -1,18 +1,27 @@
 #include "TileSet.h"
+#include "Common.h"
 #include "Game.h"
 
-TileSet::TileSet(int tileWidth, int tileHeight, const std::string& file)
-    : tileSet(nullptr), tileWidth(tileWidth), tileHeight(tileHeight) {
-    tileSet = IMG_LoadTexture(Game::GetInstance()->GetRenderer(), file.c_str());
-    if (!tileSet) {
-        std::cerr << "IMG_LoadTexture: " << SDL_GetError() << std::endl;
-        exit(EXIT_SUCCESS);
-    }
+TileSet::TileSet(const std::string& file) {
+    json j;
+    Common::read_Json(j, file);
+
+    std::string imgFile = j.at("image");
+    imgFile.replace(imgFile.begin(), imgFile.begin() + 3, "assets/");
+    tileSet = Resources::GetImage(imgFile);
+
+    tileHeight = j.at("tileheight");
+    tileWidth = j.at("tilewidth");
 
     int width, height;
-    SDL_QueryTexture(tileSet, nullptr, nullptr, &width, &height);
+    SDL_QueryTexture(tileSet.get(), nullptr, nullptr, &width, &height);
     columns = width / tileWidth;
     rows = height / tileHeight;
+
+    if (width != j.at("imagewidth") || height != j.at("imageheight")) {
+        std::cout << "Tileset mismatch" << std::endl;
+        exit(EXIT_SUCCESS);
+    }
 }
 
 void TileSet::RenderTile(unsigned index, float x, float y) const {
@@ -29,5 +38,6 @@ void TileSet::RenderTile(unsigned index, float x, float y) const {
                      tileHeight * ((int)index / columns), tileWidth,
                      tileHeight};
 
-    SDL_RenderCopy(Game::GetInstance()->GetRenderer(), tileSet, &clip, &pos);
+    SDL_RenderCopy(Game::GetInstance()->GetRenderer(), tileSet.get(), &clip,
+                   &pos);
 }

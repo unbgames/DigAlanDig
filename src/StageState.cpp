@@ -34,9 +34,7 @@ void StageState::LoadAssets() {
     Camera::pos.Set(-(Camera::screenSize.x - 600 - 120), 0);
     GameObject *gm = new GameObject();
     objectArray.emplace_back(gm);
-    tileSet =
-        new TileSet(100, 100, "assets/img/GroundhogAlanBackgroundSample.png");
-    tileMap = new TileMap(*gm, "assets/map/stage1.json", tileSet);
+    tileMap = new TileMap(*gm, "assets/map/stage1.json");
     gm->AddComponent(tileMap);
 
     GameObject *alan = new GameObject();
@@ -56,8 +54,7 @@ void StageState::LoadAssets() {
 
     GameObject *MiniMapTile = new GameObject(Common::Layer::HUD);
     MiniMapTile->box.pos = {1024 - 6 * 15, 500};
-    TileSet *minitileSet =
-        new TileSet(15, 15, "assets/img/GroundhogAlanMap.png");
+    TileSet *minitileSet = new TileSet("assets/map/miniground.json");
 
     MiniTileMap *miniTilemap =
         new MiniTileMap(*MiniMapTile, minitileSet, tileMap, lilAlan);

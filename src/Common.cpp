@@ -23,3 +23,11 @@ char *Common::file_read(const char *filename) {
     res[nb_read_total] = '\0';
     return res;
 }
+
+void Common::read_Json(json &j, const std::string &file) {
+    char *data = Common::file_read(file.c_str());
+    if (data == nullptr) exit(0);
+
+    j = json::parse(data, data + strlen(data));
+    free(data);
+}

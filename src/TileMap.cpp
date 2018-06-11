@@ -4,7 +4,6 @@
 #include <iostream>
 #include "Camera.h"
 #include "Common.h"
-#include "json.hpp"
 
 using json = nlohmann::json;
 
@@ -13,18 +12,19 @@ TileMap::~TileMap() {}
 void TileMap::TileMapGenerator() { return; }
 
 void TileMap::Load(const std::string &file) {
-    char *data = Common::file_read(file.c_str());
-    if (data == nullptr) exit(0);
+    json j;
+    Common::read_Json(j, file);
 
-    json test = json::parse(data, data + strlen(data));
-    free(data);
-    // test.
-    width = test.at("width");
-    height = test.at("height");
-    depth = test.at("layers").size();
+    std::string tileSetFile = j.at("tilesets").at(0).at("source");
+    tileSetFile.replace(tileSetFile.end() - 3, tileSetFile.end(), "json");
+    tileSet = new TileSet("assets/map/" + tileSetFile);
+
+    width = j.at("width");
+    height = j.at("height");
+    depth = j.at("layers").size();
 
     for (int i = 0; i < depth; i++)
-        tileMat.push_back(test.at("layers").at(i).at("data"));
+        tileMat.push_back(j.at("layers").at(i).at("data"));
 }
 
 inline int inRange(int value, int min, int max) {

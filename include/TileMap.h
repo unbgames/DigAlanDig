@@ -6,8 +6,8 @@
 
 class TileMap : public Component {
   public:
-    TileMap(GameObject& associated, const std::string& file, TileSet* tileSet)
-        : Component(associated), tileSet(tileSet) {
+    TileMap(GameObject& associated, const std::string& file)
+        : Component(associated) {
         TileMapGenerator();
         Load(file);
     }
