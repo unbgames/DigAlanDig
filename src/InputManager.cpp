@@ -1,4 +1,12 @@
 #include "InputManager.h"
+InputManager::InputManager() {
+    for (int i = 0; i < SDL_NumJoysticks(); i++) {
+        if (AddController(i)) {
+            std::cout << "Joystick" << i << "connected!" << std::endl;
+            break;
+        }
+    }
+}
 
 inline void InputManager::UpdateKey(int &update, bool &state,
                                     bool newValue) const {
@@ -45,6 +53,24 @@ void InputManager::Update(float deltaRhythm) {
                           mouseState[event.button.button],
                           event.type == SDL_MOUSEBUTTONDOWN);
                 break;
+
+            case SDL_CONTROLLERBUTTONDOWN:
+            case SDL_CONTROLLERBUTTONUP:
+                UpdateKey(gamepadUpdate[event.cbutton.button],
+                          gamepadState[event.cbutton.button],
+                          event.type == SDL_CONTROLLERBUTTONDOWN);
+                break;
+
+            case SDL_CONTROLLERDEVICEADDED:
+                AddController(event.cdevice.which);
+                std::cout << "control pad: "
+                          << SDL_GameControllerName(gameController)
+                          << std::endl;
+                break;
+
+            case SDL_CONTROLLERDEVICEREMOVED:
+                RemoveController();
+                break;
         }
     }
 
@@ -56,4 +82,22 @@ void InputManager::Update(float deltaRhythm) {
         keyAdjust -= 0.05;
         std::cout << "\nKey Adjust = " << keyAdjust << "ms\n";
     }
+}
+
+bool InputManager::AddController(int id) {
+    if (SDL_IsGameController(id)) {
+        SDL_GameControllerClose(gameController);
+        gameController = SDL_GameControllerOpen(id);
+        if (gameController == NULL)
+            std::cout << "SDL GameController(" << id
+                      << ") Error: " << SDL_GetError() << std::endl;
+        return true;
+    }
+    std::cout << "Controller not suported" << std::endl;
+
+    return false;
+}
+
+void InputManager::RemoveController(void) {
+    SDL_GameControllerClose(gameController);
 }

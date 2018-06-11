@@ -52,10 +52,17 @@ class InputManager {
 
   private:
     // Disallow compiler generated ctor, dtor and copy
-    InputManager() {}
+    InputManager();
     InputManager(InputManager const&);
     InputManager& operator=(InputManager const&);
     ~InputManager() {}
+
+    bool AddController(int id);
+    void RemoveController(void);
+    SDL_GameController* gameController;
+
+    bool gamepadState[SDL_CONTROLLER_BUTTON_MAX] = {0};
+    int gamepadUpdate[SDL_CONTROLLER_BUTTON_MAX] = {0};
 
     bool keyState[SDL_NUM_SCANCODES] = {0};
     int keyUpdate[SDL_NUM_SCANCODES] = {0};
