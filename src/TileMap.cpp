@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include "Camera.h"
+#include "Common.h"
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -11,36 +12,12 @@ TileMap::~TileMap() {}
 
 void TileMap::TileMapGenerator() { return; }
 
-// From SDL wiki
-char *file_read(const char *filename) {
-    SDL_RWops *rw = SDL_RWFromFile(filename, "rb");
-    if (rw == nullptr) return nullptr;
-
-    Sint64 res_size = SDL_RWsize(rw);
-    char *res = (char *)malloc(res_size + 1);
-
-    Sint64 nb_read_total = 0, nb_read = 1;
-    char *buf = res;
-    while (nb_read_total < res_size && nb_read != 0) {
-        nb_read = SDL_RWread(rw, buf, 1, (res_size - nb_read_total));
-        nb_read_total += nb_read;
-        buf += nb_read;
-    }
-    SDL_RWclose(rw);
-    if (nb_read_total != res_size) {
-        free(res);
-        return nullptr;
-    }
-
-    res[nb_read_total] = '\0';
-    return res;
-}
-
 void TileMap::Load(const std::string &file) {
-    char *data = file_read(file.c_str());
+    char *data = Common::file_read(file.c_str());
     if (data == nullptr) exit(0);
 
     json test = json::parse(data, data + strlen(data));
+    free(data);
     // test.
     width = test.at("width");
     height = test.at("height");
