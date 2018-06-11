@@ -19,16 +19,16 @@ void Camera::Update(float dt) {
         }
         return;
     }
-    if (InputManager::GetInstance().IsKeyDown(SDL_SCANCODE_RIGHT)) {
+    if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_RIGHT)) {
         pos.x += speed.x * dt;
     }
-    if (InputManager::GetInstance().IsKeyDown(SDL_SCANCODE_LEFT)) {
+    if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_LEFT)) {
         pos.x -= speed.x * dt;
     }
-    if (InputManager::GetInstance().IsKeyDown(SDL_SCANCODE_UP)) {
+    if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_UP)) {
         pos.y -= speed.y * dt;
     }
-    if (InputManager::GetInstance().IsKeyDown(SDL_SCANCODE_DOWN)) {
+    if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_DOWN)) {
         pos.y += speed.y * dt;
     }
 

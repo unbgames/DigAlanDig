@@ -14,19 +14,18 @@ Alan::Alan(GameObject &associated, Vec2 gridPosition, int gridSizeHeight,
 void Alan::GetMovement() {
     if (moved || movementDirection) return;
 
-    if (input.KeyPress(SDL_SCANCODE_UP)) {
+    if (input.ActionPress(input.DIG_UP)) {
         movementDirection = Direction::UP;
     }
-    if (input.KeyPress(SDL_SCANCODE_DOWN) ||
-        input.MousePress(InputManager::mouseKey::LEFT)) {
+    if (input.ActionPress(input.DIG_DOWN)) {
         movementDirection = Direction::DOWN;
         moved = true;
     }
-    if (input.KeyPress(SDL_SCANCODE_LEFT)) {
+    if (input.ActionPress(input.DIG_LEFT)) {
         movementDirection = Direction::LEFT;
         moved = true;
     }
-    if (input.KeyPress(SDL_SCANCODE_RIGHT)) {
+    if (input.ActionPress(input.DIG_RIGHT)) {
         movementDirection = Direction::RIGHT;
         moved = true;
     }
@@ -60,7 +59,7 @@ void Alan::Update(float dt) {
     Sprite *sprite = associated.GetComponent<Sprite *>();
     // Testa se a marmota deve "cair" ou ficar na posição atual
     if (gridsLeft || (tileMap->At(gridPosition.x, gridPosition.y + 1) == 2 &&
-                      !input.IsKeyDown(SDL_SCANCODE_A))) {
+                      !input.KeyDown(SDL_SCANCODE_A))) {
         if (gridsLeft == 0) {
             int y = gridPosition.y + 1;
             while (tileMap->At(gridPosition.x, y) == 2) {
@@ -88,7 +87,7 @@ void Alan::Update(float dt) {
     GetMovement();
 
     if (movementDirection == Direction::NONE) {
-        if (!input.IsKeyDown(SDL_SCANCODE_A) &&
+        if (!input.KeyDown(SDL_SCANCODE_A) &&
             (frameNumber != 0 && frameNumber != 1)) {
             frameNumber = 0;
             sprite->SetFrame(frameNumber);
@@ -98,7 +97,7 @@ void Alan::Update(float dt) {
     }
 
     // 'A' apertado indica que o movimento é de escalada
-    if (input.IsKeyDown(SDL_SCANCODE_A) && climbPermited) {
+    if (input.KeyDown(SDL_SCANCODE_A) && climbPermited) {
         if (movementDirection == Direction::UP) {
             // Verifica se a posição acima do grid é um espaço vazio e se a
             // marmota já está na posição de escalada

@@ -6,6 +6,32 @@ InputManager::InputManager() {
             break;
         }
     }
+
+    key2action[SDL_SCANCODE_ESCAPE] = Action::ESCAPE;
+    gamepad2action[SDL_CONTROLLER_BUTTON_BACK] = Action::ESCAPE;
+
+    key2action[SDL_SCANCODE_RETURN] = Action::ENTER;
+    key2action[SDL_SCANCODE_SPACE] = Action::ENTER;
+    gamepad2action[SDL_CONTROLLER_BUTTON_START] = Action::ENTER;
+
+    key2action[SDL_SCANCODE_DOWN] = Action::DIG_DOWN;
+    gamepad2action[SDL_CONTROLLER_BUTTON_A] = Action::DIG_DOWN;
+    gamepad2action[SDL_CONTROLLER_BUTTON_DPAD_DOWN] = Action::DIG_DOWN;
+
+    key2action[SDL_SCANCODE_LEFT] = Action::DIG_LEFT;
+    gamepad2action[SDL_CONTROLLER_BUTTON_X] = Action::DIG_LEFT;
+    gamepad2action[SDL_CONTROLLER_BUTTON_DPAD_LEFT] = Action::DIG_LEFT;
+
+    key2action[SDL_SCANCODE_UP] = Action::DIG_UP;
+    gamepad2action[SDL_CONTROLLER_BUTTON_Y] = Action::DIG_UP;
+    gamepad2action[SDL_CONTROLLER_BUTTON_DPAD_UP] = Action::DIG_UP;
+
+    key2action[SDL_SCANCODE_RIGHT] = Action::DIG_RIGHT;
+    gamepad2action[SDL_CONTROLLER_BUTTON_B] = Action::DIG_RIGHT;
+    gamepad2action[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] = Action::DIG_RIGHT;
+
+    key2action[SDL_SCANCODE_F] = Action::FULLSCREEN;
+    gamepad2action[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER] = Action::FULLSCREEN;
 }
 
 inline void InputManager::UpdateKey(int &update, bool &state,
@@ -45,6 +71,9 @@ void InputManager::Update(float deltaRhythm) {
                 UpdateKey(keyUpdate[event.key.keysym.scancode],
                           keyState[event.key.keysym.scancode],
                           event.type == SDL_KEYDOWN);
+                UpdateKey(actionUpdate[key2action[event.key.keysym.scancode]],
+                          actionState[key2action[event.key.keysym.scancode]],
+                          event.type == SDL_KEYDOWN);
                 break;
 
             case SDL_MOUSEBUTTONDOWN:
@@ -58,6 +87,9 @@ void InputManager::Update(float deltaRhythm) {
             case SDL_CONTROLLERBUTTONUP:
                 UpdateKey(gamepadUpdate[event.cbutton.button],
                           gamepadState[event.cbutton.button],
+                          event.type == SDL_CONTROLLERBUTTONDOWN);
+                UpdateKey(actionUpdate[gamepad2action[event.cbutton.button]],
+                          actionState[gamepad2action[event.cbutton.button]],
                           event.type == SDL_CONTROLLERBUTTONDOWN);
                 break;
 

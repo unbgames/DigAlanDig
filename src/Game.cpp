@@ -102,9 +102,7 @@ void Game::Run() {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
-        if (input.IsKeyDown(SDL_SCANCODE_LCTRL) &&
-            input.KeyPress(SDL_SCANCODE_F))
-            ToggleFullScreen();
+        if (input.ActionPress(InputManager::FULLSCREEN)) ToggleFullScreen();
     }
 }
 

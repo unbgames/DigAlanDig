@@ -3,13 +3,25 @@
 #define INCLUDE_SDL
 #include "SDL_include.h"
 
+#include <unordered_map>
 #include "Camera.h"
 
 class InputManager {
   public:
+    enum Action {
+        DIG_DOWN,
+        DIG_LEFT,
+        DIG_RIGHT,
+        DIG_UP,
+        ENTER,
+        ESCAPE,
+        FULLSCREEN,
+        ACTION_MAX
+    };
+
     void Update(float deltaRhythm);
 
-    bool IsKeyDown(int key) const { return keyState[key]; }
+    bool KeyDown(int key) const { return keyState[key]; }
     bool KeyPress(int key) const {
         return (frame == keyUpdate[key]) && keyState[key];
     }
@@ -17,12 +29,28 @@ class InputManager {
         return (frame == keyUpdate[key]) && !keyState[key];
     }
 
-    bool IsMouseDown(int button) const { return mouseState[button]; }
+    bool MouseDown(int button) const { return mouseState[button]; }
     bool MousePress(int button) const {
         return (frame == mouseUpdate[button]) && mouseState[button];
     }
     bool MouseRelease(int button) const {
         return (frame == mouseUpdate[button]) && !mouseState[button];
+    }
+
+    bool GamepadDown(int button) const { return gamepadState[button]; }
+    bool GamepadPress(int button) const {
+        return (frame == gamepadUpdate[button]) && gamepadState[button];
+    }
+    bool GamepadRelease(int button) const {
+        return (frame == gamepadUpdate[button]) && !gamepadState[button];
+    }
+
+    bool ActionDown(Action button) const { return actionState[button]; }
+    bool ActionPress(Action button) const {
+        return (frame == actionUpdate[button]) && actionState[button];
+    }
+    bool ActionRelease(Action button) const {
+        return (frame == actionUpdate[button]) && !actionState[button];
     }
 
     enum mouseKey {
@@ -81,6 +109,11 @@ class InputManager {
 
     float deltaRhythm = 0;
     float keyAdjust = 0;
+
+    bool actionState[Action::ACTION_MAX] = {0};
+    int actionUpdate[Action::ACTION_MAX] = {0};
+    std::unordered_map<int, Action> gamepad2action;
+    std::unordered_map<int, Action> key2action;
 };
 
 #endif  // INPUTMANAGER_H

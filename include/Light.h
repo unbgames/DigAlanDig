@@ -12,6 +12,7 @@ class Light : public Component {
           sprite(new Sprite(associated, "assets/img/light.png")) {
         sprite->SetBlendMode(SDL_BLENDMODE_ADD);
         sprite->SetColor(255, 255, 255 * 0.8);
+        SetSize(600);
     }
 
     ~Light() { delete sprite; }

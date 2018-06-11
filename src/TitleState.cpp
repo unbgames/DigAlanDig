@@ -38,8 +38,7 @@ void TitleState::Start() {
 }
 
 void TitleState::Update(float dt) {
-    if (input.KeyPress(SDL_SCANCODE_SPACE) ||
-        input.MousePress(InputManager::mouseKey::LEFT))
+    if (input.ActionPress(input.ENTER))
         Game::GetInstance()->Push(new StageState());
     UpdateArray(dt);
 }

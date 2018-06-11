@@ -56,7 +56,7 @@ void State::UpdateArray(float dt) {
         objectArray.end());
 
     // KeyPress
-    if (input.KeyPress(SDL_SCANCODE_ESCAPE) || input.QuitRequested())
+    if (input.ActionPress(input.ESCAPE) || input.QuitRequested())
         quitRequested = true;
 }
 
