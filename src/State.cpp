@@ -78,15 +78,28 @@ int PulseColor(float dtR, int combo) {
 
 void State::RenderLight() const {
     SDL_Renderer* renderer = Game::GetInstance()->GetRenderer();
-    static SDL_Texture* texTarget = SDL_CreateTexture(
+
+    // Rendering default layer to texture
+    static SDL_Texture* texDefault = SDL_CreateTexture(
+        renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
+        Camera::screenSize.x, Camera::screenSize.y);
+    SDL_SetRenderTarget(renderer, texDefault);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RenderClear(renderer);
+
+    for (auto obj : objectArray) {
+        obj->RenderOrder(Common::Layer::DEFAULT);
+    }
+
+    // Rendering to texture (Lights to an texture)
+    static SDL_Texture* texLight = SDL_CreateTexture(
         renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
         Camera::screenSize.x, Camera::screenSize.y);
 
-    // Rendering to texture (Lights to an intermediary texture)
-    SDL_SetRenderTarget(renderer, texTarget);
+    SDL_SetRenderTarget(renderer, texLight);
 
     int color =
-        50 + PulseColor(input.GetDeltaRhythm(), Game::GetInstance()->combo);
+        30 + PulseColor(input.GetDeltaRhythm(), Game::GetInstance()->combo);
     SDL_SetRenderDrawColor(renderer, color, color, color * 0.8, 255);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
@@ -95,18 +108,22 @@ void State::RenderLight() const {
     }
 
     // Rendering the texture to screen (multiply light texture to screen)
-    SDL_SetRenderTarget(renderer, NULL);
+    SDL_SetRenderTarget(renderer, texDefault);
 
+    SDL_SetTextureBlendMode(texDefault, SDL_BLENDMODE_MOD);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_MOD);
-    SDL_SetTextureBlendMode(texTarget, SDL_BLENDMODE_MOD);
-    SDL_RenderCopy(renderer, texTarget, NULL, NULL);
+    SDL_SetTextureBlendMode(texLight, SDL_BLENDMODE_MOD);
+    SDL_RenderCopy(renderer, texLight, NULL, NULL);
 
+    SDL_SetRenderTarget(renderer, NULL);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureBlendMode(texDefault, SDL_BLENDMODE_BLEND);
+    SDL_RenderCopy(renderer, texDefault, NULL, NULL);
 }
 
 void State::RenderArray() const {
     for (auto obj : objectArray) {
-        obj->RenderOrder(Common::Layer::DEFAULT);
+        obj->RenderOrder(Common::Layer::BG);
     }
 
     RenderLight();

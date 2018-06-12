@@ -47,16 +47,16 @@ void Camera::Update(float dt) {
 
         case Camera::NONE:
             if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_RIGHT)) {
-                offset.x += speed.x * dt;
+                offset.x += speed.x * dt * 10;
             }
             if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_LEFT)) {
-                offset.x -= speed.x * dt;
+                offset.x -= speed.x * dt * 10;
             }
             if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_UP)) {
-                offset.y -= speed.y * dt;
+                offset.y -= speed.y * dt * 10;
             }
             if (InputManager::GetInstance().KeyDown(SDL_SCANCODE_DOWN)) {
-                offset.y += speed.y * dt;
+                offset.y += speed.y * dt * 10;
             }
             break;
     }

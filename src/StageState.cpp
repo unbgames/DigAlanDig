@@ -9,6 +9,7 @@
 #include "Game.h"
 #include "Light.h"
 #include "MiniTileMap.h"
+#include "Parallax.h"
 #include "Sprite.h"
 #include "Vec2.h"
 
@@ -31,7 +32,7 @@ void StageState::noEffect(void *udata, Uint8 *stream, int len) {
 }
 
 void StageState::LoadAssets() {
-    Camera::offset.Set(-(Camera::screenSize.x - 600 - 120), -100);
+    Camera::offset.Set(-(Camera::screenSize.x - 600 - 120), 0);
     input.title = false;
 
     GameObject *gm =
@@ -70,6 +71,13 @@ void StageState::LoadAssets() {
     bigAlan->AddComponent(new BigAlan(*bigAlan));
     bigAlan->worldReference = false;
     bigAlan->box.pos = {0, 460};
+
+    GameObject *backG = new GameObject(Common::Layer::BG);
+    backG->worldReference = false;
+    objectArray.emplace_back(backG);
+    backG->AddComponent(new bgCircularY(*backG, "assets/img/bg.png"));
+    backG->AddComponent(new Parallax(*backG, 0.5));
+    backG->box.pos = {304, 0};
 
     music.Open("assets/audio/marmota.ogg");
     count = 0;

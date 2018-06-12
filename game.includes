@@ -2,3 +2,5 @@ include
 src
 extern
 /usr/include/SDL2
+src/include
+src/src

@@ -10,6 +10,7 @@ include/InputManager.h
 include/Light.h
 include/MiniTileMap.h
 include/Music.h
+include/Parallax.h
 include/Rect.h
 include/Resources.h
 include/SDL_include.h
@@ -35,6 +36,7 @@ src/Light.cpp
 src/Main.cpp
 src/MiniTileMap.cpp
 src/Music.cpp
+src/Parallax.cpp
 src/Rect.cpp
 src/Resources.cpp
 src/Sound.cpp
