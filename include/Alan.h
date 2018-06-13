@@ -49,19 +49,25 @@ class Alan : public Component {
     void Render(Common::Layer layer) const {}
 
     Vec2 GetGridPosition() const { return gridPosition; }
+    int GetGridSizeWidth() const { return gridSizeWidth; }
+    int GetGridSizeHeight() const { return gridSizeHeight; }
+    int GetMaxPosition() const { return maxPosition; }
 
     void Fallin(float dt);
 
   private:
     enum Direction { NONE = 0, UP, DOWN, LEFT, RIGHT };
+    enum Action { STANDIN = 0, WALKIN, CLIMBING, FALLIN };
+    Direction movementDirection = Direction::NONE;
+    Action action = Action::STANDIN;
+
+    int maxPosition = 0;
     int gridSizeWidth;
     int gridSizeHeight;
-    Direction movementDirection = Direction::NONE;
 
     Vec2 gridPosition;
     int frameNumber = 0;
     int gridsLeft = 0;
-    bool climbPermited = true;
 
     InputManager& input;
 
