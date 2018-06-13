@@ -55,7 +55,8 @@ void Camera::Update(float dt) {
                 offset.y += speed.y * dt * scrollFactor;
 
                 if (offset.y > (focus->box.y + alan->GetGridSizeHeight())) {
-                    std::cout << "MORREU VIADO!!!" << std::endl;
+                    focus->RequestDelete();
+                    Unfollow();
                 }
             }
             break;

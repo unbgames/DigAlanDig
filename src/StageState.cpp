@@ -52,7 +52,7 @@ void StageState::LoadAssets() {
 
     GameObject *alanL = new GameObject(Common::Layer::LIGHT);
     objectArray.emplace_back(alanL);
-    alanL->AddComponent(new Light(*alanL, alan));
+    alanL->AddComponent(new Light(*alanL, GetObjectPrt(alan)));
 
     Camera::Follow(alan);
 

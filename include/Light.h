@@ -1,12 +1,13 @@
 #ifndef LIGHT_H
 #define LIGHT_H
+#include <memory>
 #include "Common.h"
 #include "Component.h"
 #include "Sprite.h"
 
 class Light : public Component {
   public:
-    Light(GameObject& associated, GameObject* follow)
+    Light(GameObject& associated, std::weak_ptr<GameObject> follow)
         : Component(associated),
           follow(follow),
           sprite(new Sprite(associated, "assets/img/light.png")) {
@@ -18,8 +19,12 @@ class Light : public Component {
     ~Light() { delete sprite; }
 
     void Update(float dt) {
-        associated.box.SetCenter(follow->box.Center());
-        sprite->Update(dt);
+        if (auto ptr = follow.lock()) {
+            associated.box.SetCenter(ptr->box.Center());
+            sprite->Update(dt);
+        } else {
+            associated.RequestDelete();
+        }
     }
 
     void RhythmUpdate() {}
@@ -32,7 +37,7 @@ class Light : public Component {
     int GetSize() const { return sprite->GetScale().x * sprite->GetHeight(); }
 
   private:
-    GameObject* follow;
+    std::weak_ptr<GameObject> follow;
     Sprite* sprite;
 };
 
