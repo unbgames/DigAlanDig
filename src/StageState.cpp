@@ -57,7 +57,7 @@ void StageState::LoadAssets() {
     Camera::Follow(alan);
 
     GameObject *MiniMapTile = new GameObject(Common::Layer::HUD);
-    MiniMapTile->box.pos = {1024 - 6 * 15, 500};
+    MiniMapTile->box.pos = {1024 - 6 * 15, 200};
     TileSet *minitileSet = new TileSet("assets/map/miniground.json");
 
     MiniTileMap *miniTilemap =

@@ -23,8 +23,8 @@ void MiniTileMap::Render(Common::Layer layer) const {
             if (alanPos.x == posX && alanPos.y == posY) {
                 valPos = 5;
                 // Faz a borda o minimapa
-            } else if (posY > std::max(alanPos.y + 4, 7.0)) {
-                valPos = 4;
+            } else if (posY > alan->GetMaxPosition()) {
+                valPos = 1;
             }
             tileSet->RenderTile(valPos, x, y);
 
