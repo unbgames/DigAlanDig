@@ -8,7 +8,23 @@ void Sprite::Open(const std::string &file) {
 
     SDL_QueryTexture(texture.get(), nullptr, nullptr, &width, &height);
     width /= frameCount;
+    frameTimeTotal = frameTime;
     SetFrame(0);
+    associated.box.size.Set(width, height);
+}
+
+void Sprite::Open(SpriteState sstate, int dir) {
+    texture = Resources::GetImage(sstate.file);
+
+    SDL_QueryTexture(texture.get(), nullptr, nullptr, &width, &height);
+    width /= sstate.totalFrameCount;
+    frameCount = sstate.frameCount;
+    SetFrame(dir * sstate.frameCount);
+    frameTimeTotal = sstate.frameTime * sstate.frameCount;
+    std::cout << "FRAME = " << currentFrame << "\nDIRECT = " << dir
+              << "\nFRAMETOTALTIME = " << frameTimeTotal
+              << "\nFRAMETIME = " << sstate.frameTime << std::endl;
+    frameTime = sstate.frameTime;
     associated.box.size.Set(width, height);
 }
 
@@ -49,7 +65,7 @@ void Sprite::Update(float dt) {
         return;
     }
 
-    //    if ((currentFrame + 1) * frameTime <= timeElapsed) {
-    //        SetFrame(floor(timeElapsed / frameTime));
-    //    }
+    // if ((currentFrame + 1) * frameTime <= timeElapsed) {
+    //    SetFrame(floor(timeElapsed / frameTime));
+    //}
 }

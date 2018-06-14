@@ -41,6 +41,9 @@ class GameObject {
         return nullptr;
     }
 
+    Vec2 GetGridPosition() const { return gridPosition; }
+    Vec2 gridPosition;
+
     Rect box;
     bool worldReference = true;
     bool fromPlayer = false;

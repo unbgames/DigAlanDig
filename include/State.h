@@ -44,7 +44,11 @@ class State {
 
     Music* GetMusic() { return &music; }
 
+    int GetGridSize() const { return gridSize; }
+
   protected:
+    const int gridSize = 100;
+
     bool popRequested = false;
     bool quitRequested = false;
     bool started = false;

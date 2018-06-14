@@ -8,6 +8,14 @@
 
 class Sprite : public Component {
   public:
+    class SpriteState {
+      public:
+        std::string file;
+        int frameCount;
+        int totalFrameCount;
+        float frameTime;
+    };
+
     explicit Sprite(GameObject& associated)
         : Component(associated), scale(1, 1) {}
 
@@ -23,6 +31,7 @@ class Sprite : public Component {
     ~Sprite() {}
 
     void Open(const std::string& file);
+    void Open(SpriteState sstate, int dir);
     void SetClip(int x, int y, int w, int h) { clipRect = {x, y, w, h}; }
     int GetWidth() const { return width; }
     int GetHeight() const { return height; }
@@ -45,7 +54,7 @@ class Sprite : public Component {
     void SetFrameTime(float frameTime) { this->frameTime = frameTime; }
 
     bool FrameTimePassed() {
-        if (timeElapsed < frameTime)
+        if (timeElapsed < frameTimeTotal)
             return true;
         else {
             timeElapsed = 0;
@@ -61,12 +70,15 @@ class Sprite : public Component {
         SDL_SetTextureColorMod(texture.get(), r, g, b);
     }
 
+    int GetFrameCount() { return frameCount; }
+
   private:
     std::shared_ptr<SDL_Texture> texture = nullptr;
     int width = 0;
     int height = 0;
     int frameCount = 1;
     float frameTime = 1;
+    float frameTimeTotal = 1;
     int currentFrame = 0;
     float timeElapsed = 0;
     float secondsToSelfDestruct = 0;

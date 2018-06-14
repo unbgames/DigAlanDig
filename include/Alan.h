@@ -9,6 +9,7 @@
 #include <iostream>
 #include <queue>
 #include <string>
+#include "AlanAnimation.h"
 #include "Component.h"
 #include "Game.h"
 #include "InputManager.h"
@@ -18,8 +19,7 @@
 
 class Alan : public Component {
   public:
-    Alan(GameObject& associated, Vec2 gridPosition, int gridSizeHeight,
-         int gridSizeWidth);
+    Alan(GameObject& associated, int gridSize);
 
     ~Alan() {}
 
@@ -48,12 +48,11 @@ class Alan : public Component {
     }
     void Render(Common::Layer layer) const {}
 
-    Vec2 GetGridPosition() const { return gridPosition; }
-    int GetGridSizeWidth() const { return gridSizeWidth; }
-    int GetGridSizeHeight() const { return gridSizeHeight; }
     int GetMaxPosition() const { return maxPosition; }
 
     void Fallin(float dt);
+
+    Vec2 GetGridPosition() { return associated.GetGridPosition(); }
 
   private:
     enum Direction { NONE = 0, UP, DOWN, LEFT, RIGHT };
@@ -62,14 +61,12 @@ class Alan : public Component {
     Action action = Action::STANDIN;
 
     int maxPosition = 0;
-    int gridSizeWidth;
-    int gridSizeHeight;
-
-    Vec2 gridPosition;
     int frameNumber = 0;
     int gridsLeft = 0;
 
     InputManager& input;
+
+    int gridSize;
 
     bool moved = false;
 };

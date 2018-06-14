@@ -1,6 +1,7 @@
 #include "MiniTileMap.h"
 #include <algorithm>
 #include "Camera.h"
+#include "Game.h"
 
 MiniTileMap::MiniTileMap(GameObject &associated, TileSet *tileSet,
                          TileMap *tileMap, Alan *alan)
@@ -16,7 +17,8 @@ void MiniTileMap::Render(Common::Layer layer) const {
     int y = associated.box.y;
     int valPos;
     Vec2 alanPos = alan->GetGridPosition();
-    int yMin = Camera::pos.y/alan->GetGridSizeHeight();
+    int yMin =
+        Camera::pos.y / Game::GetInstance()->GetCurrentState().GetGridSize();
 
     for (int posY = yMin; posY < tileMap->GetHeight(); posY++) {
         for (int posX = 0; posX < tileMap->GetWidth(); posX++) {

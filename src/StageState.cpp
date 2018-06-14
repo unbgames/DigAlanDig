@@ -4,9 +4,11 @@
 
 #include <stdio.h>
 #include "Alan.h"
+#include "AlanAnimation.h"
 #include "BigAlan.h"
 #include "Camera.h"
 #include "Game.h"
+#include "Interpol.h"
 #include "Light.h"
 #include "MiniTileMap.h"
 #include "Parallax.h"
@@ -41,20 +43,29 @@ void StageState::LoadAssets() {
     tileMap = new TileMap(*gm, "assets/map/stage1.json");
     gm->AddComponent(tileMap);
 
-    GameObject *alan = new GameObject();
-    objectArray.emplace_back(alan);
-    alan->AddComponent(
-        new Sprite(*alan, "assets/img/GroundhogAlan.png", 20, 0.2));
+    GameObject *alanGO = new GameObject();
     Vec2 gp(3, 0);
-    Alan *lilAlan = new Alan(*alan, gp, 100, 100);
-    alan->AddComponent(lilAlan);
-    alan->box.pos = gp * 100;
+    alanGO->box.x = (gp.x * GetGridSize()) - GetGridSize() / 2;
+    alanGO->box.y = (gp.y * GetGridSize()) - GetGridSize() / 2;
+    alanGO->gridPosition = gp;
+    objectArray.emplace_back(alanGO);
+    alanGO->AddComponent(
+        new Sprite(*alanGO, "assets/img/alan/idle.png", 2, 0.2));
+
+    Interpol *alanMov = new Interpol(*alanGO);
+    alanGO->AddComponent(alanMov);
+
+    AlanAnimation *alanAnimation = new AlanAnimation(*alanGO);
+    alanGO->AddComponent(alanAnimation);
+
+    Alan *lilAlan = new Alan(*alanGO, GetGridSize());
+    alanGO->AddComponent(lilAlan);
 
     GameObject *alanL = new GameObject(Common::Layer::LIGHT);
     objectArray.emplace_back(alanL);
-    alanL->AddComponent(new Light(*alanL, GetObjectPrt(alan)));
+    alanL->AddComponent(new Light(*alanL, GetObjectPrt(alanGO)));
 
-    Camera::Follow(alan);
+    Camera::Follow(alanGO);
 
     GameObject *MiniMapTile = new GameObject(Common::Layer::HUD);
     MiniMapTile->box.pos = {1024 - 6 * 15, 200};

@@ -45,16 +45,19 @@ void Camera::Update(float dt) {
             scrollFactor = (1.5 * (focus->box.y - pos.y) / screenSize.y + 0.5);
 
         case Camera::CONSTSCROLL: {
-            Alan *alan = focus->GetComponent<Alan *>();
-            Vec2 focusGridPos = alan->GetGridPosition();
+            Vec2 focusGridPos = focus->GetGridPosition();
             TileMap *tileMap = Game::GetInstance()->GetCurrentState().tileMap;
 
             if (focusGridPos.y != 0 &&
-                offset.y <= (tileMap->GetHeight() * alan->GetGridSizeHeight() -
-                             screenSize.y)) {
+                offset.y <=
+                    (tileMap->GetHeight() *
+                         Game::GetInstance()->GetCurrentState().GetGridSize() -
+                     screenSize.y)) {
                 offset.y += speed.y * dt * scrollFactor;
 
-                if (offset.y > (focus->box.y + alan->GetGridSizeHeight())) {
+                if (offset.y >
+                    (focus->box.y +
+                     Game::GetInstance()->GetCurrentState().GetGridSize())) {
                     focus->RequestDelete();
                     Unfollow();
                 }

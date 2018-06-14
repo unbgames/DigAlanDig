@@ -21,6 +21,7 @@ class StageState : public State {
     void Resume() {}
 
   private:
+    
     static void noEffect(void *udata, Uint8 *stream, int len);
     static int count;
     static bool beat;
