@@ -32,6 +32,20 @@ class AlanAnimation : public Component {
 
     enum Direction { E, W, N, S };
 
+    enum State {
+        NONE_S = 0,
+        IDLE,
+        WALKIN,
+        FALLIN,
+        DIG,
+        HIT,
+        CLIMBIN,
+        DIG_CLIMB,
+        DANCIN,
+        DEAD,
+        STATE_MAX
+    };
+
     AlanAnimation(GameObject &associated);
 
     ~AlanAnimation();
@@ -42,31 +56,18 @@ class AlanAnimation : public Component {
     void Start() {
         currentState = State::IDLE;
         oldState = currentState;
-        direction = N;
+        currentDirection = N;
+        oldDirection = currentDirection;
     }
 
     void SetAction(Transition trans, Direction dir);
 
+    int GetCurrentDirection() { return currentDirection; }
     int GetCurrentState() { return currentState; }
 
   private:
-    enum State {
-        NONE_S = 0,
-        IDLE,
-        WALKIN,
-        FALLIN,
-        DIG,
-        HIT,
-        CLIMBIN,
-        WALKIN_CLIMB,
-        DIG_CLIMB,
-        DANCIN,
-        DEAD,
-        STATE_MAX
-    };
-
     State oldState, currentState;
-    Direction direction;
+    Direction oldDirection, currentDirection;
     Sprite::SpriteState AState[State::STATE_MAX];
 };
 
