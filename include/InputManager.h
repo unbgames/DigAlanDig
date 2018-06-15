@@ -81,6 +81,7 @@ class InputManager {
 
     float GetDeltaRhythm() const { return deltaRhythm; }
     bool title = true;
+    bool pressSpaceTitle = true;
 
   private:
     // Disallow compiler generated ctor, dtor and copy

@@ -25,7 +25,6 @@ void Sprite::Open(SpriteState sstate, int dir) {
 
     SetFrame(initFrame);
     frameTimeTotal = sstate.frameTime * sstate.frameCount;
-
     frameTime = sstate.frameTime;
     associated.box.size.Set(width, height);
     timeElapsed = 0;

@@ -63,13 +63,22 @@ void Alan::Fallin(float dt) {
 
 void Alan::Update(float dt) {
     AlanAnimation *animation = associated.GetComponent<AlanAnimation *>();
+    TileMap *tileMap = Game::GetInstance()->GetCurrentState().tileMap;
+    Sprite *sprite = associated.GetComponent<Sprite *>();
+
+    if (associated.gridPosition.y == (tileMap->GetHeight() - 1)) {
+        std::cout << "ENTRA AQUI CARALHO!" << std::endl;
+        if (!animationOnGoing) {
+            animation->SetAction(AlanAnimation::Transition::DANCE,
+                                 AlanAnimation::Direction::W);
+            animationOnGoing = true;
+        }
+        return;
+    }
 
     if (maxPosition < std::max(associated.gridPosition.y + 4, 7.0)) {
         maxPosition = std::max(associated.gridPosition.y + 4, 7.0);
     }
-
-    TileMap *tileMap = Game::GetInstance()->GetCurrentState().tileMap;
-    Sprite *sprite = associated.GetComponent<Sprite *>();
 
     // Testa se a marmota deve "cair" ou ficar na posição atual
     if (gridsLeft ||

@@ -46,6 +46,7 @@ class GameObject {
 
     Rect box;
     bool worldReference = true;
+    bool pressSpace = false;
     bool fromPlayer = false;
     bool started = false;
     double angleDeg = 0;

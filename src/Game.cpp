@@ -93,6 +93,7 @@ void Game::Run() {
         }
 
         if (storedState) {
+            stateStack.top()->StopMusic();
             stateStack.emplace(storedState);
             stateStack.top()->Start();
             storedState = nullptr;

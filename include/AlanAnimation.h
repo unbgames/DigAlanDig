@@ -27,7 +27,8 @@ class AlanAnimation : public Component {
         STOP_CLIMB,
         FLOOR,
         FALL,
-        DIG_T
+        DIG_T,
+        DANCE
     };
 
     enum Direction { W = 0, E, N, S };

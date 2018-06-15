@@ -12,7 +12,7 @@ AlanAnimation::AlanAnimation(GameObject &associated) : Component(associated) {
     // AState[State::CLIMBIN] = {"assets/img/alan/climbin.png", 2, 2, -1};
     AState[State::CLIMBIN] = {"assets/img/alan/dig.png", 2, 8, 0.2};
     AState[State::DIG_CLIMB] = {"assets/img/alan/idle.png", 2, 2, 0.2};
-    AState[State::DANCIN] = {"assets/img/alan/idle.png", 2, 2, 0.2};
+    AState[State::DANCIN] = {"assets/img/alan/dance.png", 10, 10, -1};
     AState[State::DEAD] = {"assets/img/alan/idle.png", 2, 2, 0.2};
 }
 
@@ -21,6 +21,8 @@ AlanAnimation::~AlanAnimation() {}
 void AlanAnimation::Update(float dt) {
     Sprite *sprite = associated.GetComponent<Sprite *>();
     Alan *alan = associated.GetComponent<Alan *>();
+
+    if (currentState == State::DANCIN) return;
 
     if (sprite->FrameTimePassed() &&
         alan->GetMovementDirection() == Alan::Direction::NONE) {
@@ -71,6 +73,11 @@ void AlanAnimation::SetAction(Transition trans, Direction dir) {
                     currentState = State::DIG;
                     break;
 
+                case DANCE:
+                    oldState = currentState;
+                    currentState = State::DANCIN;
+                    break;
+
                 default:
                     return;
                     break;
@@ -87,6 +94,11 @@ void AlanAnimation::SetAction(Transition trans, Direction dir) {
                 case NONE_T:
                     oldState = currentState;
                     currentState = State::IDLE;
+                    break;
+
+                case DANCE:
+                    oldState = currentState;
+                    currentState = State::DANCIN;
                     break;
 
                 default:
@@ -107,6 +119,11 @@ void AlanAnimation::SetAction(Transition trans, Direction dir) {
                     currentState = State::IDLE;
                     break;
 
+                case DANCE:
+                    oldState = currentState;
+                    currentState = State::DANCIN;
+                    break;
+
                 default:
                     return;
                     break;
@@ -123,6 +140,11 @@ void AlanAnimation::SetAction(Transition trans, Direction dir) {
                 case NONE_T:
                     oldState = currentState;
                     currentState = State::IDLE;
+                    break;
+
+                case DANCE:
+                    oldState = currentState;
+                    currentState = State::DANCIN;
                     break;
 
                 default:

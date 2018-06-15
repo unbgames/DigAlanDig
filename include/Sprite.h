@@ -40,9 +40,27 @@ class Sprite : public Component {
     void Update(float dt);
     void AlanUpdate(float dt);
     void RhythmUpdate() {
-        if (frameTime == -1) SetFrame(currentFrame = !currentFrame);
+        if (frameTime == -1 && frameCount < 3) {
+            SetFrame(currentFrame = !currentFrame);
+        } else if (frameTime == -1) {
+            if (currentFrame < (frameCount - 1)) {
+                SetFrame(currentFrame + 1);
+
+            } else {
+                SetFrame(initFrame);
+            }
+        }
     }
-    void RhythmReset() {}
+    void RhythmReset() {
+        if (frameTime == -1 && frameCount > 3) {
+            if (currentFrame < (frameCount - 1)) {
+                SetFrame(currentFrame + 1);
+
+            } else {
+                SetFrame(initFrame);
+            }
+        }
+    }
     void Render(Common::Layer layer) const;
 
     void SetScaleX(double scaleX, double scaleY);

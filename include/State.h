@@ -44,6 +44,8 @@ class State {
 
     Music* GetMusic() { return &music; }
 
+    void StopMusic() { musicPlaying = false; }
+
     int GetGridSize() const { return gridSize; }
 
   protected:

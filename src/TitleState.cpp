@@ -17,15 +17,22 @@ void TitleState::LoadAssets() {
     GameObject* gm = new GameObject(Common::Layer::HUD);
     gm->worldReference = false;
     objectArray.emplace_back(gm);
-    gm->AddComponent(new Sprite(*gm, "assets/img/titleAlan.jpg"));
+    gm->AddComponent(new Sprite(*gm, "assets/img/titleAlan.png"));
 
     gm = new GameObject(Common::Layer::HUD);
-    gm->box.SetCenter(Camera::Center().x, 30);
+    Sprite* sprite = new Sprite(*gm, "assets/img/title.png");
+    gm->box.SetCenter(Camera::Center().x, Camera::Center().y - 100);
     gm->worldReference = false;
     objectArray.emplace_back(gm);
-    gm->AddComponent(new Text(*gm, "assets/font/Roboto-Regular.ttf", 72,
-                              Text::TextStyle::BLENDED, "Press Space to begin",
-                              {0, 0, 0, 255}, 1));
+    gm->AddComponent(sprite);
+
+    gm = new GameObject(Common::Layer::HUD);
+    sprite = new Sprite(*gm, "assets/img/pressSpace.png");
+    gm->box.SetCenter(Camera::Center().x, Camera::Center().y + 150);
+    gm->worldReference = false;
+    gm->pressSpace = true;
+    objectArray.emplace_back(gm);
+    gm->AddComponent(sprite);
     Game::GetInstance()->StartBeatTime();
 
     music.Open("assets/audio/menu.ogg");
@@ -51,5 +58,5 @@ void TitleState::RhythmUpdate() {
         musicPlaying = true;
     }
     RhythmUpdateArray();
-    input.title = true;
+    input.pressSpaceTitle = !input.pressSpaceTitle;
 }
