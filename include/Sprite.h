@@ -38,6 +38,7 @@ class Sprite : public Component {
     bool IsOpen() const { return static_cast<bool>(Sprite::texture); }
 
     void Update(float dt);
+    void AlanUpdate(float dt);
     void RhythmUpdate() {
         if (frameTime == -1) SetFrame(currentFrame = !currentFrame);
     }
@@ -59,7 +60,6 @@ class Sprite : public Component {
         if (timeElapsed < frameTimeTotal)
             return false;
         else {
-            timeElapsed = 0;
             return true;
         }
     }

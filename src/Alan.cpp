@@ -12,9 +12,10 @@ Alan::Alan(GameObject &associated, int gridSize)
 // Direção do movimento
 void Alan::GetMovement() {
     if (moved || movementDirection) return;
-
+    //
     if (input.ActionPress(input.DIG_UP)) {
         movementDirection = Direction::UP;
+        moved = true;
     }
     if (input.ActionPress(input.DIG_DOWN)) {
         movementDirection = Direction::DOWN;
@@ -34,9 +35,8 @@ void Alan::GetMovement() {
         float dR = input.GetDeltaRhythm();
         dR = (dR > 0) ? dR : -dR;
         if (dR < duty) {
-            // movementDirection = Direction::NONE;
+            movementDirection = Direction::NONE;
             std::cout << "\n\nMiss: " << input.GetDeltaRhythm() << "\n\n";
-            // Game::GetInstance()->combo = 0;
         } else {
             std::cout << "\n\nHit: " << input.GetDeltaRhythm() << "\n\n";
             Game::GetInstance()->combo++;
@@ -56,19 +56,20 @@ void Alan::Fallin(float dt) {
     if (associated.box.y >=
         (associated.gridPosition.y + 1) * gridSize - gridSize / 2) {
         associated.gridPosition.y++;
+        movementDirection = Direction::NONE;
         gridsLeft--;
     }
 }
 
 void Alan::Update(float dt) {
     AlanAnimation *animation = associated.GetComponent<AlanAnimation *>();
-    animation->Update(dt);
 
     if (maxPosition < std::max(associated.gridPosition.y + 4, 7.0)) {
         maxPosition = std::max(associated.gridPosition.y + 4, 7.0);
     }
 
     TileMap *tileMap = Game::GetInstance()->GetCurrentState().tileMap;
+    Sprite *sprite = associated.GetComponent<Sprite *>();
 
     // Testa se a marmota deve "cair" ou ficar na posição atual
     if (gridsLeft ||
@@ -77,6 +78,7 @@ void Alan::Update(float dt) {
           action != Action::CLIMBING && movementDirection == Direction::NONE) &&
          !input.KeyDown(SDL_SCANCODE_A))) {
         if (gridsLeft == 0) {
+            movementDirection = Direction::DOWN;
             action = Action::FALLIN;
             int y = associated.gridPosition.y + 1;
             while (tileMap->At(associated.gridPosition.x, y) == 2) {
@@ -92,8 +94,17 @@ void Alan::Update(float dt) {
 
     GetMovement();
 
+    if (animation->GetCurrentState() == AlanAnimation::State::FALLIN) {
+        animation->SetAction(AlanAnimation::Transition::FLOOR,
+                             AlanAnimation::Direction::W);
+        action = Action::STANDIN;
+        movementDirection = Direction::NONE;
+    }
+
     if (movementDirection == Direction::NONE) {
         if (action != Action::CLIMBING || !input.KeyDown(SDL_SCANCODE_A)) {
+            animation->SetAction(AlanAnimation::Transition::NONE_T,
+                                 AlanAnimation::Direction::W);
             action = Action::STANDIN;
         }
 
@@ -107,14 +118,18 @@ void Alan::Update(float dt) {
         if (movementDirection == Direction::UP) {
             // Verifica se a posição acima do grid é um espaço vazio e se a
             // marmota já está na posição de escalada
-            if (animation->GetCurrentState() == AlanAnimation::State::CLIMBIN ||
-                animation->GetOldState() == AlanAnimation::State::CLIMBIN) {
+            if ((animation->GetCurrentState() ==
+                     AlanAnimation::State::CLIMBIN ||
+                 animation->GetOldState() == AlanAnimation::State::CLIMBIN) &&
+                animation->GetCurrentState() != AlanAnimation::State::IDLE) {
                 if (tileMap->At(associated.gridPosition.x,
                                 associated.gridPosition.y - 1) == 2) {
-                    if (animation->GetCurrentDirection() ==
-                            AlanAnimation::Direction::W ||
-                        animation->GetOldDirection() ==
-                            AlanAnimation::Direction::W) {
+                    if ((animation->GetCurrentDirection() ==
+                             AlanAnimation::Direction::W ||
+                         animation->GetOldDirection() ==
+                             AlanAnimation::Direction::W) &&
+                        animation->GetCurrentDirection() !=
+                            AlanAnimation::Direction::E) {
                         if (tileMap->At(associated.gridPosition.x - 1,
                                         associated.gridPosition.y - 1) == 2) {
                             Vec2 newPos{
@@ -163,7 +178,7 @@ void Alan::Update(float dt) {
                                 associated.gridPosition.x++;
                                 animation->SetAction(
                                     AlanAnimation::Transition::NONE_T,
-                                    AlanAnimation::Direction::W);
+                                    AlanAnimation::Direction::E);
                             }
                         } else {
                             if (!animationOnGoing) {
@@ -185,12 +200,18 @@ void Alan::Update(float dt) {
                         }
                     }
                 } else {
-                    animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                         AlanAnimation::Direction::N);
-                    Vec2 damage = {associated.gridPosition.x,
-                                   associated.gridPosition.y - 1};
-                    tileMap->GetDamageGround(1, damage);
-                    movementDirection = Direction::NONE;
+                    if (!animationOnGoing) {
+                        animation->SetAction(AlanAnimation::Transition::DIG_T,
+                                             AlanAnimation::Direction::N);
+                        animationOnGoing = true;
+                    }
+                    if (sprite->FrameTimePassed()) {
+                        Vec2 damage = {associated.gridPosition.x,
+                                       associated.gridPosition.y - 1};
+                        tileMap->GetDamageGround(1, damage);
+                        movementDirection = Direction::NONE;
+                        animationOnGoing = false;
+                    }
                 }
 
             } else {
@@ -200,14 +221,18 @@ void Alan::Update(float dt) {
             // Mesmo processo anterior para a baixo (quando a pedra abaixo
             // do lado onde a marmota estiver escalando for vazia ela não
             // faz nada)
-            if (animation->GetCurrentState() == AlanAnimation::State::CLIMBIN ||
-                animation->GetOldState() == AlanAnimation::State::CLIMBIN) {
+            if ((animation->GetCurrentState() ==
+                     AlanAnimation::State::CLIMBIN ||
+                 animation->GetOldState() == AlanAnimation::State::CLIMBIN) &&
+                animation->GetCurrentState() != AlanAnimation::State::IDLE) {
                 if (tileMap->At(associated.gridPosition.x,
                                 associated.gridPosition.y + 1) == 2) {
-                    if (animation->GetCurrentDirection() ==
-                            AlanAnimation::Direction::W ||
-                        animation->GetOldDirection() ==
-                            AlanAnimation::Direction::W) {
+                    if ((animation->GetCurrentDirection() ==
+                             AlanAnimation::Direction::W ||
+                         animation->GetOldDirection() ==
+                             AlanAnimation::Direction::W) &&
+                        animation->GetCurrentDirection() !=
+                            AlanAnimation::Direction::E) {
                         if (tileMap->At(associated.gridPosition.x - 1,
                                         associated.gridPosition.y + 1) == 2) {
                             movementDirection = Direction::NONE;
@@ -255,12 +280,18 @@ void Alan::Update(float dt) {
                         }
                     }
                 } else {
-                    animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                         AlanAnimation::Direction::N);
-                    Vec2 damage = {associated.gridPosition.x,
-                                   associated.gridPosition.y + 1};
-                    tileMap->GetDamageGround(1, damage);
-                    movementDirection = Direction::NONE;
+                    if (!animationOnGoing) {
+                        animation->SetAction(AlanAnimation::Transition::DIG_T,
+                                             AlanAnimation::Direction::S);
+                        animationOnGoing = true;
+                    }
+                    if (sprite->FrameTimePassed()) {
+                        Vec2 damage = {associated.gridPosition.x,
+                                       associated.gridPosition.y + 1};
+                        tileMap->GetDamageGround(1, damage);
+                        movementDirection = Direction::NONE;
+                        animationOnGoing = false;
+                    }
                 }
 
             } else {
@@ -271,9 +302,17 @@ void Alan::Update(float dt) {
             if (tileMap->At(associated.gridPosition.x - 1,
                             associated.gridPosition.y) > 2) {
                 // Se for, entra em posição de escalada
-                animation->SetAction(AlanAnimation::Transition::CLIMB,
-                                     AlanAnimation::Direction::W);
-                movementDirection = Direction::NONE;
+                if (!animationOnGoing) {
+                    action = Action::CLIMBING;
+                    animation->SetAction(AlanAnimation::Transition::CLIMB,
+                                         AlanAnimation::Direction::W);
+                    animationOnGoing = true;
+                }
+                if (sprite->FrameTimePassed()) {
+                    movementDirection = Direction::NONE;
+                    animationOnGoing = false;
+                }
+
                 return;
             } else {
                 movementDirection = Direction::NONE;
@@ -282,9 +321,16 @@ void Alan::Update(float dt) {
             // Mesmo processo anterior para a direita
             if (tileMap->At(associated.gridPosition.x + 1,
                             associated.gridPosition.y) > 2) {
-                animation->SetAction(AlanAnimation::Transition::CLIMB,
-                                     AlanAnimation::Direction::E);
-                movementDirection = Direction::NONE;
+                if (!animationOnGoing) {
+                    action = Action::CLIMBING;
+                    animation->SetAction(AlanAnimation::Transition::CLIMB,
+                                         AlanAnimation::Direction::E);
+                    animationOnGoing = true;
+                }
+                if (sprite->FrameTimePassed()) {
+                    movementDirection = Direction::NONE;
+                    animationOnGoing = false;
+                }
                 return;
             } else {
                 movementDirection = Direction::NONE;
@@ -292,18 +338,25 @@ void Alan::Update(float dt) {
         }
     } else {
         animation->SetAction(AlanAnimation::Transition::STOP_CLIMB,
-                             AlanAnimation::Direction::W);
+                             animation->GetOldDirection());
         action = Action::WALKIN;
         // Up bate na pedra acima dele se houver
         if (movementDirection == Direction::UP) {
             if (tileMap->At(associated.gridPosition.x,
                             associated.gridPosition.y - 1) > 2) {
-                animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                     AlanAnimation::Direction::N);
-                Vec2 damage = {associated.gridPosition.x,
-                               associated.gridPosition.y - 1};
-                tileMap->GetDamageGround(1, damage);
-                movementDirection = Direction::NONE;
+                if (!animationOnGoing) {
+                    animation->SetAction(AlanAnimation::Transition::DIG_T,
+                                         AlanAnimation::Direction::N);
+                    animationOnGoing = true;
+                }
+                if (sprite->FrameTimePassed()) {
+                    Vec2 damage = {associated.gridPosition.x,
+                                   associated.gridPosition.y - 1};
+                    tileMap->GetDamageGround(1, damage);
+                    movementDirection = Direction::NONE;
+                    animationOnGoing = false;
+                }
+
                 return;
             } else {
                 movementDirection = Direction::NONE;
@@ -328,12 +381,18 @@ void Alan::Update(float dt) {
                     associated.gridPosition.y++;
                 }
             } else {
-                Vec2 damage = {associated.gridPosition.x,
-                               associated.gridPosition.y + 1};
-                tileMap->GetDamageGround(1, damage);
-                movementDirection = Direction::NONE;
-                animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                     AlanAnimation::Direction::S);
+                if (!animationOnGoing) {
+                    animation->SetAction(AlanAnimation::Transition::DIG_T,
+                                         AlanAnimation::Direction::S);
+                    animationOnGoing = true;
+                }
+                if (sprite->FrameTimePassed()) {
+                    Vec2 damage = {associated.gridPosition.x,
+                                   associated.gridPosition.y + 1};
+                    tileMap->GetDamageGround(1, damage);
+                    movementDirection = Direction::NONE;
+                    animationOnGoing = false;
+                }
             }
 
         } else if (movementDirection == Direction::LEFT) {
@@ -341,13 +400,18 @@ void Alan::Update(float dt) {
             // pedra
             if (tileMap->At(associated.gridPosition.x - 1,
                             associated.gridPosition.y) != 2) {
-                animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                     AlanAnimation::Direction::W);
-
-                Vec2 damage = {associated.gridPosition.x - 1,
-                               associated.gridPosition.y};
-                tileMap->GetDamageGround(1, damage);
-                movementDirection = Direction::NONE;
+                if (!animationOnGoing) {
+                    animation->SetAction(AlanAnimation::Transition::DIG_T,
+                                         AlanAnimation::Direction::W);
+                    animationOnGoing = true;
+                }
+                if (sprite->FrameTimePassed()) {
+                    Vec2 damage = {associated.gridPosition.x - 1,
+                                   associated.gridPosition.y};
+                    tileMap->GetDamageGround(1, damage);
+                    movementDirection = Direction::NONE;
+                    animationOnGoing = false;
+                }
 
                 return;
             }
@@ -367,13 +431,18 @@ void Alan::Update(float dt) {
             // Mesmo processo anterior para a direita
             if (tileMap->At(associated.gridPosition.x + 1,
                             associated.gridPosition.y) != 2) {
-                animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                     AlanAnimation::Direction::E);
-
-                Vec2 damage = {associated.gridPosition.x + 1,
-                               associated.gridPosition.y};
-                tileMap->GetDamageGround(1, damage);
-                movementDirection = Direction::NONE;
+                if (!animationOnGoing) {
+                    animation->SetAction(AlanAnimation::Transition::DIG_T,
+                                         AlanAnimation::Direction::E);
+                    animationOnGoing = true;
+                }
+                if (sprite->FrameTimePassed()) {
+                    Vec2 damage = {associated.gridPosition.x + 1,
+                                   associated.gridPosition.y};
+                    tileMap->GetDamageGround(1, damage);
+                    movementDirection = Direction::NONE;
+                    animationOnGoing = false;
+                }
 
                 return;
             }

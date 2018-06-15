@@ -19,6 +19,9 @@
 
 class Alan : public Component {
   public:
+    enum Direction { NONE = 0, UP, DOWN, LEFT, RIGHT };
+    enum Action { STANDIN = 0, WALKIN, CLIMBING, FALLIN };
+
     Alan(GameObject& associated, int gridSize);
 
     ~Alan() {}
@@ -42,9 +45,9 @@ class Alan : public Component {
 
     Vec2 GetGridPosition() { return associated.GetGridPosition(); }
 
+    Direction GetMovementDirection() { return movementDirection; }
+
   private:
-    enum Direction { NONE = 0, UP, DOWN, LEFT, RIGHT };
-    enum Action { STANDIN = 0, WALKIN, CLIMBING, FALLIN };
     Direction movementDirection = Direction::NONE;
     Action action = Action::STANDIN;
 
