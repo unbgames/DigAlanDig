@@ -30,7 +30,7 @@ class AlanAnimation : public Component {
         DIG_T
     };
 
-    enum Direction { E, W, N, S };
+    enum Direction { W = 0, E, N, S };
 
     enum State {
         NONE_S = 0,
@@ -63,7 +63,10 @@ class AlanAnimation : public Component {
     void SetAction(Transition trans, Direction dir);
 
     int GetCurrentDirection() { return currentDirection; }
+    int GetOldDirection() { return oldDirection; }
+
     int GetCurrentState() { return currentState; }
+    int GetOldState() { return oldState; }
 
   private:
     State oldState, currentState;

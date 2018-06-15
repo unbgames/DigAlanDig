@@ -19,11 +19,12 @@ void Sprite::Open(SpriteState sstate, int dir) {
     SDL_QueryTexture(texture.get(), nullptr, nullptr, &width, &height);
     width /= sstate.totalFrameCount;
     frameCount = sstate.frameCount;
-    SetFrame(dir * sstate.frameCount);
+    initFrame = dir * sstate.frameCount;
+    SetFrame(initFrame);
     frameTimeTotal = sstate.frameTime * sstate.frameCount;
-    std::cout << "FRAME = " << currentFrame << "\nDIRECT = " << dir
-              << "\nFRAMETOTALTIME = " << frameTimeTotal
-              << "\nFRAMETIME = " << sstate.frameTime << std::endl;
+    // std::cout << "FRAME = " << currentFrame << "\nDIRECT = " << dir
+    //          << "\nFRAMETOTALTIME = " << frameTimeTotal
+    //          << "\nFRAMETIME = " << sstate.frameTime << std::endl;
     frameTime = sstate.frameTime;
     associated.box.size.Set(width, height);
 }
@@ -36,7 +37,7 @@ void Sprite::SetScaleX(double scaleX, double scaleY) {
 void Sprite::SetFrame(int frame) {
     currentFrame = frame;
     Vec2 size(width, height);
-    Vec2 pos(width * (currentFrame % frameCount), 0);
+    Vec2 pos(width * (currentFrame), 0);
     clipRect = Rect(pos, size);
 }
 
@@ -65,7 +66,11 @@ void Sprite::Update(float dt) {
         return;
     }
 
-    // if ((currentFrame + 1) * frameTime <= timeElapsed) {
-    //    SetFrame(floor(timeElapsed / frameTime));
-    //}
+    if (timeElapsed - (frameTime * (currentFrame - initFrame)) >= frameTime) {
+        if (currentFrame - initFrame < frameCount) {
+            SetFrame(currentFrame++);
+        } else {
+            SetFrame(initFrame);
+        }
+    }
 }

@@ -26,19 +26,7 @@ class Alan : public Component {
     void GetMovement();
 
     void Update(float dt);
-    void RhythmUpdate() {
-        if (movementDirection == Direction::NONE &&
-            (frameNumber == 0 || frameNumber == 1)) {
-            Sprite* sprite = associated.GetComponent<Sprite*>();
-            if (frameNumber == 0) {
-                frameNumber = 1;
-                sprite->SetFrame(frameNumber);
-            } else {
-                frameNumber = 0;
-                sprite->SetFrame(frameNumber);
-            }
-        }
-    }
+    void RhythmUpdate() {}
     void RhythmReset() {
         if (!moved) {
             Game::GetInstance()->combo /= 2;
@@ -69,6 +57,7 @@ class Alan : public Component {
     int gridSize;
 
     bool moved = false;
+    bool animationOnGoing = false;
 };
 
 #endif  // ALAN_H

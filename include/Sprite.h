@@ -54,11 +54,13 @@ class Sprite : public Component {
     void SetFrameTime(float frameTime) { this->frameTime = frameTime; }
 
     bool FrameTimePassed() {
+        if (frameTimeTotal < 0) return false;
+
         if (timeElapsed < frameTimeTotal)
-            return true;
+            return false;
         else {
             timeElapsed = 0;
-            return false;
+            return true;
         }
     }
 
@@ -77,6 +79,7 @@ class Sprite : public Component {
     int width = 0;
     int height = 0;
     int frameCount = 1;
+    int initFrame = 0;
     float frameTime = 1;
     float frameTimeTotal = 1;
     int currentFrame = 0;
