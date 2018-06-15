@@ -31,9 +31,13 @@ class Alan : public Component {
     void Update(float dt);
     void RhythmUpdate() {}
     void RhythmReset() {
-        if (!moved) {
-            Game::GetInstance()->combo /= 2;
-        }
+        static int missCounter = 0;
+        if (!moved)
+            missCounter++;
+        else
+            missCounter = 0;
+
+        if (missCounter > 1) Game::GetInstance()->combo /= 2;
 
         moved = false;
     }

@@ -35,7 +35,9 @@ void Alan::GetMovement() {
         float dR = input.GetDeltaRhythm();
         dR = (dR > 0) ? dR : -dR;
         if (dR < duty) {
-            movementDirection = Direction::NONE;
+            // movementDirection = Direction::NONE;
+            Camera::Shake();
+            Game::GetInstance()->combo = 0;
             std::cout << "\n\nMiss: " << input.GetDeltaRhythm() << "\n\n";
         } else {
             std::cout << "\n\nHit: " << input.GetDeltaRhythm() << "\n\n";
