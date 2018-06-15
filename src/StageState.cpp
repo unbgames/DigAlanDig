@@ -77,8 +77,8 @@ void StageState::LoadAssets() {
     MiniMapTile->box.pos = {1024 - 6 * 15, 200};
     TileSet *minitileSet = new TileSet("assets/map/miniground.json");
 
-    MiniTileMap *miniTilemap =
-        new MiniTileMap(*MiniMapTile, minitileSet, tileMap, lilAlan);
+    MiniTileMap *miniTilemap = new MiniTileMap(*MiniMapTile, minitileSet,
+                                               tileMap, GetObjectPrt(alanGO));
     MiniMapTile->AddComponent(miniTilemap);
     objectArray.emplace_back(MiniMapTile);
 

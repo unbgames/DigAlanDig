@@ -4,7 +4,7 @@
 #include "Game.h"
 
 MiniTileMap::MiniTileMap(GameObject &associated, TileSet *tileSet,
-                         TileMap *tileMap, Alan *alan)
+                         TileMap *tileMap, std::weak_ptr<GameObject> alan)
     : Component(associated), tileMap(tileMap), tileSet(tileSet), alan(alan) {}
 
 MiniTileMap::~MiniTileMap() {}
@@ -13,10 +13,13 @@ MiniTileMap::~MiniTileMap() {}
     Renderiza as camadas do mapa.
 */
 void MiniTileMap::Render(Common::Layer layer) const {
+    if (!alan.lock()) return;
+
     int x = associated.box.x;
     int y = associated.box.y;
     int valPos;
-    Vec2 alanPos = alan->GetGridPosition();
+
+    Vec2 alanPos = alan.lock()->GetGridPosition();
     int yMin =
         Camera::pos.y / Game::GetInstance()->GetCurrentState().GetGridSize();
 
@@ -27,7 +30,9 @@ void MiniTileMap::Render(Common::Layer layer) const {
             if (alanPos.x == posX && alanPos.y == posY) {
                 valPos = 5;
                 // Faz a borda o minimapa
-            } else if (posY > alan->GetMaxPosition() + 7) {
+            } else if (posY >
+                       alan.lock()->GetComponent<Alan *>()->GetMaxPosition() +
+                           7) {
                 valPos = 1;
             }
             tileSet->RenderTile(valPos, x, y);

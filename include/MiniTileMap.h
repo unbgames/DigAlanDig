@@ -14,7 +14,7 @@
 class MiniTileMap : public Component {
   public:
     MiniTileMap(GameObject &associated, TileSet *tileSet, TileMap *tileMap,
-                Alan *alan);
+                std::weak_ptr<GameObject> alan);
 
     ~MiniTileMap();
 
@@ -25,7 +25,7 @@ class MiniTileMap : public Component {
   private:
     TileMap *tileMap;
     TileSet *tileSet;
-    Alan *alan;
+    std::weak_ptr<GameObject> alan;
 };
 
 #endif  // MINITILEMAP
