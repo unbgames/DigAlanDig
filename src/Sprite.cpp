@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include "Alan.h"
 #include "Camera.h"
 #include "Game.h"
 #include "Resources.h"
@@ -11,6 +12,7 @@ void Sprite::Open(const std::string &file) {
     frameTimeTotal = frameTime;
     SetFrame(0);
     associated.box.size.Set(width, height);
+    timeElapsed = 0;
 }
 
 void Sprite::Open(SpriteState sstate, int dir) {
@@ -20,13 +22,17 @@ void Sprite::Open(SpriteState sstate, int dir) {
     width /= sstate.totalFrameCount;
     frameCount = sstate.frameCount;
     initFrame = dir * sstate.frameCount;
+
     SetFrame(initFrame);
     frameTimeTotal = sstate.frameTime * sstate.frameCount;
-    // std::cout << "FRAME = " << currentFrame << "\nDIRECT = " << dir
-    //          << "\nFRAMETOTALTIME = " << frameTimeTotal
-    //          << "\nFRAMETIME = " << sstate.frameTime << std::endl;
+
+    std::cout << "FRAME = " << currentFrame << "\nDIRECT = " << dir
+              << "\nFRAMETOTALTIME = " << frameTimeTotal
+              << "\nFRAMETIME = " << sstate.frameTime << std::endl;
+
     frameTime = sstate.frameTime;
     associated.box.size.Set(width, height);
+    timeElapsed = 0;
 }
 
 void Sprite::SetScaleX(double scaleX, double scaleY) {
@@ -66,11 +72,23 @@ void Sprite::Update(float dt) {
         return;
     }
 
-    if (timeElapsed - (frameTime * (currentFrame - initFrame)) >= frameTime) {
-        if (currentFrame - initFrame < frameCount) {
-            SetFrame(currentFrame++);
-        } else {
-            SetFrame(initFrame);
+    if (associated.GetComponent<Alan *>() != nullptr) {
+        AlanUpdate(dt);
+        return;
+    }
+}
+
+void Sprite::AlanUpdate(float dt) {
+    std::cout << "TIMEELAPSED = " << timeElapsed << std::endl;
+    if (frameTime != -1) {
+        if (timeElapsed - (frameTime * (currentFrame - initFrame)) >=
+            frameTime) {
+            if ((currentFrame - initFrame) < (frameCount - 1)) {
+                SetFrame(currentFrame + 1);
+
+            } else {
+                SetFrame(initFrame + 1);
+            }
         }
     }
 }

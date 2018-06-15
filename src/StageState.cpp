@@ -43,6 +43,7 @@ void StageState::LoadAssets() {
     tileMap = new TileMap(*gm, "assets/map/stage1.json");
     gm->AddComponent(tileMap);
 
+    // Alan
     GameObject *alanGO = new GameObject();
     Vec2 gp(3, 0);
     alanGO->box.x = (gp.x * GetGridSize()) - GetGridSize() / 2;
@@ -52,14 +53,14 @@ void StageState::LoadAssets() {
     alanGO->AddComponent(
         new Sprite(*alanGO, "assets/img/alan/idle.png", 2, 0.2));
 
+    Alan *lilAlan = new Alan(*alanGO, GetGridSize());
+    alanGO->AddComponent(lilAlan);
+
     Interpol *alanMov = new Interpol(*alanGO);
     alanGO->AddComponent(alanMov);
 
     AlanAnimation *alanAnimation = new AlanAnimation(*alanGO);
     alanGO->AddComponent(alanAnimation);
-
-    Alan *lilAlan = new Alan(*alanGO, GetGridSize());
-    alanGO->AddComponent(lilAlan);
 
     GameObject *alanL = new GameObject(Common::Layer::LIGHT);
     objectArray.emplace_back(alanL);
@@ -67,6 +68,7 @@ void StageState::LoadAssets() {
 
     Camera::Follow(alanGO);
 
+    // MiniMap
     GameObject *MiniMapTile = new GameObject(Common::Layer::HUD);
     MiniMapTile->box.pos = {1024 - 6 * 15, 200};
     TileSet *minitileSet = new TileSet("assets/map/miniground.json");
@@ -76,6 +78,7 @@ void StageState::LoadAssets() {
     MiniMapTile->AddComponent(miniTilemap);
     objectArray.emplace_back(MiniMapTile);
 
+    // Big-Alan
     GameObject *bigAlan = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(bigAlan);
     bigAlan->AddComponent(new Sprite(*bigAlan, "assets/img/mooda.png", 2, -1));
@@ -83,6 +86,7 @@ void StageState::LoadAssets() {
     bigAlan->worldReference = false;
     bigAlan->box.pos = {0, 460};
 
+    // HUD
     GameObject *backG = new GameObject(Common::Layer::BG);
     backG->worldReference = false;
     objectArray.emplace_back(backG);

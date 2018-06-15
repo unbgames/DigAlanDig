@@ -62,11 +62,11 @@ class AlanAnimation : public Component {
 
     void SetAction(Transition trans, Direction dir);
 
-    int GetCurrentDirection() { return currentDirection; }
-    int GetOldDirection() { return oldDirection; }
+    Direction GetCurrentDirection() { return currentDirection; }
+    Direction GetOldDirection() { return oldDirection; }
 
-    int GetCurrentState() { return currentState; }
-    int GetOldState() { return oldState; }
+    State GetCurrentState() { return currentState; }
+    State GetOldState() { return oldState; }
 
   private:
     State oldState, currentState;
