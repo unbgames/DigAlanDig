@@ -17,7 +17,7 @@ LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
 INC_PATHS = -I$(INC_PATH) -I$(EXT_PATH) $(addprefix -I,$(SDL_INC_PATH))
 
 # Diretivas de compilacao
-FLAGS = -std=c++11 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self -I/usr/include/SDL2
+FLAGS = -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -std=c++11 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self -I/usr/include/SDL2
 # Diretivas extras para debug
 DFLAGS = -ggdb -O0 -DDEBUG
 # Diretivas extras para release
