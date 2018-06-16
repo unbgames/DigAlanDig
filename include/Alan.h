@@ -50,6 +50,7 @@ class Alan : public Component {
     Vec2 GetGridPosition() { return associated.GetGridPosition(); }
 
     Direction GetMovementDirection() { return movementDirection; }
+    Action GetAction() { return action; }
 
   private:
     Direction movementDirection = Direction::NONE;

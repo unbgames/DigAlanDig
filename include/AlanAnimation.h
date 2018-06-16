@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 #include "Component.h"
-#include "Game.h"
 #include "InputManager.h"
 #include "Sprite.h"
 #include "TileMap.h"

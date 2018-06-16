@@ -15,6 +15,7 @@ Game::~Game() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     delete storedState;
+    delete gridControl;
 }
 
 Game* Game::GetInstance(const std::string& title, int w, int h) {
@@ -169,4 +170,6 @@ Game::Game(const std::string& title, int width, int height)
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
     SDL_RenderSetLogicalSize(renderer, width, height);
+
+    gridControl = GridControl::GetInstance();
 }

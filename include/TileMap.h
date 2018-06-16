@@ -29,6 +29,8 @@ class TileMap : public Component {
     void GetDamageGround(int damage, Vec2 posDamage);
     int GetNextFile();
 
+    enum Layers { BASE = 0, BLOCOS, ITENS, INIMIGOS };
+
   private:
     std::vector<std::vector<int>> tileMat;
     std::vector<std::string> TileMapsFiles;

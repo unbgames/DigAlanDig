@@ -7,6 +7,7 @@
 #include "SDL_include.h"
 
 #include <stack>
+#include "GridControl.h"
 #include "InputManager.h"
 #include "State.h"
 
@@ -16,6 +17,7 @@ class Game {
     void Run();
     SDL_Renderer* GetRenderer() const { return renderer; }
     State& GetCurrentState() const { return *stateStack.top(); }
+    GridControl* GetGridControl() const { return gridControl; }
     static Game* GetInstance() { return _instance; }
     static Game* GetInstance(const std::string& title, int w, int h);
     float GetDeltaTime() const { return dt; }
@@ -40,6 +42,7 @@ class Game {
     SDL_Window* window;
     SDL_Renderer* renderer;
     State* storedState = nullptr;
+    GridControl* gridControl = nullptr;
     std::stack<std::unique_ptr<State>> stateStack;
 
     int frameStart;

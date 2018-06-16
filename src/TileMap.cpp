@@ -9,10 +9,10 @@ using json = nlohmann::json;
 
 TileMap::TileMap(GameObject& associated, const std::string& file, bool infinity)
     : Component(associated), infinity(infinity) {
-    layerIndex["base"] = 0;
-    layerIndex["blocos"] = 1;
-    layerIndex["itens"] = 2;
-    layerIndex["inimigos"] = 3;
+    layerIndex["base"] = Layers::BASE;
+    layerIndex["blocos"] = Layers::BLOCOS;
+    layerIndex["itens"] = Layers::ITENS;
+    layerIndex["inimigos"] = Layers::INIMIGOS;
     tileMat.resize(layerIndex.size());
 
     if (infinity)
@@ -94,6 +94,7 @@ int TileMap::At(int x, int y, int z) {
             ((Camera::pos.y + Camera::screenSize.y) / 100) >= height)) {
         Load(TileMapsFiles[GetNextFile()]);
     }
+
     return tileMat[z][y * width + x];
 }
 

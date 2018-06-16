@@ -38,6 +38,8 @@ class Vec2 {
 
     bool operator<(const Vec2& v) const { return (x < v.x) && (y < v.y); }
     bool operator>(const Vec2& v) const { return (x > v.x) && (y > v.y); }
+    bool operator==(const Vec2& v) const { return (x == v.x) && (y == v.y); }
+    bool operator!=(const Vec2& v) const { return (x != v.x) || (y != v.y); }
 
     friend std::ostream& operator<<(std::ostream& os, const Vec2& v) {
         os << "(" << v.x << " , " << v.y << ")";

@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include "Camera.h"
+#include "Game.h"
 #include "Sound.h"
 #include "Sprite.h"
 #include "StageState.h"

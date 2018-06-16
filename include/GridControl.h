@@ -9,21 +9,28 @@
 
 class GridControl {
   public:
-    ~GridControl() {}
+    static GridControl *GetInstance();
 
-    static GridControl &GetInstance() { return *_instance; }
-    static GridControl &GetInstance(TileMap *tileMap);
+    void SetAlan(std::weak_ptr<GameObject> alan) { this->alan = alan; }
+    void SetTileMap(TileMap *tileMap) { this->tileMap = tileMap; }
+    int TestPath(Vec2 target, bool isAlan);
 
-    void SetAlanPos(Vec2 *alanPos) { alanPosition = alanPos; }
+    enum WhatsThere {
+        NONE = 0,
+        FREE,
+        FREE_FALL,
+        ENEMY,
+        ALAN,
+        ROCK_WEAK,
+        ROCK_STRONG
+    };
 
   private:
-    Vec2 *alanPosition;
-    std::vector<Vec2 *> enemyPosition;
-    std::vector<Vec2 *> itemPosition;
+    std::weak_ptr<GameObject> alan;
     TileMap *tileMap;
     static GridControl *_instance;
 
-    GridControl(TileMap *tileMap) : tileMap(tileMap) {}
+    GridControl() {}
 };
 
 #endif  // GRIDCONTROL_H

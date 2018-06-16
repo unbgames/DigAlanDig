@@ -1,5 +1,6 @@
 #include "MiniTileMap.h"
 #include <algorithm>
+#include "Alan.h"
 #include "Camera.h"
 #include "Game.h"
 

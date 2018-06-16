@@ -8,7 +8,6 @@
 #include "BigAlan.h"
 #include "Camera.h"
 #include "Game.h"
-#include "GridControl.h"
 #include "Interpol.h"
 #include "Light.h"
 #include "MiniTileMap.h"
@@ -44,7 +43,7 @@ void StageState::LoadAssets() {
     tileMap = new TileMap(*gm, "assets/map/manager.json", true);
     gm->AddComponent(tileMap);
 
-    // GridControl::GetInstance(tileMap);
+    Game::GetInstance()->GetGridControl()->SetTileMap(tileMap);
 
     // Alan
     GameObject *alanGO = new GameObject();
@@ -52,7 +51,9 @@ void StageState::LoadAssets() {
     alanGO->box.x = (gp.x * GetGridSize()) - GetGridSize() / 2;
     alanGO->box.y = (gp.y * GetGridSize()) - GetGridSize() / 2;
     alanGO->gridPosition = gp;
-    // GridControl::GetInstance()->SetAlanPos(&alanGO->gridPosition);
+
+    Game::GetInstance()->GetGridControl()->SetAlan(GetObjectPrt(alanGO));
+
     objectArray.emplace_back(alanGO);
     alanGO->AddComponent(
         new Sprite(*alanGO, "assets/img/alan/idle.png", 2, 0.2));

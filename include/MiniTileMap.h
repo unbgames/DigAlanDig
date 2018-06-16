@@ -6,7 +6,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Alan.h"
 #include "Component.h"
 #include "TileMap.h"
 #include "TileSet.h"
