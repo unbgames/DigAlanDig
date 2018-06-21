@@ -129,10 +129,10 @@ void State::RenderArray() const {
     RenderLight();
 
     for (auto obj : objectArray) {
-        if (!obj->pressSpace) {
+        if (!obj->blink) {
             obj->RenderOrder(Common::Layer::HUD);
         } else {
-            if (input.pressSpaceTitle) obj->RenderOrder(Common::Layer::HUD);
+            if (input.shouldShow) obj->RenderOrder(Common::Layer::HUD);
         }
     }
 }

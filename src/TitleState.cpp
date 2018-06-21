@@ -17,21 +17,29 @@ TitleState::TitleState() {}
 void TitleState::LoadAssets() {
     GameObject* gm = new GameObject(Common::Layer::HUD);
     gm->worldReference = false;
+    gm->move = true;
     objectArray.emplace_back(gm);
-    gm->AddComponent(new Sprite(*gm, "assets/img/titleAlan.png"));
+    gm->AddComponent(new Sprite(*gm, "assets/img/titleBg.png"));
+
+    gm = new GameObject(Common::Layer::HUD);
+    gm->worldReference = false;
+    gm->blink = true;
+    gm->move = true;
+    objectArray.emplace_back(gm);
+    gm->AddComponent(new Sprite(*gm, "assets/img/stars.png"));
 
     gm = new GameObject(Common::Layer::HUD);
     Sprite* sprite = new Sprite(*gm, "assets/img/title.png");
-    gm->box.SetCenter(Camera::Center().x, Camera::Center().y - 100);
+    gm->box.SetCenter(Camera::Center().x, Camera::Center().y - 230);
     gm->worldReference = false;
     objectArray.emplace_back(gm);
     gm->AddComponent(sprite);
 
     gm = new GameObject(Common::Layer::HUD);
     sprite = new Sprite(*gm, "assets/img/pressSpace.png");
-    gm->box.SetCenter(Camera::Center().x, Camera::Center().y + 150);
+    gm->box.SetCenter(Camera::Center().x, Camera::Center().y + 350);
     gm->worldReference = false;
-    gm->pressSpace = true;
+    gm->blink = true;
     objectArray.emplace_back(gm);
     gm->AddComponent(sprite);
     Game::GetInstance()->StartBeatTime();
@@ -59,5 +67,5 @@ void TitleState::RhythmUpdate() {
         musicPlaying = true;
     }
     RhythmUpdateArray();
-    input.pressSpaceTitle = !input.pressSpaceTitle;
+    input.shouldShow = !input.shouldShow;
 }
