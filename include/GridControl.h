@@ -15,6 +15,8 @@ class GridControl {
     void SetTileMap(TileMap *tileMap) { this->tileMap = tileMap; }
     int TestPath(Vec2 target, bool isAlan);
 
+    std::weak_ptr<GameObject> GetAlan() { return alan; }
+
     enum WhatsThere {
         NONE = 0,
         FREE,

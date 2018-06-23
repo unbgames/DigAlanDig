@@ -57,7 +57,6 @@ class Alan : public Component {
     Action action = Action::STANDIN;
 
     int maxPosition = 0;
-    int frameNumber = 0;
     int gridsLeft = 0;
 
     InputManager& input;

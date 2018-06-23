@@ -459,19 +459,28 @@ void Alan::Update(float dt) {
                 }
 
                 return;
+            } else if (Game::GetInstance()->GetGridControl()->TestPath(
+                           Vec2(associated.gridPosition.x - 1,
+                                associated.gridPosition.y),
+                           true) == GridControl::WhatsThere::FREE) {
+                animation->SetAction(AlanAnimation::Transition::WALK,
+                                     AlanAnimation::Direction::W);
+
+                if (interpol->AttPosition(
+                        Vec2((associated.gridPosition.x - 1) * gridSize -
+                                 gridSize / 2,
+                             (associated.gridPosition.y) * gridSize -
+                                 gridSize / 2))) {
+                    // Se não for pedra só anda
+
+                    movementDirection = Direction::NONE;
+                    associated.gridPosition.x--;
+                }
+                return;
             }
 
-            // Se não for pedra só anda
+            movementDirection = Direction::NONE;
 
-            animation->SetAction(AlanAnimation::Transition::WALK,
-                                 AlanAnimation::Direction::W);
-
-            if (interpol->AttPosition(Vec2(
-                    (associated.gridPosition.x - 1) * gridSize - gridSize / 2,
-                    (associated.gridPosition.y) * gridSize - gridSize / 2))) {
-                movementDirection = Direction::NONE;
-                associated.gridPosition.x--;
-            }
         } else {
             // Mesmo processo anterior para a direita
             if (Game::GetInstance()->GetGridControl()->TestPath(
@@ -496,18 +505,26 @@ void Alan::Update(float dt) {
                 }
 
                 return;
+            } else if (Game::GetInstance()->GetGridControl()->TestPath(
+                           Vec2(associated.gridPosition.x + 1,
+                                associated.gridPosition.y),
+                           true) == GridControl::WhatsThere::FREE) {
+                // Se não for pedra só anda
+                animation->SetAction(AlanAnimation::Transition::WALK,
+                                     AlanAnimation::Direction::E);
+
+                if (interpol->AttPosition(
+                        Vec2((associated.gridPosition.x + 1) * gridSize -
+                                 gridSize / 2,
+                             (associated.gridPosition.y) * gridSize -
+                                 gridSize / 2))) {
+                    movementDirection = Direction::NONE;
+                    associated.gridPosition.x++;
+                }
+                return;
             }
 
-            // Se não for pedra só anda
-            animation->SetAction(AlanAnimation::Transition::WALK,
-                                 AlanAnimation::Direction::E);
-
-            if (interpol->AttPosition(Vec2(
-                    (associated.gridPosition.x + 1) * gridSize - gridSize / 2,
-                    (associated.gridPosition.y) * gridSize - gridSize / 2))) {
-                movementDirection = Direction::NONE;
-                associated.gridPosition.x++;
-            }
+            movementDirection = Direction::NONE;
         }
     }
 }
