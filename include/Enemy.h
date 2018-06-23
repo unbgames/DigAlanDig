@@ -19,14 +19,16 @@
 class Enemy : public Component {
   public:
     enum Direction { LEFT = 0, RIGHT };
-    enum State { NONE_S = 0, IDLE_S, WALKIN_S, HIT_S, STATE_MAX };
+    enum State { NONE_S = 0, IDLE_S, WALKIN_S, HIT_S, DIE_S, STATE_MAX };
 
     Enemy(GameObject& associated, int enemyType, int range = 2);
 
     ~Enemy() {}
 
     void Update(float dt);
-    void RhythmUpdate();
+    void RhythmUpdate() {
+        if (!movimentAllowed) movimentAllowed = true;
+    }
     void RhythmReset() {}
     void Render(Common::Layer layer) const {}
 
@@ -37,12 +39,16 @@ class Enemy : public Component {
     Direction GetMovementDirection() { return movementDirection; }
     State GetState() { return state; }
 
+    void TakeDamage(int damage) { hp -= damage; }
+
   private:
     Direction movementDirection = Direction::LEFT;
 
     // 2<=range<=7
     int range, steps = 0;
     State state = State::WALKIN_S;
+
+    int hp;
 
     Sprite::SpriteState EState[State::STATE_MAX];
     InputManager& input;

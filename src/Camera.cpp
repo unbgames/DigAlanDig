@@ -55,7 +55,7 @@ void Camera::Update(float dt) {
                      screenSize.y)) {
                 offset.y += speed.y * dt * scrollFactor;
 
-                                if (offset.y + screenSize.y - 200 < focus->box.y) {
+                if (offset.y + screenSize.y - 200 < focus->box.y) {
                     offset.y += 3 * speed.y * dt * scrollFactor;
                 }
 
@@ -63,6 +63,7 @@ void Camera::Update(float dt) {
                     (focus->box.y +
                      Game::GetInstance()->GetCurrentState().GetGridSize())) {
                     focus->RequestDelete();
+                    Game::GetInstance()->combo = 0;
                     Unfollow();
                 }
             }

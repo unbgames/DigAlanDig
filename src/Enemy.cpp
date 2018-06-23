@@ -12,6 +12,7 @@ Enemy::Enemy(GameObject &associated, int enemyType, int range)
                                    0.2};
         // EState[State::HIT_S] = {"assets/img/alan/hit.png", 2, 2, -1};
         EState[State::HIT_S] = {"assets/img/enemies/enemy1/hit.png", 2, 2, 0.2};
+        EState[State::DIE_S] = {"assets/img/enemies/enemy1/die.png", 2, 2, 0.2};
     } else if (enemyType == 2) {
         EState[State::IDLE_S] = {"assets/img/enemies/enemy2/idle.png", 2, 2,
                                  -1};
@@ -19,6 +20,7 @@ Enemy::Enemy(GameObject &associated, int enemyType, int range)
                                    0.2};
         // EState[State::HIT_S] = {"assets/img/alan/hit.png", 2, 2, -1};
         EState[State::HIT_S] = {"assets/img/enemies/enemy2/hit.png", 2, 2, 0.2};
+        EState[State::DIE_S] = {"assets/img/enemies/enemy2/die.png", 2, 2, 0.2};
     } else if (enemyType == 3) {
         EState[State::IDLE_S] = {"assets/img/enemies/enemy3/idle.png", 2, 2,
                                  -1};
@@ -26,14 +28,30 @@ Enemy::Enemy(GameObject &associated, int enemyType, int range)
                                    0.2};
         // EState[State::HIT_S] = {"assets/img/alan/hit.png", 2, 2, -1};
         EState[State::HIT_S] = {"assets/img/enemies/enemy3/hit.png", 2, 2, 0.2};
+        EState[State::DIE_S] = {"assets/img/enemies/enemy3/die.png", 2, 2, 0.2};
     } else {
         std::cout << "ERRO: enemy not valid!" << std::endl;
+        return;
     }
+
+    hp = enemyType * 2;
 }
 
 void Enemy::Update(float dt) {
-    Interpol *interpol = associated.GetComponent<Interpol *>();
     Sprite *sprite = associated.GetComponent<Sprite *>();
+
+    if (hp <= 0) {
+        if (state != Enemy::State::DIE_S) {
+            state = Enemy::State::DIE_S;
+            sprite->Open(EState[state], Enemy::Direction::LEFT);
+        }
+        if (sprite->FrameTimePassed()) {
+            associated.RequestDelete();
+        }
+        return;
+    }
+
+    Interpol *interpol = associated.GetComponent<Interpol *>();
     Alan *alan = Game::GetInstance()
                      ->GetGridControl()
                      ->GetAlan()
@@ -44,21 +62,11 @@ void Enemy::Update(float dt) {
         alan->GetAction() != Alan::Action::FALLIN) {
         if (Game::GetInstance()->GetGridControl()->TestPath(
                 Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
+                false) == GridControl::WhatsThere::ALAN ||
+            Game::GetInstance()->GetGridControl()->TestPath(
+                Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
                 false) == GridControl::WhatsThere::ALAN) {
-            if (state != Enemy::State::HIT_S) {
-                state = Enemy::State::HIT_S;
-                movementDirection = Enemy::Direction::RIGHT;
-                sprite->Open(EState[state], movementDirection);
-            }
-        } else if (Game::GetInstance()->GetGridControl()->TestPath(
-                       Vec2(associated.gridPosition.x - 1,
-                            associated.gridPosition.y),
-                       false) == GridControl::WhatsThere::ALAN) {
-            if (state != Enemy::State::HIT_S) {
-                state = Enemy::State::HIT_S;
-                movementDirection = Enemy::Direction::LEFT;
-                sprite->Open(EState[state], movementDirection);
-            }
+            // Change game color pallet
         }
 
     } else if (movimentAllowed) {
@@ -171,11 +179,5 @@ void Enemy::Update(float dt) {
             state = Enemy::State::IDLE_S;
             sprite->Open(EState[state], movementDirection);
         }
-    }
-}
-
-void Enemy::RhythmUpdate() {
-    if (!movimentAllowed) {
-        movimentAllowed = true;
     }
 }

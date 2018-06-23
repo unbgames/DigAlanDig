@@ -40,7 +40,7 @@ class Sprite : public Component {
     void Update(float dt);
     void AlanUpdate(float dt);
     void RhythmUpdate() {
-        if (frameTime == -1 && frameCount < 3) {
+        if (frameTime == -1 && frameCount == 2) {
             SetFrame(currentFrame = !currentFrame);
         } else if (frameTime == -1) {
             if (currentFrame < (frameCount - 1)) {
