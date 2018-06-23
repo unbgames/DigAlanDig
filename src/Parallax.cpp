@@ -17,8 +17,6 @@ void bgCircularY::Render(Common::Layer layer) const {
             (lmax + 1) * associated.box.h)
             lmax++;
 
-        std::cout << linit << " " << lmax << " "
-                  << Camera::screenSize.y / associated.box.h << std::endl;
         for (int i = linit; i <= lmax; i++) {
             Rect dst(associated.box.pos.x, associated.box.pos.y + i * height,
                      (double)width, (double)height);

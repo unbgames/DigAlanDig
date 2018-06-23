@@ -26,11 +26,14 @@ Game* Game::GetInstance(const std::string& title, int w, int h) {
 void Game::UpdateBeatTime(int timeRhythm) {
     std::cout << tickCounter << " ; " << timeRhythm << std::endl;
     tickCounter = (tickCounter * 9 + timeRhythm) / 10;
+    if (std::abs(tickCounter - timeRhythm) > 1000) tickCounter = timeRhythm;
 }
 
 void Game::CalculateDeltaTime() {
     int ticksTotal = static_cast<int>(SDL_GetTicks());
     dt = ticksTotal - frameStart;
+    if (dt > 100) dt = 10;
+
     tickCounter += dt;
     dt /= 1000;
     frameStart = ticksTotal;
