@@ -54,6 +54,7 @@ void TitleState::Start() {
 }
 
 void TitleState::Update(float dt) {
+    input.title = true;
     if (input.ActionPress(input.ENTER))
         Game::GetInstance()->Push(new StageState());
     UpdateArray(dt);

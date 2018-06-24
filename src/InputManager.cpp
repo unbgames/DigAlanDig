@@ -1,6 +1,7 @@
 #include "InputManager.h"
 InputManager::InputManager() {
     key2action[SDL_SCANCODE_ESCAPE] = Action::ESCAPE;
+    key2action[SDL_SCANCODE_AC_BACK] = Action::ESCAPE;
     gamepad2action[SDL_CONTROLLER_BUTTON_BACK] = Action::ESCAPE;
 
     key2action[SDL_SCANCODE_RETURN] = Action::ENTER;

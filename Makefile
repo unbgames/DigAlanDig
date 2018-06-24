@@ -150,11 +150,16 @@ else
 endif
 
 android:
-	cp src/* ../org.pedro.marmota/app/jni/src/
-	cp include/* ../org.pedro.marmota/app/jni/src/
-	cp extern/* ../org.pedro.marmota/app/jni/src/
+	rsync -vah src/* ../org.pedro.marmota/app/jni/src/
+	rsync -vah include/* ../org.pedro.marmota/app/jni/src/
+	rsync -vah extern/* ../org.pedro.marmota/app/jni/src/
 	cd ../org.pedro.marmota && ./gradlew assembleDebug
 	cp ../org.pedro.marmota/app/build/outputs/apk/app-debug.apk $(EXEC).apk
+
+androidrun:
+	adb install -r $(EXEC).apk
+	adb shell monkey -p org.pedro.marmota -v 500
+	adb logcat org.pedro.marmota:I S:* | grep --color=never marmolog
 
 # Regra pra debug
 print-% : ; @echo $* = $($*)
