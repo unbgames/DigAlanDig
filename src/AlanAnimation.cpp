@@ -154,7 +154,8 @@ void AlanAnimation::SetAction(Transition trans, Direction dir) {
             break;
 
         case HIT:
-
+            oldState = currentState;
+            currentState = State::IDLE;
             break;
 
         case CLIMBIN:

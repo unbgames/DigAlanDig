@@ -9,20 +9,22 @@ GridControl *GridControl::GetInstance() {
 }
 
 int GridControl::TestPath(Vec2 target, bool isAlan) {
-    if (target.x >= tileMap->GetWidth() || target.y >= tileMap->GetHeight()) {
+    if ((target.x >= tileMap->GetWidth() || target.x < 0) ||
+        (target.y >= tileMap->GetHeight() || target.y < 0)) {
         return WhatsThere::NONE;
     }
 
+    int block = tileMap->At(target.x, target.y, tileMap->Layers::BLOCOS);
+
     if (isAlan) {
-        int block = tileMap->At(target.x, target.y, tileMap->Layers::BLOCOS);
-        if (block == 2) {
+        if (!block) {
             return WhatsThere::FREE;
 
         } else if (int enemy = tileMap->At(target.x, target.y,
                                            tileMap->Layers::INIMIGOS)) {
             std::cout << "ENEMY " << enemy << std::endl;
             return WhatsThere::ENEMY;
-        } else if (block > 2) {
+        } else if (block) {
             if (block > 3)
                 return WhatsThere::ROCK_STRONG;
             else
@@ -34,15 +36,12 @@ int GridControl::TestPath(Vec2 target, bool isAlan) {
     if (alan.lock()) {
         if (target == alan.lock()->GetComponent<Alan *>()->GetGridPosition())
             return WhatsThere::ALAN;
+    }
 
-    } else if (tileMap->At(target.x, target.y, tileMap->Layers::BLOCOS) == 2) {
-        if (tileMap->At(target.x, target.y + 1, tileMap->Layers::BLOCOS) == 2) {
-            return WhatsThere::FREE_FALL;
-        }
-
+    if (!block) {
         return WhatsThere::FREE;
 
-    } else if (tileMap->At(target.x, target.y, tileMap->Layers::BLOCOS) > 2) {
+    } else if (block) {
         return WhatsThere::ROCK_STRONG;
     }
 

@@ -7,6 +7,7 @@
 #include "AlanAnimation.h"
 #include "BigAlan.h"
 #include "Camera.h"
+#include "EnemySpawn.h"
 #include "Game.h"
 #include "Interpol.h"
 #include "Light.h"
@@ -51,11 +52,11 @@ void StageState::LoadAssets() {
     alanGO->box.x = (gp.x * GetGridSize()) - GetGridSize() / 2;
     alanGO->box.y = (gp.y * GetGridSize()) - GetGridSize() / 2;
     alanGO->gridPosition = gp;
+    objectArray.emplace_back(alanGO);
 
     Game::GetInstance()->GetGridControl()->SetAlan(GetObjectPrt(alanGO));
 
-    objectArray.emplace_back(alanGO);
-    alanGO->AddComponent(
+        alanGO->AddComponent(
         new Sprite(*alanGO, "assets/img/alan/idle.png", 2, 0.2));
 
     Alan *lilAlan = new Alan(*alanGO, GetGridSize());
@@ -72,6 +73,10 @@ void StageState::LoadAssets() {
     alanL->AddComponent(new Light(*alanL, GetObjectPrt(alanGO)));
 
     Camera::Follow(alanGO);
+
+    GameObject *esGO = new GameObject();
+    esGO->AddComponent(new EnemySpawn(*esGO, tileMap));
+    objectArray.emplace_back(esGO);
 
     // MiniMap
     GameObject *MiniMapTile = new GameObject(Common::Layer::HUD);

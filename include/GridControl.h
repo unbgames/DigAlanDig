@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Component.h"
 #include "TileMap.h"
 #include "Vec2.h"
 
@@ -34,5 +35,4 @@ class GridControl {
 
     GridControl() {}
 };
-
 #endif  // GRIDCONTROL_H

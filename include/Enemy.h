@@ -21,13 +21,18 @@ class Enemy : public Component {
     enum Direction { LEFT = 0, RIGHT };
     enum State { NONE_S = 0, IDLE_S, WALKIN_S, HIT_S, DIE_S, STATE_MAX };
 
-    Enemy(GameObject& associated, int enemyType, int range = 2);
+    Enemy(GameObject& associated, int enemyType = 1);
 
     ~Enemy() {}
 
     void Update(float dt);
     void RhythmUpdate() {
-        if (!movimentAllowed) movimentAllowed = true;
+        numBeats++;
+
+        if (!movimentAllowed && numBeats > 1) {
+            movimentAllowed = true;
+            numBeats = 0;
+        }
     }
     void RhythmReset() {}
     void Render(Common::Layer layer) const {}
@@ -46,7 +51,9 @@ class Enemy : public Component {
 
     // 2<=range<=7
     int range, steps = 0;
-    State state = State::WALKIN_S;
+    State state = State::IDLE_S;
+
+    int numBeats = 0;
 
     int hp;
 

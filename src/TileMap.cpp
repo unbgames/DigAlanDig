@@ -112,7 +112,7 @@ void TileMap::GetDamageGround(int damage, Vec2 posDamage) {
     int valPos = At(posDamage.x, posDamage.y);
     if (valPos == 1) return;
 
-    if (--tileMat[groundLayer][(int)(posDamage.y * width + posDamage.x)] < 2)
-        tileMat[groundLayer][(int)(posDamage.y * width + posDamage.x)] = 2;
+    if (--tileMat[groundLayer][(int)(posDamage.y * width + posDamage.x)] <= 2)
+        tileMat[groundLayer][(int)(posDamage.y * width + posDamage.x)] = 0;
     // tileSet->RenderTile(valPos - 1, posDamage.x, posDamage.y);
 }

@@ -69,7 +69,6 @@ void Alan::Update(float dt) {
     Sprite *sprite = associated.GetComponent<Sprite *>();
 
     if (associated.gridPosition.y == (tileMap->GetHeight() - 1)) {
-        std::cout << "ENTRA AQUI CARALHO!" << std::endl;
         if (!animationOnGoing) {
             animation->SetAction(AlanAnimation::Transition::DANCE,
                                  AlanAnimation::Direction::W);
@@ -87,13 +86,13 @@ void Alan::Update(float dt) {
         ((Game::GetInstance()->GetGridControl()->TestPath(
               Vec2(associated.gridPosition.x, associated.gridPosition.y + 1),
               true) == GridControl::WhatsThere::FREE &&
-          action != Action::CLIMBING && movementDirection == Direction::NONE) &&
+          action != Action::CLIMBING) &&
          !input.KeyDown(SDL_SCANCODE_A))) {
         if (gridsLeft == 0) {
             movementDirection = Direction::DOWN;
             action = Action::FALLIN;
             int y = associated.gridPosition.y + 1;
-            while (tileMap->At(associated.gridPosition.x, y) == 2) {
+            while (!tileMap->At(associated.gridPosition.x, y)) {
                 gridsLeft++;
                 y++;
             }
