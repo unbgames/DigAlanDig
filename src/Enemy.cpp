@@ -63,6 +63,8 @@ Enemy::Enemy(GameObject &associated, int enemyType)
 }
 
 void Enemy::Update(float dt) {
+    if (!Game::GetInstance()->GetGridControl()->GetAlan().lock()) return;
+
     Sprite *sprite = associated.GetComponent<Sprite *>();
     Interpol *interpol = associated.GetComponent<Interpol *>();
     Alan *alan = Game::GetInstance()
