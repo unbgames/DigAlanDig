@@ -14,9 +14,18 @@ class GridControl {
 
     void SetAlan(std::weak_ptr<GameObject> alan) { this->alan = alan; }
     void SetTileMap(TileMap *tileMap) { this->tileMap = tileMap; }
+
     int TestPath(Vec2 target, bool isAlan);
 
     std::weak_ptr<GameObject> GetAlan() { return alan; }
+
+    bool VerifyEnemy(Vec2 target);
+
+    void AddEnemy(GameObject *enemy) { enemies.emplace_back(enemy); }
+    void DeleteEnemy(GameObject *enemy) {
+        enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy),
+                      enemies.end());
+    }
 
     enum WhatsThere {
         NONE = 0,
@@ -30,6 +39,7 @@ class GridControl {
 
   private:
     std::weak_ptr<GameObject> alan;
+    std::vector<GameObject *> enemies;
     TileMap *tileMap;
     static GridControl *_instance;
 

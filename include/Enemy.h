@@ -10,6 +10,7 @@
 #include <queue>
 #include <string>
 #include <vector>
+#include "Alan.h"
 #include "Component.h"
 #include "InputManager.h"
 #include "Sprite.h"
@@ -44,6 +45,8 @@ class Enemy : public Component {
     Direction GetMovementDirection() { return movementDirection; }
     State GetState() { return state; }
 
+    bool VerifyDeath(Alan* alan);
+
     void TakeDamage(int damage) { hp -= damage; }
 
   private:
@@ -56,6 +59,8 @@ class Enemy : public Component {
     int numBeats = 0;
 
     int hp;
+
+    Vec2 tileMapPos;
 
     Sprite::SpriteState EState[State::STATE_MAX];
     InputManager& input;

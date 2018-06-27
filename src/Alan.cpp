@@ -83,9 +83,12 @@ void Alan::Update(float dt) {
 
     // Testa se a marmota deve "cair" ou ficar na posição atual
     if (gridsLeft ||
-        ((Game::GetInstance()->GetGridControl()->TestPath(
-              Vec2(associated.gridPosition.x, associated.gridPosition.y + 1),
-              true) == GridControl::WhatsThere::FREE &&
+        (((Game::GetInstance()->GetGridControl()->TestPath(
+               Vec2(associated.gridPosition.x, associated.gridPosition.y + 1),
+               true) == GridControl::WhatsThere::FREE ||
+           Game::GetInstance()->GetGridControl()->TestPath(
+               Vec2(associated.gridPosition.x, associated.gridPosition.y + 1),
+               true) == GridControl::WhatsThere::ENEMY) &&
           action != Action::CLIMBING) &&
          !input.KeyDown(SDL_SCANCODE_A))) {
         if (gridsLeft == 0) {
@@ -439,20 +442,25 @@ void Alan::Update(float dt) {
             if (Game::GetInstance()->GetGridControl()->TestPath(
                     Vec2(associated.gridPosition.x - 1,
                          associated.gridPosition.y),
-                    true) == GridControl::WhatsThere::ROCK_STRONG ||
-                Game::GetInstance()->GetGridControl()->TestPath(
-                    Vec2(associated.gridPosition.x - 1,
-                         associated.gridPosition.y),
-                    true) == GridControl::WhatsThere::ROCK_WEAK) {
+                    true) != GridControl::WhatsThere::FREE) {
                 if (!animationOnGoing) {
                     animation->SetAction(AlanAnimation::Transition::DIG_T,
                                          AlanAnimation::Direction::W);
                     animationOnGoing = true;
                 }
                 if (sprite->FrameTimePassed()) {
-                    tileMap->GetDamageGround(1,
-                                             Vec2(associated.gridPosition.x - 1,
-                                                  associated.gridPosition.y));
+                    if (Game::GetInstance()->GetGridControl()->TestPath(
+                            Vec2(associated.gridPosition.x - 1,
+                                 associated.gridPosition.y),
+                            true) == GridControl::WhatsThere::ROCK_STRONG ||
+                        Game::GetInstance()->GetGridControl()->TestPath(
+                            Vec2(associated.gridPosition.x - 1,
+                                 associated.gridPosition.y),
+                            true) == GridControl::WhatsThere::ROCK_WEAK) {
+                        tileMap->GetDamageGround(
+                            1, Vec2(associated.gridPosition.x - 1,
+                                    associated.gridPosition.y));
+                    }
                     movementDirection = Direction::NONE;
                     animationOnGoing = false;
                 }
@@ -485,20 +493,25 @@ void Alan::Update(float dt) {
             if (Game::GetInstance()->GetGridControl()->TestPath(
                     Vec2(associated.gridPosition.x + 1,
                          associated.gridPosition.y),
-                    true) == GridControl::WhatsThere::ROCK_STRONG ||
-                Game::GetInstance()->GetGridControl()->TestPath(
-                    Vec2(associated.gridPosition.x + 1,
-                         associated.gridPosition.y),
-                    true) == GridControl::WhatsThere::ROCK_WEAK) {
+                    true) != GridControl::WhatsThere::FREE) {
                 if (!animationOnGoing) {
                     animation->SetAction(AlanAnimation::Transition::DIG_T,
                                          AlanAnimation::Direction::E);
                     animationOnGoing = true;
                 }
                 if (sprite->FrameTimePassed()) {
-                    Vec2 damage = {associated.gridPosition.x + 1,
-                                   associated.gridPosition.y};
-                    tileMap->GetDamageGround(1, damage);
+                    if (Game::GetInstance()->GetGridControl()->TestPath(
+                            Vec2(associated.gridPosition.x + 1,
+                                 associated.gridPosition.y),
+                            true) == GridControl::WhatsThere::ROCK_STRONG ||
+                        Game::GetInstance()->GetGridControl()->TestPath(
+                            Vec2(associated.gridPosition.x + 1,
+                                 associated.gridPosition.y),
+                            true) == GridControl::WhatsThere::ROCK_WEAK) {
+                        tileMap->GetDamageGround(
+                            1, Vec2(associated.gridPosition.x + 1,
+                                    associated.gridPosition.y));
+                    }
                     movementDirection = Direction::NONE;
                     animationOnGoing = false;
                 }

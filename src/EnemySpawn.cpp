@@ -1,12 +1,14 @@
 #include "EnemySpawn.h"
 #include "Camera.h"
 #include "Enemy.h"
+#include "EnemyDeath.h"
 #include "Game.h"
 
 void EnemySpawn::Update(float dt) {
     while (currentY <
-           (int)((Camera::pos.y + Camera::screenSize.y) /
-                 Game::GetInstance()->GetCurrentState().GetGridSize())) {
+           ((int)(((Camera::pos.y + Camera::screenSize.y) /
+                   Game::GetInstance()->GetCurrentState().GetGridSize()) +
+                  4))) {
         for (int x = 0; x < tileMap->GetWidth(); x++) {
             if (int enemy =
                     tileMap->At(x, currentY, TileMap::Layers::INIMIGOS)) {
@@ -20,7 +22,9 @@ void EnemySpawn::Update(float dt) {
                     Game::GetInstance()->GetCurrentState().GetGridSize() / 2;
                 go->gridPosition.x = x;
                 go->gridPosition.y = currentY;
+                go->AddComponent(new EnemyDeath(*go));
                 go->AddComponent(new Enemy(*go, enemy));
+                Game::GetInstance()->GetGridControl()->AddEnemy(go);
                 Game::GetInstance()->GetCurrentState().AddObject(go);
             }
         }

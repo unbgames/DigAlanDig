@@ -1,5 +1,6 @@
 #include "GridControl.h"
 #include "Alan.h"
+#include "Enemy.h"
 
 GridControl *GridControl::_instance = nullptr;
 
@@ -17,13 +18,11 @@ int GridControl::TestPath(Vec2 target, bool isAlan) {
     int block = tileMap->At(target.x, target.y, tileMap->Layers::BLOCOS);
 
     if (isAlan) {
-        if (!block) {
+        if (VerifyEnemy(target)) {
+            return WhatsThere::ENEMY;
+        } else if (!block) {
             return WhatsThere::FREE;
 
-        } else if (int enemy = tileMap->At(target.x, target.y,
-                                           tileMap->Layers::INIMIGOS)) {
-            std::cout << "ENEMY " << enemy << std::endl;
-            return WhatsThere::ENEMY;
         } else if (block) {
             if (block > 3)
                 return WhatsThere::ROCK_STRONG;
@@ -46,4 +45,13 @@ int GridControl::TestPath(Vec2 target, bool isAlan) {
     }
 
     return WhatsThere::NONE;
+}
+
+bool GridControl::VerifyEnemy(Vec2 target) {
+    for (auto enemy : enemies) {
+        Vec2 enemyPos = enemy->GetComponent<Enemy *>()->GetGridPosition();
+        if (enemyPos == target) return true;
+    }
+
+    return false;
 }

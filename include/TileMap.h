@@ -27,6 +27,8 @@ class TileMap : public Component {
     int GetDepth() const { return depth; }
 
     void GetDamageGround(int damage, Vec2 posDamage);
+    void ClearEnemyFromMap(Vec2 enemyPos);
+
     int GetNextFile();
 
     enum Layers { BASE = 0, BLOCOS, ITENS, INIMIGOS };
@@ -38,6 +40,7 @@ class TileMap : public Component {
     TileSet* tileSet;
     int width = 0, height = 0, depth = 0;
     const int groundLayer = 1;
+    const int enemyLayer = 3;
     bool infinity;
 };
 

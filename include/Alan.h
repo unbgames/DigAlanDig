@@ -52,6 +52,9 @@ class Alan : public Component {
     Direction GetMovementDirection() { return movementDirection; }
     Action GetAction() { return action; }
 
+    int GetDamage() { return damage; }
+    void SetDamage(int damage) { this->damage = damage; }
+
   private:
     Direction movementDirection = Direction::NONE;
     Action action = Action::STANDIN;
@@ -62,6 +65,7 @@ class Alan : public Component {
     InputManager& input;
 
     int gridSize;
+    int damage = 1;
 
     bool moved = false;
     bool animationOnGoing = false;
