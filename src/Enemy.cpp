@@ -49,8 +49,6 @@ Enemy::Enemy(GameObject &associated, int enemyType)
         EState[State::DIE_S] = {"assets/img/enemies/enemy1/idle.png", 2, 2,
                                 0.2};
     }
-    std::cout << "ENEMY = " << enemyType
-              << "\nPOS = " << associated.GetGridPosition() << std::endl;
 
     Sprite *sprite = new Sprite(associated);
     Interpol *interpol = new Interpol(associated);
@@ -58,7 +56,7 @@ Enemy::Enemy(GameObject &associated, int enemyType)
     associated.AddComponent(interpol);
     sprite->Open(EState[state], Enemy::Direction::LEFT);
 
-    hp = 1;  // enemyType * 2;
+    hp = enemyType;
     range = enemyType;
 
     tileMapPos.x = associated.box.x;
@@ -81,7 +79,6 @@ void Enemy::Update(float dt) {
             sprite->Open(EState[state], Enemy::Direction::LEFT);
         }
         if (sprite->FrameTimePassed()) {
-            std::cout << "MORRE VIADO! \n\n\n\n" << std::endl;
             Game::GetInstance()->GetGridControl()->DeleteEnemy(&associated);
             associated.RequestDelete();
         }
@@ -92,14 +89,21 @@ void Enemy::Update(float dt) {
             Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
             false) == GridControl::WhatsThere::ALAN &&
         alan->GetMovementDirection() == Alan::Direction::RIGHT) {
-        TakeDamage(alan->GetDamage());
+        if (!damageTaken) {
+            TakeDamage(alan->GetDamage());
+            damageTaken = true;
+        }
         movimentAllowed = false;
+
     } else if (Game::GetInstance()->GetGridControl()->TestPath(
                    Vec2(associated.gridPosition.x + 1,
                         associated.gridPosition.y),
                    false) == GridControl::WhatsThere::ALAN &&
                alan->GetMovementDirection() == Alan::Direction::LEFT) {
-        TakeDamage(alan->GetDamage());
+        if (!damageTaken) {
+            TakeDamage(alan->GetDamage());
+            damageTaken = true;
+        }
         movimentAllowed = false;
     }
 
@@ -144,6 +148,7 @@ void Enemy::Update(float dt) {
     }
 
     if (movimentAllowed) {
+        damageTaken = false;
         if (steps < range) {
             if (state != Enemy::State::WALKIN_S) {
                 state = Enemy::State::WALKIN_S;
