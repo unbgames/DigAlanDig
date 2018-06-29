@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "EnemySpawn.h"
 #include "Game.h"
+#include "HudMeter.h"
 #include "Interpol.h"
 #include "Light.h"
 #include "MiniTileMap.h"
@@ -103,6 +104,20 @@ void StageState::LoadAssets() {
     backG->AddComponent(new bgCircularY(*backG, "assets/img/bg.png"));
     backG->AddComponent(new Parallax(*backG, 0.5));
     backG->box.pos = {304, 0};
+
+    GameObject *meterHeart = new GameObject(Common::Layer::HUD);
+    objectArray.emplace_back(meterHeart);
+    meterHeart->worldReference = false;
+    meterHeart->box.pos = {20, 26};
+    bigAlan->AddComponent(new HudMeter(*meterHeart, "assets/hud/barravida.png",
+                                       "assets/hud/coracao.png"));
+
+    GameObject *meterLight = new GameObject(Common::Layer::HUD);
+    objectArray.emplace_back(meterLight);
+    meterLight->worldReference = false;
+    meterLight->box.pos = {176, 26};
+    bigAlan->AddComponent(new HudMeter(*meterLight, "assets/hud/barraluz.png",
+                                       "assets/hud/raio.png"));
 
     music.Open("assets/audio/marmota.ogg");
     count = 0;

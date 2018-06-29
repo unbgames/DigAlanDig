@@ -32,7 +32,8 @@ void Game::UpdateBeatTime(int timeRhythm) {
 void Game::CalculateDeltaTime() {
     int ticksTotal = static_cast<int>(SDL_GetTicks());
     dt = ticksTotal - frameStart;
-    if (dt > 100) dt = 10;
+    // Maximum time, fix return from suspended
+    if (dt > 100) dt = 100;
 
     tickCounter += dt;
     dt /= 1000;
