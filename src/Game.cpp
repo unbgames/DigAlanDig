@@ -79,9 +79,10 @@ void Game::Run() {
 
         if (shouldRhythmUpdate) {
             shouldRhythmUpdate = false;
-            if (!offBeat)
+            if (!offBeat) {
                 stateStack.top()->RhythmUpdate();
-            else
+                Camera::RhythmUpdate();
+            } else
                 stateStack.top()->RhythmReset();
             std::cout << "." << offBeat << "." << std::endl;
         }

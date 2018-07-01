@@ -56,11 +56,18 @@ class Alan : public Component {
     Action GetAction() { return action; }
 
     int GetDamage() { return damage; }
+    void TakeDamage() {
+        std::cout << "HP = " << hp << std::endl;
+        hp--;
+    }
     void SetDamage(int damage) { this->damage = damage; }
+    int GetHP() { return hp; }
 
   private:
     Direction movementDirection = Direction::NONE;
     Action action = Action::STANDIN;
+
+    int hp = 6;
 
     int maxPosition = 0;
     int gridsLeft = 0;

@@ -19,6 +19,15 @@ void Camera::Unfollow() { focus = nullptr; }
 
 Vec2 Camera::Center() { return pos + screenSize / 2; }
 
+void Camera::RhythmUpdate() {
+    if (focus) {
+        if (offset.y > (focus->box.y +
+                        Game::GetInstance()->GetCurrentState().GetGridSize())) {
+            focus->GetComponent<Alan *>()->TakeDamage();
+        }
+    }
+}
+
 void Camera::Update(float dt) {
     if (shakeDuration > 0) {
         shakeDuration -= dt;
@@ -57,14 +66,6 @@ void Camera::Update(float dt) {
 
                 if (offset.y + screenSize.y - 200 < focus->box.y) {
                     offset.y += 3 * speed.y * dt * scrollFactor;
-                }
-
-                if (offset.y >
-                    (focus->box.y +
-                     Game::GetInstance()->GetCurrentState().GetGridSize())) {
-                    focus->RequestDelete();
-                    Game::GetInstance()->combo = 0;
-                    Unfollow();
                 }
             }
             break;

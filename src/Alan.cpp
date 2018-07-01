@@ -68,6 +68,19 @@ void Alan::Update(float dt) {
     TileMap *tileMap = Game::GetInstance()->GetCurrentState().tileMap;
     Sprite *sprite = associated.GetComponent<Sprite *>();
 
+    if (hp <= 0) {
+        if (animation->GetCurrentState() != AlanAnimation::State::DEAD)
+            animation->SetAction(AlanAnimation::Transition::DIE,
+                                 AlanAnimation::Direction::W);
+
+        if (sprite->FrameTimePassed()) {
+            associated.RequestDelete();
+            Camera::Unfollow();
+            Game::GetInstance()->combo = 0;
+        }
+        return;
+    }
+
     if (associated.gridPosition.y == (tileMap->GetHeight() - 1)) {
         if (!animationOnGoing) {
             animation->SetAction(AlanAnimation::Transition::DANCE,
