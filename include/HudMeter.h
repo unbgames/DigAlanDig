@@ -28,4 +28,18 @@ class HudMeter : public Component {
     void setMeter(int i) const;
 };
 
+class HeartMeter : public HudMeter {
+  public:
+    HeartMeter(GameObject& associated, const std::string& bgFile,
+               const std::string& meterFile)
+        : HudMeter(associated, bgFile, meterFile){};
+};
+
+class LightMeter : public HudMeter {
+  public:
+    LightMeter(GameObject& associated, const std::string& bgFile,
+               const std::string& meterFile)
+        : HudMeter(associated, bgFile, meterFile){};
+};
+
 #endif  // HUDMETER_H

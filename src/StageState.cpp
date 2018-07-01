@@ -57,7 +57,7 @@ void StageState::LoadAssets() {
 
     Game::GetInstance()->GetGridControl()->SetAlan(GetObjectPrt(alanGO));
 
-        alanGO->AddComponent(
+    alanGO->AddComponent(
         new Sprite(*alanGO, "assets/img/alan/idle.png", 2, 0.2));
 
     Alan *lilAlan = new Alan(*alanGO, GetGridSize());
@@ -109,15 +109,15 @@ void StageState::LoadAssets() {
     objectArray.emplace_back(meterHeart);
     meterHeart->worldReference = false;
     meterHeart->box.pos = {20, 26};
-    bigAlan->AddComponent(new HudMeter(*meterHeart, "assets/hud/barravida.png",
-                                       "assets/hud/coracao.png"));
+    meterHeart->AddComponent(new HeartMeter(
+        *meterHeart, "assets/hud/barravida.png", "assets/hud/coracao.png"));
 
     GameObject *meterLight = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(meterLight);
     meterLight->worldReference = false;
     meterLight->box.pos = {176, 26};
-    bigAlan->AddComponent(new HudMeter(*meterLight, "assets/hud/barraluz.png",
-                                       "assets/hud/raio.png"));
+    meterLight->AddComponent(new LightMeter(
+        *meterLight, "assets/hud/barraluz.png", "assets/hud/raio.png"));
 
     music.Open("assets/audio/marmota.ogg");
     count = 0;
