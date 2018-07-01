@@ -47,10 +47,9 @@ class Enemy : public Component {
 
     bool VerifyDeath(Alan* alan);
 
-    void TakeDamage(int damage) {
-        std::cout << "DAMAGE HP = " << hp << std::endl;
-        hp -= damage;
-    }
+    void TakeDamage(int damage) { hp -= damage; }
+
+    bool movimentAllowed = false;
 
   private:
     Direction movementDirection = Direction::LEFT;
@@ -67,7 +66,7 @@ class Enemy : public Component {
 
     Sprite::SpriteState EState[State::STATE_MAX];
     InputManager& input;
-    bool movimentAllowed = false;
+
     bool damageTaken = false;
 };
 

@@ -88,6 +88,7 @@ void Game::Run() {
 
         if (stateStack.top()->PopRequested() ||
             stateStack.top()->QuitRequested()) {
+            Game::GetInstance()->GetGridControl()->ClearEnemyVector();
             stateStack.pop();
             Resources::ClearAll();
             if (!stateStack.empty()) stateStack.top()->Resume();

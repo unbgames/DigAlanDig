@@ -130,8 +130,8 @@ void Enemy::Update(float dt) {
                      associated.gridPosition.y + 1),
                 false) != GridControl::WhatsThere::ROCK_STRONG) {
             movementDirection = Enemy::Direction::RIGHT;
-            steps = 0;
             movimentAllowed = false;
+            steps = 0;
         }
     } else {
         if (Game::GetInstance()->GetGridControl()->TestPath(
@@ -142,8 +142,8 @@ void Enemy::Update(float dt) {
                      associated.gridPosition.y + 1),
                 false) != GridControl::WhatsThere::ROCK_STRONG) {
             movementDirection = Enemy::Direction::LEFT;
-            steps = 0;
             movimentAllowed = false;
+            steps = 0;
         }
     }
 

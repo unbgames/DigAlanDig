@@ -27,6 +27,8 @@ class GridControl {
                       enemies.end());
     }
 
+    void ClearEnemyVector() { enemies.clear(); }
+
     enum WhatsThere {
         NONE = 0,
         FREE,
