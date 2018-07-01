@@ -93,7 +93,6 @@ void Enemy::Update(float dt) {
             TakeDamage(alan->GetDamage());
             damageTaken = true;
         }
-        movimentAllowed = false;
 
     } else if (Game::GetInstance()->GetGridControl()->TestPath(
                    Vec2(associated.gridPosition.x + 1,
@@ -104,7 +103,8 @@ void Enemy::Update(float dt) {
             TakeDamage(alan->GetDamage());
             damageTaken = true;
         }
-        movimentAllowed = false;
+    } else {
+        damageTaken = false;
     }
 
     Interpol *interpol = associated.GetComponent<Interpol *>();
@@ -148,7 +148,6 @@ void Enemy::Update(float dt) {
     }
 
     if (movimentAllowed) {
-        damageTaken = false;
         if (steps < range) {
             if (state != Enemy::State::WALKIN_S) {
                 state = Enemy::State::WALKIN_S;
@@ -202,7 +201,6 @@ void Enemy::Update(float dt) {
             } else {
                 movementDirection = Enemy::Direction::LEFT;
             }
-            movimentAllowed = false;
             steps = 0;
         }
     } else {
@@ -219,22 +217,22 @@ bool Enemy::VerifyDeath(Alan *alan) {
     if (hp <= 0) {
         return true;
     }
-    // 2. Scroll da camera já passou da posição dele
+    // 2. Alan cai em cima dele
+    if (Game::GetInstance()->GetGridControl()->TestPath(
+            Vec2(associated.gridPosition.x, associated.gridPosition.y),
+            false) == GridControl::WhatsThere::ALAN) {
+        return true;
+    }
+    // 3. Scroll da camera já passou da posição dele
     if (associated.GetGridPosition().y <
         (Camera::pos.y / Game::GetInstance()->GetCurrentState().GetGridSize()) -
             3) {
         return true;
     }
-    // 3. Espaço embaixo dele não é uma pedra
+    // 4. Espaço embaixo dele não é uma pedra
     if (Game::GetInstance()->GetGridControl()->TestPath(
             Vec2(associated.gridPosition.x, associated.gridPosition.y + 1),
             false) != GridControl::WhatsThere::ROCK_STRONG) {
-        return true;
-    }
-    // 4. Alan cai em cima dele
-    if (Game::GetInstance()->GetGridControl()->TestPath(
-            Vec2(associated.gridPosition.x, associated.gridPosition.y),
-            false) == GridControl::WhatsThere::ALAN) {
         return true;
     }
 

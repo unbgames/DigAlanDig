@@ -49,8 +49,9 @@ int GridControl::TestPath(Vec2 target, bool isAlan) {
 
 bool GridControl::VerifyEnemy(Vec2 target) {
     for (auto enemy : enemies) {
-        Vec2 enemyPos = enemy->GetComponent<Enemy *>()->GetGridPosition();
-        if (enemyPos == target) return true;
+        if (enemy->GetComponent<Enemy *>()->GetGridPosition() == target &&
+            enemy->GetComponent<Enemy *>()->GetState() == Enemy::State::IDLE_S)
+            return true;
     }
 
     return false;

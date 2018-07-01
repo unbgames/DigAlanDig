@@ -37,7 +37,10 @@ class Alan : public Component {
         else
             missCounter = 0;
 
-        if (missCounter > 1) Game::GetInstance()->combo /= 2;
+        if (missCounter > 1) {
+            Game::GetInstance()->combo /= 2;
+            movementDirection = Direction::NONE;
+        }
 
         moved = false;
     }

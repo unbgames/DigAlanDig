@@ -369,9 +369,11 @@ void Alan::Update(float dt) {
             }
         }
     } else {
-        animation->SetAction(AlanAnimation::Transition::STOP_CLIMB,
-                             animation->GetOldDirection());
-        action = Action::WALKIN;
+        if (action != Action::WALKIN) {
+            animation->SetAction(AlanAnimation::Transition::STOP_CLIMB,
+                                 animation->GetOldDirection());
+            action = Action::WALKIN;
+        }
         // Up bate na pedra acima dele se houver
         if (movementDirection == Direction::UP) {
             if (Game::GetInstance()->GetGridControl()->TestPath(
@@ -537,6 +539,9 @@ void Alan::Update(float dt) {
             }
 
             movementDirection = Direction::NONE;
+        }
+        if (animation->GetCurrentState() == AlanAnimation::State::IDLE) {
+            animationOnGoing = false;
         }
     }
 }
