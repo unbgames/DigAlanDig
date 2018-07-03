@@ -45,6 +45,14 @@ inline void InputManager::UpdateKey(int &update, bool &state,
     }
 }
 
+float InputManager::scaleFactor() const {
+    float dR = GetDeltaRhythm();
+    static constexpr float maxS = 0.3;
+    float scale = pow(10, -(std::abs(dR) - 1)) / 10;
+    if (scale > 0.8) scale += 0.5;
+    return scale * maxS + 1;
+}
+
 float fixRange(float value, float fix) {
     float ret = value + fix;
     if (ret > 1.0)
