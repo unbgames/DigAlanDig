@@ -6,7 +6,7 @@
 AlanAnimation::AlanAnimation(GameObject &associated) : Component(associated) {
     AState[State::IDLE] = {"assets/img/alan/idle.png", 2, 2, -1};
     AState[State::WALKIN] = {"assets/img/alan/walkin.png", 2, 4, 0.1};
-    AState[State::FALLIN] = {"assets/img/alan/fallin.png", 2, 2, 0.2};
+    AState[State::FALLIN] = {"assets/img/alan/fallin.png", 2, 2, 0.1};
     AState[State::DIG] = {"assets/img/alan/dig.png", 2, 8, 0.1};
     AState[State::CLIMBIN] = {"assets/img/alan/climb.png", 2, 4, 0.2};
     AState[State::DIG_CLIMB] = {"assets/img/alan/idle.png", 2, 2, 0.2};

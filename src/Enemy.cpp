@@ -119,6 +119,16 @@ void Enemy::ShouldTakeDamage(Alan *alan) {
     }
 }
 
+void Enemy::IsSurrounded() {
+    if (Game::GetInstance()->GetGridControl()->TestPath(
+            Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
+            false) != GridControl::WhatsThere::FREE &&
+        Game::GetInstance()->GetGridControl()->TestPath(
+            Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
+            false) != GridControl::WhatsThere::FREE)
+        movementAllowed = false;
+}
+
 void Enemy::Update(float dt) {
     if (!Game::GetInstance()->GetGridControl()->GetAlan().lock()) return;
 
@@ -160,28 +170,22 @@ void Enemy::Update(float dt) {
     if (movementDirection == Enemy::Direction::LEFT) {
         if (Game::GetInstance()->GetGridControl()->TestPath(
                 Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
-                false) != GridControl::WhatsThere::FREE ||
-            Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x - 1,
-                     associated.gridPosition.y + 1),
-                false) != GridControl::WhatsThere::ROCK) {
+                false) != GridControl::WhatsThere::FREE) {
             movementDirection = Enemy::Direction::RIGHT;
             steps = 0;
         }
     } else {
         if (Game::GetInstance()->GetGridControl()->TestPath(
                 Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
-                false) != GridControl::WhatsThere::FREE ||
-            Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x + 1,
-                     associated.gridPosition.y + 1),
-                false) != GridControl::WhatsThere::ROCK) {
+                false) != GridControl::WhatsThere::FREE) {
             movementDirection = Enemy::Direction::LEFT;
             steps = 0;
         }
     }
 
-    if (movimentAllowed) {
+    IsSurrounded();
+
+    if (movementAllowed) {
         if (steps < range) {
             if (state != Enemy::State::WALKIN_S) {
                 state = Enemy::State::WALKIN_S;
@@ -202,7 +206,7 @@ void Enemy::Update(float dt) {
                                     ->GetCurrentState()
                                     .GetGridSize() /
                                 2))) {
-                    movimentAllowed = false;
+                    movementAllowed = false;
                     steps++;
                     associated.gridPosition.x--;
                 }
@@ -223,7 +227,7 @@ void Enemy::Update(float dt) {
                                     ->GetCurrentState()
                                     .GetGridSize() /
                                 2))) {
-                    movimentAllowed = false;
+                    movementAllowed = false;
                     steps++;
                     associated.gridPosition.x++;
                 }

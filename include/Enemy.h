@@ -30,8 +30,8 @@ class Enemy : public Component {
     void RhythmUpdate() {
         numBeats++;
 
-        if (!movimentAllowed && numBeats > 1) {
-            movimentAllowed = true;
+        if (!movementAllowed && numBeats > 1) {
+            movementAllowed = true;
             numBeats = 0;
         }
     }
@@ -48,7 +48,9 @@ class Enemy : public Component {
     void TakeDamage(int damage) { hp -= damage; }
     void ShouldTakeDamage(Alan* alan);
 
-    bool movimentAllowed = false;
+    void IsSurrounded();
+
+    bool movementAllowed = false;
 
   private:
     Direction movementDirection = Direction::LEFT;
