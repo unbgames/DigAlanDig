@@ -70,7 +70,7 @@ class AlanAnimation : public Component {
 
   private:
     State oldState = NONE_S, currentState = NONE_S;
-    Direction oldDirection = W, currentDirection = W;
+    Direction oldDirection = LEFT, currentDirection = LEFT;
     Sprite::SpriteState AState[State::STATE_MAX];
 
     void PlaySound(Transition trans);
