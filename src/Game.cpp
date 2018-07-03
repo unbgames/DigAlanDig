@@ -93,6 +93,7 @@ void Game::Run() {
 
         if (stateStack.top()->PopRequested() ||
             stateStack.top()->QuitRequested()) {
+            Camera::Follow(nullptr);
             Game::GetInstance()->GetGridControl()->ClearEnemyVector();
             stateStack.pop();
             Resources::ClearAll();
