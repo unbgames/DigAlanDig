@@ -33,7 +33,7 @@ void Game::CalculateDeltaTime() {
     int ticksTotal = static_cast<int>(SDL_GetTicks());
     dt = ticksTotal - frameStart;
     // Maximum time, fix return from suspended
-    if (dt > 100) dt = 100;
+    if (dt > 1000) dt = 1000;
 
     tickCounter += dt;
     dt /= 1000;
@@ -73,10 +73,12 @@ void Game::Run() {
         storedState = nullptr;
     }
 
+    int fpb = 0;
     while (!stateStack.empty()) {
         CalculateDeltaTime();
         input.Update(deltaRhythm);
 
+        fpb++;
         if (shouldRhythmUpdate) {
             shouldRhythmUpdate = false;
             if (!offBeat) {
@@ -84,7 +86,8 @@ void Game::Run() {
                 Camera::RhythmUpdate();
             } else
                 stateStack.top()->RhythmReset();
-            std::cout << "." << offBeat << "." << std::endl;
+            std::cout << "." << offBeat << "." << fpb << std::endl;
+            fpb = 0;
         }
 
         stateStack.top()->Update(dt);
