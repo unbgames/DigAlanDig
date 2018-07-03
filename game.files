@@ -1,10 +1,16 @@
 Makefile
+extern/SdlScanCodeHelper.hpp
+extern/androidbuf.h
+extern/json.hpp
 include/Alan.h
 include/AlanAnimation.h
 include/BigAlan.h
 include/Camera.h
 include/Common.h
 include/Component.h
+include/Enemy.h
+include/EnemyDeath.h
+include/EnemySpawn.h
 include/Game.h
 include/GameObject.h
 include/GridControl.h
@@ -35,6 +41,9 @@ src/BigAlan.cpp
 src/Camera.cpp
 src/Common.cpp
 src/Component.cpp
+src/Enemy.cpp
+src/EnemyDeath.cpp
+src/EnemySpawn.cpp
 src/Game.cpp
 src/GameObject.cpp
 src/GridControl.cpp

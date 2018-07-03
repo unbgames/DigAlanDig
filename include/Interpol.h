@@ -8,7 +8,7 @@
 
 class Interpol : public Component {
   public:
-    Interpol(GameObject &associated);
+    explicit Interpol(GameObject &associated);
 
     void Update(float dt);
     void RhythmUpdate() {}

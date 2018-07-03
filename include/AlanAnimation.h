@@ -47,7 +47,7 @@ class AlanAnimation : public Component {
         STATE_MAX
     };
 
-    AlanAnimation(GameObject &associated);
+    explicit AlanAnimation(GameObject &associated);
 
     ~AlanAnimation();
 
@@ -70,8 +70,8 @@ class AlanAnimation : public Component {
     State GetOldState() { return oldState; }
 
   private:
-    State oldState, currentState;
-    Direction oldDirection, currentDirection;
+    State oldState = NONE_S, currentState = NONE_S;
+    Direction oldDirection = W, currentDirection = W;
     Sprite::SpriteState AState[State::STATE_MAX];
 
     void PlaySound(Transition trans);
