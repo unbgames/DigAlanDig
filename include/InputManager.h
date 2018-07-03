@@ -79,6 +79,14 @@ class InputManager {
         return input;
     }
 
+    float scaleFactor() const {
+        float dR = GetDeltaRhythm();
+        static constexpr float maxS = 0.3;
+        float scale = pow(10, -(std::abs(dR) - 1)) / 10;
+        if (scale > 0.8) scale += 0.5;
+        return scale * maxS + 0.5;
+    }
+
     float GetDeltaRhythm() const { return deltaRhythm; }
     bool title = true;
     bool shouldShow = true;

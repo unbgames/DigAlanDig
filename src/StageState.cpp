@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "EnemySpawn.h"
 #include "Game.h"
+#include "HudCounter.h"
 #include "HudMeter.h"
 #include "Interpol.h"
 #include "Light.h"
@@ -89,6 +90,21 @@ void StageState::LoadAssets() {
     MiniMapTile->AddComponent(miniTilemap);
     objectArray.emplace_back(MiniMapTile);
 
+    // BG
+    GameObject *backG = new GameObject(Common::Layer::BG);
+    backG->worldReference = false;
+    objectArray.emplace_back(backG);
+    backG->AddComponent(new bgCircularY(*backG, "assets/img/bg.png"));
+    backG->AddComponent(new Parallax(*backG, 0.5));
+    backG->box.pos = {304, 0};
+
+    GameObject *frameG = new GameObject(Common::Layer::BG);
+    frameG->worldReference = false;
+    objectArray.emplace_back(frameG);
+    frameG->AddComponent(new bgCircularY(*frameG, "assets/img/framebg.png"));
+    frameG->AddComponent(new Parallax(*frameG, 1));
+    frameG->box.pos = {0, 0};
+
     // Big-Alan
     GameObject *bigAlan = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(bigAlan);
@@ -98,27 +114,49 @@ void StageState::LoadAssets() {
     bigAlan->box.pos = {0, 460};
 
     // HUD
-    GameObject *backG = new GameObject(Common::Layer::BG);
-    backG->worldReference = false;
-    objectArray.emplace_back(backG);
-    backG->AddComponent(new bgCircularY(*backG, "assets/img/bg.png"));
-    backG->AddComponent(new Parallax(*backG, 0.5));
-    backG->box.pos = {304, 0};
-
     GameObject *meterHeart = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(meterHeart);
     meterHeart->worldReference = false;
-    meterHeart->box.pos = {20, 26};
+    meterHeart->box.pos = {10, 26};
     meterHeart->AddComponent(new HeartMeter(
         *meterHeart, "assets/hud/barravida.png", "assets/hud/coracao.png"));
 
     GameObject *meterLight = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(meterLight);
     meterLight->worldReference = false;
-    meterLight->box.pos = {176, 26};
+    meterLight->box.pos = {156, 26};
     meterLight->AddComponent(new LightMeter(
         *meterLight, "assets/hud/barraluz.png", "assets/hud/raio.png"));
 
+    GameObject *counterHeart = new GameObject(Common::Layer::HUD);
+    objectArray.emplace_back(counterHeart);
+    counterHeart->worldReference = false;
+    counterHeart->box.pos = {22, 140};
+    counterHeart->AddComponent(new HudCounter(
+        *counterHeart, "assets/hud/item1.png", "assets/hud/coracaoi.png"));
+
+    GameObject *counterMetal = new GameObject(Common::Layer::HUD);
+    objectArray.emplace_back(counterMetal);
+    counterMetal->worldReference = false;
+    counterMetal->box.pos = {148, 140};
+    counterMetal->AddComponent(new HudCounter(
+        *counterMetal, "assets/hud/item2.png", "assets/hud/metali.png"));
+
+    GameObject *counterCristal = new GameObject(Common::Layer::HUD);
+    objectArray.emplace_back(counterCristal);
+    counterCristal->worldReference = false;
+    counterCristal->box.pos = {22, 264};
+    counterCristal->AddComponent(new HudCounter(
+        *counterCristal, "assets/hud/item3.png", "assets/hud/cristali.png"));
+
+    GameObject *counterPetro = new GameObject(Common::Layer::HUD);
+    objectArray.emplace_back(counterPetro);
+    counterPetro->worldReference = false;
+    counterPetro->box.pos = {148, 264};
+    counterPetro->AddComponent(new HudCounter(
+        *counterPetro, "assets/hud/item4.png", "assets/hud/petroleoi.png"));
+
+    // Music
     music.Open("assets/audio/marmota.ogg");
     count = 0;
     halfBeatCounter = 0;

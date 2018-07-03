@@ -25,21 +25,13 @@ HudMeter::~HudMeter() {
     delete meter;
 }
 
-float scaleFactor() {
-    float dR = InputManager::GetInstance().GetDeltaRhythm();
-    static constexpr float maxS = 0.3;
-    float scale = pow(10, -(std::abs(dR) - 1)) / 10;
-    if (scale > 0.8) scale += 0.5;
-    return scale * maxS + 1;
-}
-
 void HudMeter::Render(Common::Layer layer) const {
     associated.box = boxbg;
     bg->Render(layer);
 
     associated.box += offset1;
 
-    float s = scaleFactor();
+    float s = InputManager::GetInstance().scaleFactor();
     for (int i = 0; i < 3; i++) {
         setMeter(i);
         meter->SetScaleX(s);

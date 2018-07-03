@@ -8,6 +8,7 @@ include/Component.h
 include/Game.h
 include/GameObject.h
 include/GridControl.h
+include/HudCounter.h
 include/HudMeter.h
 include/InputManager.h
 include/Interpol.h
@@ -37,6 +38,7 @@ src/Component.cpp
 src/Game.cpp
 src/GameObject.cpp
 src/GridControl.cpp
+src/HudCounter.cpp
 src/HudMeter.cpp
 src/InputManager.cpp
 src/Interpol.cpp
