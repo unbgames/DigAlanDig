@@ -121,6 +121,8 @@ void StageState::LoadAssets() {
     meterHeart->box.pos = {10, 26};
     meterHeart->AddComponent(new HeartMeter(
         *meterHeart, "assets/hud/barravida.png", "assets/hud/coracao.png"));
+    meterHeart->GetComponent<HeartMeter *>()->setIsHeart(true);
+    meterHeart->GetComponent<HeartMeter *>()->SetAlan(GetObjectPrt(alanGO));
 
     GameObject *meterLight = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(meterLight);
@@ -128,6 +130,8 @@ void StageState::LoadAssets() {
     meterLight->box.pos = {156, 26};
     meterLight->AddComponent(new LightMeter(
         *meterLight, "assets/hud/barraluz.png", "assets/hud/raio.png"));
+    meterLight->GetComponent<LightMeter *>()->setIsHeart(false);
+    meterLight->GetComponent<LightMeter *>()->SetAlan(GetObjectPrt(alanGO));
 
     GameObject *counterHeart = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(counterHeart);

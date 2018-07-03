@@ -1,4 +1,5 @@
 #include "HudMeter.h"
+#include "Alan.h"
 #include "InputManager.h"
 
 HudMeter::HudMeter(GameObject& associated, const std::string& bgFile,
@@ -41,7 +42,13 @@ void HudMeter::Render(Common::Layer layer) const {
 }
 
 void HudMeter::setMeter(int i) const {
-    int tmp = hp - i * 2;
+    int tmp;
+
+    if (isHeart)
+        tmp = alan.lock()->GetComponent<Alan*>()->GetHP() - i * 2;
+    else
+        tmp = (int)floor(Game::GetInstance()->combo / (5 * (i + 1))) - i + 1;
+
     if (tmp >= 2)
         meter->SetFrame(2);
     else if (tmp == 1)

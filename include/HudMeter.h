@@ -12,18 +12,21 @@ class HudMeter : public Component {
 
     void Update(float dt) {}
 
-    void RhythmUpdate() { hp = (hp >= 7) ? 0 : hp + 1; }
+    void RhythmUpdate() {}
     void Render(Common::Layer layer) const;
+
+    void SetAlan(std::weak_ptr<GameObject> alan) { this->alan = alan; }
+    void setIsHeart(bool isHeart) { this->isHeart = isHeart; }
 
     void setLevel(int level);
 
   private:
+    bool isHeart;
+    std::weak_ptr<GameObject> alan;
     Sprite *bg, *meter;
     Rect boxbg;
     Vec2 offset1;
     Vec2 offset2;
-
-    int hp = 0;
 
     void setMeter(int i) const;
 };
