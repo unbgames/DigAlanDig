@@ -38,8 +38,6 @@ class Enemy : public Component {
     void RhythmReset() {}
     void Render(Common::Layer layer) const {}
 
-    void Fallin(float dt);
-
     Vec2 GetGridPosition() { return associated.GetGridPosition(); }
 
     Direction GetMovementDirection() { return movementDirection; }
@@ -48,6 +46,7 @@ class Enemy : public Component {
     bool VerifyDeath(Alan* alan);
 
     void TakeDamage(int damage) { hp -= damage; }
+    void ShouldTakeDamage(Alan* alan);
 
     bool movimentAllowed = false;
 

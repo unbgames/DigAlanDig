@@ -92,6 +92,8 @@ class Sprite : public Component {
 
     int GetFrameCount() { return frameCount; }
 
+    void TimeElapsedReset() { timeElapsed = 0; }
+
   private:
     std::shared_ptr<SDL_Texture> texture = nullptr;
     int width = 0;

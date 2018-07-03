@@ -24,10 +24,8 @@ int GridControl::TestPath(Vec2 target, bool isAlan) {
             return WhatsThere::FREE;
 
         } else if (block) {
-            if (block > 3)
-                return WhatsThere::ROCK_STRONG;
-            else
-                return WhatsThere::ROCK_WEAK;
+            blockLife = block;
+            return WhatsThere::ROCK;
         }
         return WhatsThere::NONE;
     }
@@ -41,7 +39,7 @@ int GridControl::TestPath(Vec2 target, bool isAlan) {
         return WhatsThere::FREE;
 
     } else if (block) {
-        return WhatsThere::ROCK_STRONG;
+        return WhatsThere::ROCK;
     }
 
     return WhatsThere::NONE;
@@ -56,3 +54,5 @@ bool GridControl::VerifyEnemy(Vec2 target) {
 
     return false;
 }
+
+bool GridControl::WillDestroyBlock() { return (blockLife == 3); }

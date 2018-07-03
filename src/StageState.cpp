@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include "Alan.h"
+#include "AlanActionControl.h"
 #include "AlanAnimation.h"
 #include "BigAlan.h"
 #include "Camera.h"
@@ -63,14 +64,12 @@ void StageState::LoadAssets() {
         new Sprite(*alanGO, "assets/img/alan/idle.png", 2, 0.2));
     alanGO->AddComponent(new Sound(*alanGO));
 
-    Alan *lilAlan = new Alan(*alanGO, GetGridSize());
+    Alan *lilAlan = new Alan(*alanGO);
     alanGO->AddComponent(lilAlan);
 
-    Interpol *alanMov = new Interpol(*alanGO);
-    alanGO->AddComponent(alanMov);
-
-    AlanAnimation *alanAnimation = new AlanAnimation(*alanGO);
-    alanGO->AddComponent(alanAnimation);
+    alanGO->AddComponent(new Interpol(*alanGO));
+    alanGO->AddComponent(new AlanAnimation(*alanGO));
+    alanGO->AddComponent(new AlanActionControl(*alanGO, GetGridSize()));
 
     GameObject *alanL = new GameObject(Common::Layer::LIGHT);
     objectArray.emplace_back(alanL);

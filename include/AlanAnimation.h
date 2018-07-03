@@ -31,7 +31,7 @@ class AlanAnimation : public Component {
         DIE
     };
 
-    enum Direction { W = 0, E, N, S };
+    enum Direction { LEFT = 0, RIGHT, UP, DOWN };
 
     enum State {
         NONE_S = 0,
@@ -39,7 +39,6 @@ class AlanAnimation : public Component {
         WALKIN,
         FALLIN,
         DIG,
-        HIT,
         CLIMBIN,
         DIG_CLIMB,
         DANCIN,
@@ -57,7 +56,7 @@ class AlanAnimation : public Component {
     void Start() {
         currentState = State::IDLE;
         oldState = currentState;
-        currentDirection = N;
+        currentDirection = LEFT;
         oldDirection = currentDirection;
     }
 

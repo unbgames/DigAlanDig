@@ -74,15 +74,21 @@ void Sprite::Update(float dt) {
 }
 
 void Sprite::AlanUpdate(float dt) {
-    if (frameTime != -1) {
+    if (frameTime > 0) {
         if (timeElapsed - (frameTime * (currentFrame - initFrame)) >=
             frameTime) {
             if ((currentFrame - initFrame) < (frameCount - 1)) {
                 SetFrame(currentFrame + 1);
 
             } else {
-                SetFrame(initFrame + 1);
+                SetFrame(initFrame);
             }
+        }
+    } else if (frameTime != -1) {
+        if (timeElapsed - (std::abs(frameTime) * (currentFrame - initFrame)) >=
+            std::abs(frameTime)) {
+            if ((currentFrame - initFrame) < (frameCount - 1))
+                SetFrame(currentFrame + 1);
         }
     }
 }

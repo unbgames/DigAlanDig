@@ -26,24 +26,19 @@ class GridControl {
         enemies.erase(std::remove(enemies.begin(), enemies.end(), enemy),
                       enemies.end());
     }
-
     void ClearEnemyVector() { enemies.clear(); }
 
-    enum WhatsThere {
-        NONE = 0,
-        FREE,
-        FREE_FALL,
-        ENEMY,
-        ALAN,
-        ROCK_WEAK,
-        ROCK_STRONG
-    };
+    bool WillDestroyBlock();
+
+    enum WhatsThere { NONE = 0, FREE, FREE_FALL, ENEMY, ALAN, ROCK };
 
   private:
     std::weak_ptr<GameObject> alan;
     std::vector<GameObject *> enemies;
     TileMap *tileMap;
     static GridControl *_instance;
+
+    int blockLife;
 
     GridControl() {}
 };
