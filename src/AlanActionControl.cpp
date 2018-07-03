@@ -97,18 +97,18 @@ bool AlanActionControl::ClimbPathFree() {
     return false;
 }
 
-bool AlanActionControl::IsEnemy() {
+bool AlanActionControl::IsNone() {
     if (movementDirection == Direction::LEFT) {
         if (Game::GetInstance()->GetGridControl()->TestPath(
                 Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
-                true) == GridControl::WhatsThere::ENEMY)
+                true) == GridControl::WhatsThere::NONE)
             return true;
     }
 
     if (movementDirection == Direction::RIGHT) {
         if (Game::GetInstance()->GetGridControl()->TestPath(
                 Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
-                true) == GridControl::WhatsThere::ENEMY)
+                true) == GridControl::WhatsThere::NONE)
             return true;
     }
 
@@ -134,6 +134,13 @@ void AlanActionControl::Update(float dt) {
                                  AlanAnimation::Direction::LEFT);
             ;
             Camera::Unfollow();
+            /*
+             std::cout << "\n\n\n\n\n\n\nCAMERAPOS = " << Camera::pos.y
+                       << std::endl;
+             Camera::SetNewCameraPos(
+                 Vec2(Camera::pos.x, Camera::pos.y - Camera::screenSize.y / 2));
+             std::cout << "CAMERAPOS = " << Camera::pos.y << std::endl;
+            */
         }
 
         if (sprite->FrameTimePassed()) {

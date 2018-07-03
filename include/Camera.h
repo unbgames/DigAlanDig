@@ -10,6 +10,7 @@ class Camera {
     static void Update(float dt);
     static Vec2 Center();
     static void Shake(int intensity = 4, float duration = 0.1);
+    /* static void SetNewCameraPos(Vec2 newPos) { pos = newPos; } */
 
     static void RhythmUpdate();
 

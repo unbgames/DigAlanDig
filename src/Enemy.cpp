@@ -14,9 +14,6 @@ Enemy::Enemy(GameObject &associated, int enemyType)
                                  -1};
         EState[State::WALKIN_S] = {"assets/img/enemies/enemy1/walkin.png", 2, 4,
                                    0.2};
-        // EState[State::HIT_S] = {"assets/img/alan/hit.png", 2, 2, -1};
-        EState[State::HIT_S] = {"assets/img/enemies/enemy1/walkin.png", 2, 2,
-                                0.2};
         EState[State::DIE_S] = {"assets/img/enemies/enemy1/idle.png", 2, 2,
                                 0.2};
     } else if (enemyType == 2) {
@@ -24,9 +21,6 @@ Enemy::Enemy(GameObject &associated, int enemyType)
                                  -1};
         EState[State::WALKIN_S] = {"assets/img/enemies/enemy2/walkin.png", 2, 4,
                                    0.2};
-        // EState[State::HIT_S] = {"assets/img/alan/hit.png", 2, 2, -1};
-        EState[State::HIT_S] = {"assets/img/enemies/enemy2/walkin.png", 2, 2,
-                                0.2};
         EState[State::DIE_S] = {"assets/img/enemies/enemy2/idle.png", 2, 2,
                                 0.2};
     } else if (enemyType == 3) {
@@ -34,9 +28,6 @@ Enemy::Enemy(GameObject &associated, int enemyType)
                                  -1};
         EState[State::WALKIN_S] = {"assets/img/enemies/enemy3/walkin.png", 2, 4,
                                    0.2};
-        // EState[State::HIT_S] = {"assets/img/alan/walkin.png", 2, 2, -1};
-        EState[State::HIT_S] = {"assets/img/enemies/enemy3/walkin.png", 2, 2,
-                                0.2};
         EState[State::DIE_S] = {"assets/img/enemies/enemy3/idle.png", 2, 2,
                                 0.2};
     } else {
@@ -44,9 +35,6 @@ Enemy::Enemy(GameObject &associated, int enemyType)
                                  -1};
         EState[State::WALKIN_S] = {"assets/img/enemies/enemy1/walkin.png", 2, 4,
                                    0.2};
-        // EState[State::HIT_S] = {"assets/img/alan/walkin.png", 2, 2, -1};
-        EState[State::HIT_S] = {"assets/img/enemies/enemy1/walkin.png", 2, 2,
-                                0.2};
         EState[State::DIE_S] = {"assets/img/enemies/enemy1/idle.png", 2, 2,
                                 0.2};
     }
@@ -170,27 +158,36 @@ void Enemy::Update(float dt) {
     if (movementDirection == Enemy::Direction::LEFT) {
         if (Game::GetInstance()->GetGridControl()->TestPath(
                 Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
-                false) != GridControl::WhatsThere::FREE) {
+                false) != GridControl::WhatsThere::FREE ||
+            Game::GetInstance()->GetGridControl()->TestPath(
+                Vec2(associated.gridPosition.x - 1,
+                     associated.gridPosition.y + 1),
+                false) != GridControl::WhatsThere::ROCK) {
             movementDirection = Enemy::Direction::RIGHT;
             steps = 0;
         }
     } else {
         if (Game::GetInstance()->GetGridControl()->TestPath(
                 Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
-                false) != GridControl::WhatsThere::FREE) {
+                false) != GridControl::WhatsThere::FREE ||
+            Game::GetInstance()->GetGridControl()->TestPath(
+                Vec2(associated.gridPosition.x + 1,
+                     associated.gridPosition.y + 1),
+                false) != GridControl::WhatsThere::ROCK) {
             movementDirection = Enemy::Direction::LEFT;
             steps = 0;
         }
     }
 
     IsSurrounded();
+    Game::GetInstance()->GetGridControl()->CheckEnemyAlanCollision(false);
 
     if (movementAllowed) {
+        if (state != Enemy::State::WALKIN_S) {
+            state = Enemy::State::WALKIN_S;
+            sprite->Open(EState[state], movementDirection);
+        }
         if (steps < range) {
-            if (state != Enemy::State::WALKIN_S) {
-                state = Enemy::State::WALKIN_S;
-                sprite->Open(EState[state], movementDirection);
-            }
             if (movementDirection == Enemy::Direction::LEFT) {
                 if (interpol->AttPosition(Vec2(
                         ((associated.gridPosition.x - 1) *

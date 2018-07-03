@@ -20,7 +20,7 @@
 class Enemy : public Component {
   public:
     enum Direction { LEFT = 0, RIGHT };
-    enum State { NONE_S = 0, IDLE_S, WALKIN_S, HIT_S, DIE_S, STATE_MAX };
+    enum State { NONE_S = 0, IDLE_S, WALKIN_S, DIE_S, STATE_MAX };
 
     Enemy(GameObject& associated, int enemyType = 1);
 
@@ -39,6 +39,8 @@ class Enemy : public Component {
     void Render(Common::Layer layer) const {}
 
     Vec2 GetGridPosition() { return associated.GetGridPosition(); }
+
+    void MovementDenied() { movementAllowed = false; }
 
     Direction GetMovementDirection() { return movementDirection; }
     State GetState() { return state; }

@@ -1,5 +1,6 @@
 #include "GridControl.h"
 #include "Alan.h"
+#include "AlanActionControl.h"
 #include "Enemy.h"
 
 GridControl *GridControl::_instance = nullptr;
@@ -48,7 +49,8 @@ int GridControl::TestPath(Vec2 target, bool isAlan) {
 bool GridControl::VerifyEnemy(Vec2 target) {
     for (auto enemy : enemies) {
         if (enemy->GetComponent<Enemy *>()->GetGridPosition() == target &&
-            enemy->GetComponent<Enemy *>()->GetState() == Enemy::State::IDLE_S)
+            enemy->GetComponent<Enemy *>()->GetState() !=
+                Enemy::State::WALKIN_S)
             return true;
     }
 
@@ -56,3 +58,47 @@ bool GridControl::VerifyEnemy(Vec2 target) {
 }
 
 bool GridControl::WillDestroyBlock() { return (blockLife == 3); }
+
+void GridControl::CheckEnemyAlanCollision(bool isAlan) {
+    for (auto enemy : enemies) {
+        Vec2 alanPos = alan.lock()->GetComponent<Alan *>()->GetGridPosition();
+        Vec2 enemyPos = enemy->GetComponent<Enemy *>()->GetGridPosition();
+
+        if (alanPos.y == enemyPos.y &&
+            enemy->GetComponent<Enemy *>()->GetState() ==
+                Enemy::State::WALKIN_S) {
+            if ((alanPos.x - enemyPos.x) == 2 &&
+                (alan.lock()->GetComponent<Alan *>()->GetMovementDirection() ==
+                     AlanActionControl::Direction::LEFT &&
+                 enemy->GetComponent<Enemy *>()->GetMovementDirection() ==
+                     Enemy::Direction::RIGHT)) {
+                if (isAlan) {
+                    alan.lock()
+                        ->GetComponent<AlanActionControl *>()
+                        ->SetMovementDirection(
+                            AlanActionControl::Direction::NONE);
+                } else {
+                    enemy->GetComponent<Enemy *>()->MovementDenied();
+                }
+
+                return;
+            }
+            if ((enemyPos.x - alanPos.x) == 2 &&
+                (alan.lock()->GetComponent<Alan *>()->GetMovementDirection() ==
+                     AlanActionControl::Direction::RIGHT &&
+                 enemy->GetComponent<Enemy *>()->GetMovementDirection() ==
+                     Enemy::Direction::LEFT)) {
+                if (isAlan) {
+                    alan.lock()
+                        ->GetComponent<AlanActionControl *>()
+                        ->SetMovementDirection(
+                            AlanActionControl::Direction::NONE);
+                } else {
+                    enemy->GetComponent<Enemy *>()->MovementDenied();
+                }
+
+                return;
+            }
+        }
+    }
+}

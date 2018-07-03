@@ -48,6 +48,8 @@ void Alan::GetMovement() {
             std::cout << "\n\nMiss: " << input.GetDeltaRhythm() << "\n\n";
         }
     }
+
+    Game::GetInstance()->GetGridControl()->CheckEnemyAlanCollision(true);
 }
 
 void Alan::Update(float dt) {

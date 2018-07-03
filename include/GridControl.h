@@ -30,6 +30,8 @@ class GridControl {
 
     bool WillDestroyBlock();
 
+    void CheckEnemyAlanCollision(bool isAlan);
+
     enum WhatsThere { NONE = 0, FREE, FREE_FALL, ENEMY, ALAN, ROCK };
 
   private:
