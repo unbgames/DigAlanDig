@@ -25,6 +25,9 @@ class Sound : public Component {
     void Stop() const {
         if (chunk) Mix_HaltChannel(channel);
     }
+    void SetVolume(int v) {
+        if (chunk) chunk->volume = v;
+    }
 
     void Update(float dt) {}
     void RhythmUpdate() {}

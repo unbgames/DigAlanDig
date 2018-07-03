@@ -34,6 +34,8 @@ void AlanAnimation::PlaySound(Transition trans) {
         default:
             return;
     }
+
+    s->SetVolume(100);
     s->Play();
 }
 
