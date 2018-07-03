@@ -1,5 +1,6 @@
 #include "AlanAnimation.h"
 #include "Alan.h"
+#include "Sound.h"
 
 AlanAnimation::AlanAnimation(GameObject &associated) : Component(associated) {
     AState[State::IDLE] = {"assets/img/alan/idle.png", 2, 2, -1};
@@ -17,6 +18,24 @@ AlanAnimation::AlanAnimation(GameObject &associated) : Component(associated) {
 }
 
 AlanAnimation::~AlanAnimation() {}
+
+void AlanAnimation::PlaySound(Transition trans) {
+    Sound *s = associated.GetComponent<Sound *>();
+    switch (trans) {
+        case Transition::WALK:
+            s->Open("assets/audio/andando.wav");
+            break;
+        case Transition::DIG_T:
+            s->Open("assets/audio/cavando.wav");
+            break;
+        case Transition::HIT_T:
+            s->Open("assets/audio/dor.wav");
+            break;
+        default:
+            return;
+    }
+    s->Play();
+}
 
 void AlanAnimation::Update(float dt) {
     if (currentState == State::DANCIN || currentState == State::DEAD) return;
@@ -221,6 +240,7 @@ void AlanAnimation::SetAction(Transition trans, Direction dir) {
             return;
             break;
     }
+    PlaySound(trans);
 
     oldDirection = currentDirection;
     currentDirection = dir;

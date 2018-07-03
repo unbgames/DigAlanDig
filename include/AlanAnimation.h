@@ -73,6 +73,8 @@ class AlanAnimation : public Component {
     State oldState, currentState;
     Direction oldDirection, currentDirection;
     Sprite::SpriteState AState[State::STATE_MAX];
+
+    void PlaySound(Transition trans);
 };
 
 #endif  // ALANANIMATION_H

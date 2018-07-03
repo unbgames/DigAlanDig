@@ -15,6 +15,7 @@
 #include "Light.h"
 #include "MiniTileMap.h"
 #include "Parallax.h"
+#include "Sound.h"
 #include "Sprite.h"
 #include "Vec2.h"
 
@@ -60,6 +61,7 @@ void StageState::LoadAssets() {
 
     alanGO->AddComponent(
         new Sprite(*alanGO, "assets/img/alan/idle.png", 2, 0.2));
+    alanGO->AddComponent(new Sound(*alanGO));
 
     Alan *lilAlan = new Alan(*alanGO, GetGridSize());
     alanGO->AddComponent(lilAlan);
