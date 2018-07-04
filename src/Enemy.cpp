@@ -118,7 +118,9 @@ void Enemy::IsSurrounded() {
 }
 
 void Enemy::Update(float dt) {
-    if (!Game::GetInstance()->GetGridControl()->GetAlan().lock()) return;
+    if (!Game::GetInstance()->GetGridControl()->GetAlan().lock() ||
+        !associated.GetComponent<Interpol *>()->IsMovementDone())
+        return;
 
     Sprite *sprite = associated.GetComponent<Sprite *>();
     Alan *alan = Game::GetInstance()
@@ -140,8 +142,6 @@ void Enemy::Update(float dt) {
         }
         return;
     }
-
-    Interpol *interpol = associated.GetComponent<Interpol *>();
 
     if (alan->GetAction() != AlanActionControl::Action::CLIMBING &&
         alan->GetAction() != AlanActionControl::Action::FALLIN) {
@@ -191,45 +191,14 @@ void Enemy::Update(float dt) {
         }
         if (steps < range) {
             if (movementDirection == Enemy::Direction::LEFT) {
-                if (interpol->AttPosition(Vec2(
-                        ((associated.gridPosition.x - 1) *
-                         Game::GetInstance()->GetCurrentState().GetGridSize()) -
-                            Game::GetInstance()
-                                    ->GetCurrentState()
-                                    .GetGridSize() /
-                                2,
-                        (associated.gridPosition.y) * Game::GetInstance()
-                                                          ->GetCurrentState()
-                                                          .GetGridSize() -
-                            Game::GetInstance()
-                                    ->GetCurrentState()
-                                    .GetGridSize() /
-                                2))) {
-                    movementAllowed = false;
-                    steps++;
-                    associated.gridPosition.x--;
-                }
+                movementAllowed = false;
+                steps++;
+                associated.gridPosition.x--;
+
             } else {
-                if (interpol->AttPosition(Vec2(
-                        (associated.gridPosition.x + 1) *
-                                Game::GetInstance()
-                                    ->GetCurrentState()
-                                    .GetGridSize() -
-                            Game::GetInstance()
-                                    ->GetCurrentState()
-                                    .GetGridSize() /
-                                2,
-                        (associated.gridPosition.y) * Game::GetInstance()
-                                                          ->GetCurrentState()
-                                                          .GetGridSize() -
-                            Game::GetInstance()
-                                    ->GetCurrentState()
-                                    .GetGridSize() /
-                                2))) {
-                    movementAllowed = false;
-                    steps++;
-                    associated.gridPosition.x++;
-                }
+                movementAllowed = false;
+                steps++;
+                associated.gridPosition.x++;
             }
 
         } else {

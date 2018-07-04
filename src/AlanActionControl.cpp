@@ -11,27 +11,18 @@ bool AlanActionControl::ShouldFall() {
                  true) == GridControl::WhatsThere::FREE ||
              Game::GetInstance()->GetGridControl()->TestPath(
                  Vec2(associated.gridPosition.x, associated.gridPosition.y + 1),
-                 true) == GridControl::WhatsThere::ENEMY) &&
+                 true) == GridControl::WhatsThere::NONE) &&
             action != Action::CLIMBING);
 }
 
 void AlanActionControl::Fallin(float dt) {
-    Interpol *interpol = associated.GetComponent<Interpol *>();
+    std::cout << "\n\n\n\n\n\n\n\nAAAAAAAAAAAAAAAAAAAAH" << std::endl;
 
-    if (interpol->AttPosition(
-            Vec2(associated.gridPosition.x * gridSize - gridSize / 2,
-                 (associated.gridPosition.y + 1) * gridSize - gridSize / 2)) &&
-        gridsLeft == 0) {
-        action = Action::STANDIN;
-    }
+    if (gridsLeft > 0) gridsLeft--;
+    associated.gridPosition.y++;
 
-    if (associated.box.y >=
-        (associated.gridPosition.y + 1) * gridSize - gridSize / 2) {
-        associated.gridPosition.y++;
-        movementDirection = Direction::NONE;
-        gridsLeft--;
-        associated.GetComponent<Sprite *>()->TimeElapsedReset();
-    }
+    std::cout << "GRIDSLEFT" << gridsLeft << std::endl;
+    associated.GetComponent<Sprite *>()->TimeElapsedReset();
 }
 
 bool AlanActionControl::IsFree() {
@@ -97,18 +88,18 @@ bool AlanActionControl::ClimbPathFree() {
     return false;
 }
 
-bool AlanActionControl::IsNone() {
+bool AlanActionControl::IsEnemy() {
     if (movementDirection == Direction::LEFT) {
         if (Game::GetInstance()->GetGridControl()->TestPath(
                 Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
-                true) == GridControl::WhatsThere::NONE)
+                true) == GridControl::WhatsThere::ENEMY)
             return true;
     }
 
     if (movementDirection == Direction::RIGHT) {
         if (Game::GetInstance()->GetGridControl()->TestPath(
                 Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
-                true) == GridControl::WhatsThere::NONE)
+                true) == GridControl::WhatsThere::ENEMY)
             return true;
     }
 
@@ -123,6 +114,8 @@ bool AlanActionControl::IsClimbDirectionLeft(AlanAnimation *animation) {
 }
 
 void AlanActionControl::Update(float dt) {
+    if (!associated.GetComponent<Interpol *>()->IsMovementDone()) return;
+
     Alan *alan = associated.GetComponent<Alan *>();
     AlanAnimation *animation = associated.GetComponent<AlanAnimation *>();
     TileMap *tileMap = Game::GetInstance()->GetCurrentState().tileMap;
@@ -132,16 +125,6 @@ void AlanActionControl::Update(float dt) {
         if (animation->GetCurrentState() != AlanAnimation::State::DEAD) {
             animation->SetAction(AlanAnimation::Transition::DIE,
                                  AlanAnimation::Direction::LEFT);
-
-            /*
-                        std::cout << "\n\n\n\n\n\n\nCAMERAPOS = " <<
-               Camera::pos.y
-                                  << std::endl;
-                        Camera::SetNewCameraPos(
-                            Vec2(Camera::pos.x, Camera::pos.y -
-               Camera::screenSize.y)); std::cout << "CAMERAPOS = " <<
-               Camera::pos.y << std::endl;
-             */
         }
 
         if (sprite->FrameTimePassed()) {
@@ -186,8 +169,6 @@ void AlanActionControl::Update(float dt) {
         return;
     }
 
-    Interpol *interpol = associated.GetComponent<Interpol *>();
-
     // 'A' apertado indica que o movimento é de escalada
     if (CanClimb()) {
         if (InClimbPosition(animation)) {
@@ -198,34 +179,19 @@ void AlanActionControl::Update(float dt) {
                                 Vec2(associated.gridPosition.x - 1,
                                      associated.gridPosition.y - 1),
                                 true) == GridControl::WhatsThere::FREE) {
-                            if (interpol->AttPosition(Vec2(
-                                    (associated.gridPosition.x - 1) * gridSize -
-                                        gridSize / 2,
-                                    (associated.gridPosition.y - 1) * gridSize -
-                                        gridSize / 2))) {
-                                movementDirection = Direction::NONE;
-                                associated.gridPosition.y--;
-                                associated.gridPosition.x--;
-                                animation->SetAction(
-                                    AlanAnimation::Transition::NONE_T,
-                                    AlanAnimation::Direction::LEFT);
-                            }
+                            movementDirection = Direction::NONE;
+                            associated.gridPosition.y--;
+                            associated.gridPosition.x--;
+                            animation->SetAction(
+                                AlanAnimation::Transition::NONE_T,
+                                AlanAnimation::Direction::LEFT);
+
                         } else {
-                            if (!animationOnGoing) {
-                                animation->SetAction(
-                                    AlanAnimation::Transition::WALK,
-                                    AlanAnimation::Direction::UP);
-                                animationOnGoing = true;
-                            }
-                            if (interpol->AttPosition(Vec2(
-                                    (associated.gridPosition.x) * gridSize -
-                                        gridSize / 2,
-                                    (associated.gridPosition.y - 1) * gridSize -
-                                        gridSize / 2))) {
-                                movementDirection = Direction::NONE;
-                                associated.gridPosition.y--;
-                                animationOnGoing = false;
-                            }
+                            animation->SetAction(
+                                AlanAnimation::Transition::WALK,
+                                AlanAnimation::Direction::UP);
+                            movementDirection = Direction::NONE;
+                            associated.gridPosition.y--;
                         }
                         // Verifica se a marmota está em posição de escalada
                     } else {
@@ -233,34 +199,20 @@ void AlanActionControl::Update(float dt) {
                                 Vec2(associated.gridPosition.x + 1,
                                      associated.gridPosition.y - 1),
                                 true) == GridControl::WhatsThere::FREE) {
-                            if (interpol->AttPosition(Vec2(
-                                    (associated.gridPosition.x + 1) * gridSize -
-                                        gridSize / 2,
-                                    (associated.gridPosition.y - 1) * gridSize -
-                                        gridSize / 2))) {
-                                movementDirection = Direction::NONE;
-                                associated.gridPosition.y--;
-                                associated.gridPosition.x++;
-                                animation->SetAction(
-                                    AlanAnimation::Transition::NONE_T,
-                                    AlanAnimation::Direction::RIGHT);
-                            }
+                            movementDirection = Direction::NONE;
+                            associated.gridPosition.y--;
+                            associated.gridPosition.x++;
+                            animation->SetAction(
+                                AlanAnimation::Transition::NONE_T,
+                                AlanAnimation::Direction::RIGHT);
+
                         } else {
-                            if (!animationOnGoing) {
-                                animation->SetAction(
-                                    AlanAnimation::Transition::WALK,
-                                    AlanAnimation::Direction::UP);
-                                animationOnGoing = true;
-                            }
-                            if (interpol->AttPosition(Vec2(
-                                    (associated.gridPosition.x) * gridSize -
-                                        gridSize / 2,
-                                    (associated.gridPosition.y - 1) * gridSize -
-                                        gridSize / 2))) {
-                                movementDirection = Direction::NONE;
-                                associated.gridPosition.y--;
-                                animationOnGoing = false;
-                            }
+                            animation->SetAction(
+                                AlanAnimation::Transition::WALK,
+                                AlanAnimation::Direction::UP);
+
+                            movementDirection = Direction::NONE;
+                            associated.gridPosition.y--;
                         }
                     }
                 } else {
@@ -271,8 +223,9 @@ void AlanActionControl::Update(float dt) {
                     }
                     if (sprite->FrameTimePassed()) {
                         tileMap->GetDamageGround(
-                            1, Vec2(associated.gridPosition.x,
-                                    associated.gridPosition.y - 1));
+                            alan->GetDamage(),
+                            Vec2(associated.gridPosition.x,
+                                 associated.gridPosition.y - 1));
                         movementDirection = Direction::NONE;
                         animationOnGoing = false;
                     }
@@ -291,21 +244,12 @@ void AlanActionControl::Update(float dt) {
                                 true) == GridControl::WhatsThere::FREE) {
                             movementDirection = Direction::NONE;
                         } else {
-                            if (!animationOnGoing) {
-                                animation->SetAction(
-                                    AlanAnimation::Transition::WALK,
-                                    AlanAnimation::Direction::DOWN);
-                                animationOnGoing = true;
-                            }
-                            if (interpol->AttPosition(Vec2(
-                                    (associated.gridPosition.x) * gridSize -
-                                        gridSize / 2,
-                                    (associated.gridPosition.y + 1) * gridSize -
-                                        gridSize / 2))) {
-                                movementDirection = Direction::NONE;
-                                associated.gridPosition.y++;
-                                animationOnGoing = false;
-                            }
+                            animation->SetAction(
+                                AlanAnimation::Transition::WALK,
+                                AlanAnimation::Direction::DOWN);
+
+                            movementDirection = Direction::NONE;
+                            associated.gridPosition.y++;
                         }
                         // Verifica se a marmota está em posição de
                         // escalada
@@ -316,22 +260,13 @@ void AlanActionControl::Update(float dt) {
                                 true) == GridControl::WhatsThere::FREE) {
                             movementDirection = Direction::NONE;
                         } else {
-                            if (!animationOnGoing) {
-                                animation->SetAction(
-                                    AlanAnimation::Transition::WALK,
-                                    AlanAnimation::Direction::DOWN);
+                            animation->SetAction(
+                                AlanAnimation::Transition::WALK,
+                                AlanAnimation::Direction::DOWN);
 
-                                animationOnGoing = true;
-                            }
-                            if (interpol->AttPosition(Vec2(
-                                    (associated.gridPosition.x) * gridSize -
-                                        gridSize / 2,
-                                    (associated.gridPosition.y + 1) * gridSize -
-                                        gridSize / 2))) {
-                                movementDirection = Direction::NONE;
-                                associated.gridPosition.y++;
-                                animationOnGoing = false;
-                            }
+                            movementDirection = Direction::NONE;
+                            associated.gridPosition.y++;
+                            animationOnGoing = false;
                         }
                     }
                 } else {
@@ -342,17 +277,15 @@ void AlanActionControl::Update(float dt) {
                     }
                     if (sprite->FrameTimePassed()) {
                         tileMap->GetDamageGround(
-                            1, Vec2(associated.gridPosition.x,
-                                    associated.gridPosition.y + 1));
+                            alan->GetDamage(),
+                            Vec2(associated.gridPosition.x,
+                                 associated.gridPosition.y + 1));
                         movementDirection = Direction::NONE;
                         animationOnGoing = false;
                     }
                 }
             }
         } else if (movementDirection == Direction::LEFT) {
-            if (action != Action::WALKIN) {
-                action = Action::WALKIN;
-            }
             // Testa se o valor do grid a esquerda é uma pedra
             if (Game::GetInstance()->GetGridControl()->TestPath(
                     Vec2(associated.gridPosition.x - 1,
@@ -396,6 +329,9 @@ void AlanActionControl::Update(float dt) {
             }
         }
     } else {
+        if (action != Action::WALKIN) {
+            action = Action::WALKIN;
+        }
         // Up bate na pedra acima dele se houver
         if (movementDirection == Direction::UP) {
             if (Game::GetInstance()->GetGridControl()->TestPath(
@@ -409,8 +345,8 @@ void AlanActionControl::Update(float dt) {
                 }
                 if (sprite->FrameTimePassed()) {
                     tileMap->GetDamageGround(
-                        1, Vec2(associated.gridPosition.x,
-                                associated.gridPosition.y - 1));
+                        alan->GetDamage(), Vec2(associated.gridPosition.x,
+                                                associated.gridPosition.y - 1));
                     movementDirection = Direction::NONE;
                     animationOnGoing = false;
                 }
@@ -422,22 +358,14 @@ void AlanActionControl::Update(float dt) {
             // Down bate na pedra embaixo dele
         } else if (movementDirection == Direction::DOWN) {
             if (Game::GetInstance()->GetGridControl()->WillDestroyBlock()) {
-                if (!animationOnGoing) {
-                    animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                         AlanAnimation::Direction::DOWN);
-                    animationOnGoing = true;
-                }
-                if (interpol->AttPosition(Vec2(
-                        associated.gridPosition.x * gridSize - gridSize / 2,
-                        (associated.gridPosition.y + 1) * gridSize -
-                            gridSize / 2))) {
-                    Vec2 damage = {associated.gridPosition.x,
-                                   associated.gridPosition.y + 1};
-                    tileMap->GetDamageGround(1, damage);
-                    movementDirection = Direction::NONE;
-                    associated.gridPosition.y++;
-                    animationOnGoing = false;
-                }
+                animation->SetAction(AlanAnimation::Transition::DIG_T,
+                                     AlanAnimation::Direction::DOWN);
+
+                tileMap->GetDamageGround(alan->GetDamage(),
+                                         Vec2(associated.gridPosition.x,
+                                              associated.gridPosition.y + 1));
+                movementDirection = Direction::NONE;
+                associated.gridPosition.y++;
             } else {
                 if (!animationOnGoing) {
                     animation->SetAction(AlanAnimation::Transition::DIG_T,
@@ -446,13 +374,12 @@ void AlanActionControl::Update(float dt) {
                 }
                 if (sprite->FrameTimePassed()) {
                     tileMap->GetDamageGround(
-                        1, Vec2(associated.gridPosition.x,
-                                associated.gridPosition.y + 1));
+                        alan->GetDamage(), Vec2(associated.gridPosition.x,
+                                                associated.gridPosition.y + 1));
                     movementDirection = Direction::NONE;
                     animationOnGoing = false;
                 }
             }
-
         } else if (movementDirection == Direction::LEFT) {
             // Testa se o valor do grid a esquerda é uma
             // pedra
@@ -465,35 +392,21 @@ void AlanActionControl::Update(float dt) {
                 if (sprite->FrameTimePassed()) {
                     if (IsBlock()) {
                         tileMap->GetDamageGround(
-                            1, Vec2(associated.gridPosition.x - 1,
-                                    associated.gridPosition.y));
+                            alan->GetDamage(),
+                            Vec2(associated.gridPosition.x - 1,
+                                 associated.gridPosition.y));
                     }
                     movementDirection = Direction::NONE;
                     animationOnGoing = false;
                 }
 
-                return;
             } else {
-                if (!animationOnGoing) {
-                    animation->SetAction(AlanAnimation::Transition::WALK,
-                                         AlanAnimation::Direction::LEFT);
-                    animationOnGoing = true;
-                }
+                animation->SetAction(AlanAnimation::Transition::WALK,
+                                     AlanAnimation::Direction::LEFT);
 
-                if (interpol->AttPosition(
-                        Vec2((associated.gridPosition.x - 1) * gridSize -
-                                 gridSize / 2,
-                             (associated.gridPosition.y) * gridSize -
-                                 gridSize / 2))) {
-                    movementDirection = Direction::NONE;
-                    associated.gridPosition.x--;
-                    animationOnGoing = false;
-                }
-                return;
+                movementDirection = Direction::NONE;
+                associated.gridPosition.x--;
             }
-
-            movementDirection = Direction::NONE;
-
         } else {
             // Mesmo processo anterior para a direita
             if (!IsFree()) {
@@ -505,34 +418,22 @@ void AlanActionControl::Update(float dt) {
                 if (sprite->FrameTimePassed()) {
                     if (IsBlock()) {
                         tileMap->GetDamageGround(
-                            1, Vec2(associated.gridPosition.x + 1,
-                                    associated.gridPosition.y));
+                            alan->GetDamage(),
+                            Vec2(associated.gridPosition.x + 1,
+                                 associated.gridPosition.y));
                     }
                     movementDirection = Direction::NONE;
                     animationOnGoing = false;
                 }
 
-                return;
             } else {
-                if (!animationOnGoing) {
-                    animation->SetAction(AlanAnimation::Transition::WALK,
-                                         AlanAnimation::Direction::RIGHT);
-                    animationOnGoing = true;
-                }
+                animation->SetAction(AlanAnimation::Transition::WALK,
+                                     AlanAnimation::Direction::RIGHT);
 
-                if (interpol->AttPosition(
-                        Vec2((associated.gridPosition.x + 1) * gridSize -
-                                 gridSize / 2,
-                             (associated.gridPosition.y) * gridSize -
-                                 gridSize / 2))) {
-                    movementDirection = Direction::NONE;
-                    associated.gridPosition.x++;
-                    animationOnGoing = false;
-                }
-                return;
+                movementDirection = Direction::NONE;
+                associated.gridPosition.x++;
+                animationOnGoing = false;
             }
-
-            movementDirection = Direction::NONE;
         }
         if (animation->GetCurrentState() == AlanAnimation::State::IDLE) {
             animationOnGoing = false;

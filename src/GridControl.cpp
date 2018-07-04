@@ -67,7 +67,7 @@ void GridControl::CheckEnemyAlanCollision(bool isAlan) {
         if (alanPos.y == enemyPos.y &&
             enemy->GetComponent<Enemy *>()->GetState() ==
                 Enemy::State::WALKIN_S) {
-            if ((alanPos.x - enemyPos.x) == 2 &&
+            if ((alanPos.x - enemyPos.x) == 1 &&
                 (alan.lock()->GetComponent<Alan *>()->GetMovementDirection() ==
                      AlanActionControl::Direction::LEFT &&
                  enemy->GetComponent<Enemy *>()->GetMovementDirection() ==
@@ -83,7 +83,7 @@ void GridControl::CheckEnemyAlanCollision(bool isAlan) {
 
                 return;
             }
-            if ((enemyPos.x - alanPos.x) == 2 &&
+            if ((enemyPos.x - alanPos.x) == 1 &&
                 (alan.lock()->GetComponent<Alan *>()->GetMovementDirection() ==
                      AlanActionControl::Direction::RIGHT &&
                  enemy->GetComponent<Enemy *>()->GetMovementDirection() ==

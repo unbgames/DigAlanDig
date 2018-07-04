@@ -16,9 +16,17 @@ class Interpol : public Component {
     void Render(Common::Layer layer) const {}
     void Start() {}
 
-    bool AttPosition(Vec2 newPos);
+    void IsHit(Vec2 target) {
+        alanPos = target;
+        isHit = true;
+    }
+
+    bool IsMovementDone() { return movementDone; }
 
   private:
+    Vec2 alanPos;
+    bool movementDone = true;
+    bool isHit = false;
     Vec2 speed;
 };
 
