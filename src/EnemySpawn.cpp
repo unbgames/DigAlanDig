@@ -1,7 +1,6 @@
 #include "EnemySpawn.h"
 #include "Camera.h"
 #include "Enemy.h"
-#include "EnemyDeath.h"
 #include "Game.h"
 
 void EnemySpawn::Update(float dt) {
@@ -22,7 +21,6 @@ void EnemySpawn::Update(float dt) {
                     Game::GetInstance()->GetCurrentState().GetGridSize() / 2;
                 go->gridPosition.x = x;
                 go->gridPosition.y = currentY;
-                go->AddComponent(new EnemyDeath(*go));
                 go->AddComponent(new Enemy(*go, enemy));
                 Game::GetInstance()->GetGridControl()->AddEnemy(go);
                 Game::GetInstance()->GetCurrentState().AddObject(go);

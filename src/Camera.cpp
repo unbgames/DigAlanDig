@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include <iostream>
 #include "Alan.h"
+#include "AlanAnimation.h"
 #include "Game.h"
 #include "InputManager.h"
 #include "TileMap.h"
@@ -22,7 +23,8 @@ Vec2 Camera::Center() { return pos + screenSize / 2; }
 void Camera::RhythmUpdate() {
     if (focus) {
         if (offset.y > (focus->box.y +
-                        Game::GetInstance()->GetCurrentState().GetGridSize())) {
+                        Game::GetInstance()->GetCurrentState().GetGridSize()) &&
+            focus->GetComponent<Alan *>()->GetHP() > 0) {
             focus->GetComponent<Alan *>()->TakeDamage();
         }
     }
@@ -56,6 +58,16 @@ void Camera::Update(float dt) {
         case Camera::CONSTSCROLL: {
             Vec2 focusGridPos = focus->GetGridPosition();
             TileMap *tileMap = Game::GetInstance()->GetCurrentState().tileMap;
+
+            if (focus->GetComponent<AlanAnimation *>()->GetCurrentState() ==
+                AlanAnimation::State::DEAD) {
+                if (offset.y >
+                        ((focusGridPos.y + 1) * 100 - screenSize.y / 2) &&
+                    offset.y > 0) {
+                    offset.y -= dt * 400;
+                }
+                break;
+            }
 
             if (focusGridPos.y != 0 &&
                 offset.y <=

@@ -132,15 +132,16 @@ void AlanActionControl::Update(float dt) {
         if (animation->GetCurrentState() != AlanAnimation::State::DEAD) {
             animation->SetAction(AlanAnimation::Transition::DIE,
                                  AlanAnimation::Direction::LEFT);
-            ;
-            Camera::Unfollow();
+
             /*
-             std::cout << "\n\n\n\n\n\n\nCAMERAPOS = " << Camera::pos.y
-                       << std::endl;
-             Camera::SetNewCameraPos(
-                 Vec2(Camera::pos.x, Camera::pos.y - Camera::screenSize.y / 2));
-             std::cout << "CAMERAPOS = " << Camera::pos.y << std::endl;
-            */
+                        std::cout << "\n\n\n\n\n\n\nCAMERAPOS = " <<
+               Camera::pos.y
+                                  << std::endl;
+                        Camera::SetNewCameraPos(
+                            Vec2(Camera::pos.x, Camera::pos.y -
+               Camera::screenSize.y)); std::cout << "CAMERAPOS = " <<
+               Camera::pos.y << std::endl;
+             */
         }
 
         if (sprite->FrameTimePassed()) {
@@ -349,6 +350,9 @@ void AlanActionControl::Update(float dt) {
                 }
             }
         } else if (movementDirection == Direction::LEFT) {
+            if (action != Action::WALKIN) {
+                action = Action::WALKIN;
+            }
             // Testa se o valor do grid a esquerda é uma pedra
             if (Game::GetInstance()->GetGridControl()->TestPath(
                     Vec2(associated.gridPosition.x - 1,
