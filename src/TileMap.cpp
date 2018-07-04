@@ -104,7 +104,7 @@ void TileMap::Render(Common::Layer layer) const {
     else
         tileSet->setTileSetLight();
 
-    for (int i = 0; i < depth - 1; ++i)
+    for (int i = 1; i < depth - 1; ++i)
         RenderLayer(i, Camera::pos.x, Camera::pos.y);
 }
 
