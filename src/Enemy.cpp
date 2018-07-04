@@ -163,6 +163,7 @@ void Enemy::Update(float dt) {
                 Vec2(associated.gridPosition.x - 1,
                      associated.gridPosition.y + 1),
                 false) != GridControl::WhatsThere::ROCK) {
+            movementAllowed = false;
             movementDirection = Enemy::Direction::RIGHT;
             steps = 0;
         }
@@ -174,6 +175,7 @@ void Enemy::Update(float dt) {
                 Vec2(associated.gridPosition.x + 1,
                      associated.gridPosition.y + 1),
                 false) != GridControl::WhatsThere::ROCK) {
+            movementAllowed = false;
             movementDirection = Enemy::Direction::LEFT;
             steps = 0;
         }
