@@ -95,8 +95,36 @@ void StageState::LoadAssets() {
     GameObject *backG = new GameObject(Common::Layer::BG);
     backG->worldReference = false;
     objectArray.emplace_back(backG);
-    backG->AddComponent(new bgCircularY(*backG, "assets/img/bg.png"));
+    backG->AddComponent(new bgCircularY(*backG, "assets/img/bg1.png"));
+    backG->AddComponent(new Parallax(*backG, 0.1));
+    backG->box.pos = {304, 0};
+
+    backG = new GameObject(Common::Layer::BG);
+    backG->worldReference = false;
+    objectArray.emplace_back(backG);
+    backG->AddComponent(new bgCircularY(*backG, "assets/img/bg2.png"));
+    backG->AddComponent(new Parallax(*backG, 0.3));
+    backG->box.pos = {304, 0};
+
+    backG = new GameObject(Common::Layer::BG);
+    backG->worldReference = false;
+    objectArray.emplace_back(backG);
+    backG->AddComponent(new bgCircularY(*backG, "assets/img/bg3.png"));
     backG->AddComponent(new Parallax(*backG, 0.5));
+    backG->box.pos = {304, 0};
+
+    backG = new GameObject(Common::Layer::BG);
+    backG->worldReference = false;
+    objectArray.emplace_back(backG);
+    backG->AddComponent(new bgCircularY(*backG, "assets/img/bg4.png"));
+    backG->AddComponent(new Parallax(*backG, 0.7));
+    backG->box.pos = {304, 0};
+
+    backG = new GameObject(Common::Layer::BG);
+    backG->worldReference = false;
+    objectArray.emplace_back(backG);
+    backG->AddComponent(new bgCircularY(*backG, "assets/img/bg5.png"));
+    backG->AddComponent(new Parallax(*backG, 0.9));
     backG->box.pos = {304, 0};
 
     GameObject *frameG = new GameObject(Common::Layer::BG);
