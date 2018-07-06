@@ -1,8 +1,32 @@
 #include "Interpol.h"
+#include "Enemy.h"
 #include "Game.h"
 #include "Sprite.h"
 
 Interpol::Interpol(GameObject &associated) : Component(associated) {}
+
+void Interpol::RhythmReset() {
+    if (isHit) {
+        if (associated.GetComponent<Enemy *>()->GetMovementDirection() ==
+            Enemy::Direction::LEFT) {
+            associated.gridPosition.x++;
+        } else {
+            associated.gridPosition.x--;
+        }
+        isHit = false;
+    }
+}
+
+void Interpol::RhythmUpdate() {
+    if (isHit) {
+        if (associated.GetComponent<Enemy *>()->GetMovementDirection() ==
+            Enemy::Direction::LEFT) {
+            associated.gridPosition.x--;
+        } else {
+            associated.gridPosition.x++;
+        }
+    }
+}
 
 void Interpol::Update(float dt) {
     Sprite *sprite = associated.GetComponent<Sprite *>();
@@ -11,8 +35,6 @@ void Interpol::Update(float dt) {
               sprite->GetFrameCount();
     speed.y = 10 * dt * Game::GetInstance()->GetCurrentState().GetGridSize() /
               sprite->GetFrameCount();
-
-    if (isHit) return;
 
     Vec2 newPos = {
         associated.gridPosition.x *

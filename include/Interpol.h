@@ -11,22 +11,18 @@ class Interpol : public Component {
     explicit Interpol(GameObject &associated);
 
     void Update(float dt);
-    void RhythmUpdate() {}
-    void RhythmReset() {}
+    void RhythmUpdate();
+    void RhythmReset();
     void Render(Common::Layer layer) const {}
     void Start() {}
 
-    void IsHit(Vec2 target) {
-        alanPos = target;
-        isHit = true;
-    }
-
     bool IsMovementDone() { return movementDone; }
+
+    bool isHit = false;
 
   private:
     Vec2 alanPos;
     bool movementDone = true;
-    bool isHit = false;
     Vec2 speed;
 };
 

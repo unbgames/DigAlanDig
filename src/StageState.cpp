@@ -47,42 +47,42 @@ void StageState::LoadAssets() {
     backG->worldReference = false;
     objectArray.emplace_back(backG);
     backG->AddComponent(new bgCircularY(*backG, "assets/img/bg1.png"));
-    backG->AddComponent(new Parallax(*backG, 0.1));
+    backG->AddComponent(new ParallaxY(*backG, 0.1));
     backG->box.pos = {304, 0};
 
     backG = new GameObject(Common::Layer::BG);
     backG->worldReference = false;
     objectArray.emplace_back(backG);
     backG->AddComponent(new bgCircularY(*backG, "assets/img/bg2.png"));
-    backG->AddComponent(new Parallax(*backG, 0.3));
+    backG->AddComponent(new ParallaxY(*backG, 0.3));
     backG->box.pos = {304, 0};
 
     backG = new GameObject(Common::Layer::BG);
     backG->worldReference = false;
     objectArray.emplace_back(backG);
     backG->AddComponent(new bgCircularY(*backG, "assets/img/bg3.png"));
-    backG->AddComponent(new Parallax(*backG, 0.5));
+    backG->AddComponent(new ParallaxY(*backG, 0.5));
     backG->box.pos = {304, 0};
 
     backG = new GameObject(Common::Layer::BG);
     backG->worldReference = false;
     objectArray.emplace_back(backG);
     backG->AddComponent(new bgCircularY(*backG, "assets/img/bg4.png"));
-    backG->AddComponent(new Parallax(*backG, 0.7));
+    backG->AddComponent(new ParallaxY(*backG, 0.7));
     backG->box.pos = {304, 0};
 
     backG = new GameObject();
     backG->worldReference = false;
     objectArray.emplace_back(backG);
     backG->AddComponent(new bgCircularY(*backG, "assets/img/bg5.png"));
-    backG->AddComponent(new Parallax(*backG, 0.9));
+    backG->AddComponent(new ParallaxY(*backG, 0.9));
     backG->box.pos = {304, 0};
 
     GameObject *frameG = new GameObject(Common::Layer::BG);
     frameG->worldReference = false;
     objectArray.emplace_back(frameG);
     frameG->AddComponent(new bgCircularY(*frameG, "assets/img/framebg.png"));
-    frameG->AddComponent(new Parallax(*frameG, 1));
+    frameG->AddComponent(new ParallaxY(*frameG, 1));
     frameG->box.pos = {0, 0};
 
     // TileMap

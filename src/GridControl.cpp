@@ -78,7 +78,7 @@ void GridControl::CheckEnemyAlanCollision(bool isAlan) {
                         ->SetMovementDirection(
                             AlanActionControl::Direction::NONE);
                 } else {
-                    enemy->GetComponent<Enemy *>()->MovementDenied();
+                    enemy->GetComponent<Enemy *>()->SetAsHit();
                 }
 
                 return;
@@ -94,7 +94,7 @@ void GridControl::CheckEnemyAlanCollision(bool isAlan) {
                         ->SetMovementDirection(
                             AlanActionControl::Direction::NONE);
                 } else {
-                    enemy->GetComponent<Enemy *>()->MovementDenied();
+                    enemy->GetComponent<Enemy *>()->SetAsHit();
                 }
 
                 return;

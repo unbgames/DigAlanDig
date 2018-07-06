@@ -3,9 +3,9 @@
 #include "Camera.h"
 #include "Component.h"
 
-class Parallax : public Component {
+class ParallaxY : public Component {
   public:
-    Parallax(GameObject& associated, float factor = 1)
+    ParallaxY(GameObject& associated, float factor = 1)
         : Component(associated), factor(factor) {}
 
     void Update(float dt) { associated.box.pos.y = -Camera::pos.y * factor; }
@@ -32,4 +32,36 @@ class bgCircularY : public Component {
     std::shared_ptr<SDL_Texture> texture = nullptr;
     int width = 0, height = 0;
 };
+
+class bgCircularX : public Component {
+  public:
+    bgCircularX(GameObject& associated, const std::string& file)
+        : Component(associated) {
+        Open(file);
+    }
+
+    void Open(const std::string& file);
+    void Update(float dt) {}
+    void RhythmUpdate() {}
+    void Render(Common::Layer layer) const;
+    int GetWidth() { return width; }
+
+  private:
+    std::shared_ptr<SDL_Texture> texture = nullptr;
+    int width = 0, height = 0;
+};
+
+class ParallaxX : public Component {
+  public:
+    ParallaxX(GameObject& associated, float factor = 1)
+        : Component(associated), factor(factor) {}
+
+    void Update(float dt) { associated.box.pos.x -= dt * factor * 10; }
+    void RhythmUpdate() {}
+    void Render(Common::Layer layer) const {}
+
+  private:
+    float factor;
+};
+
 #endif  // PARALLAX_H

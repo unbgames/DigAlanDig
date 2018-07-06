@@ -11,17 +11,13 @@ bool AlanActionControl::ShouldFall() {
                  true) == GridControl::WhatsThere::FREE ||
              Game::GetInstance()->GetGridControl()->TestPath(
                  Vec2(associated.gridPosition.x, associated.gridPosition.y + 1),
-                 true) == GridControl::WhatsThere::NONE) &&
+                 true) == GridControl::WhatsThere::ENEMY) &&
             action != Action::CLIMBING);
 }
 
 void AlanActionControl::Fallin(float dt) {
-    std::cout << "\n\n\n\n\n\n\n\nAAAAAAAAAAAAAAAAAAAAH" << std::endl;
-
     if (gridsLeft > 0) gridsLeft--;
     associated.gridPosition.y++;
-
-    std::cout << "GRIDSLEFT" << gridsLeft << std::endl;
     associated.GetComponent<Sprite *>()->TimeElapsedReset();
 }
 
