@@ -13,6 +13,7 @@
 #include "Alan.h"
 #include "Component.h"
 #include "InputManager.h"
+#include "Interpol.h"
 #include "Sprite.h"
 #include "TileMap.h"
 #include "Vec2.h"
@@ -44,6 +45,8 @@ class Enemy : public Component {
 
     Direction GetMovementDirection() { return movementDirection; }
     State GetState() { return state; }
+
+    void SetAsHit() { associated.GetComponent<Interpol*>()->isHit = true; }
 
     bool VerifyDeath(Alan* alan);
 
