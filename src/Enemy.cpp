@@ -4,7 +4,6 @@
 #include "Camera.h"
 #include "EnemySpawn.h"
 #include "Game.h"
-#include "Interpol.h"
 #include "StageState.h"
 
 Enemy::Enemy(GameObject &associated, int enemyType)
@@ -147,11 +146,13 @@ void Enemy::Update(float dt) {
         alan->GetAction() != AlanActionControl::Action::FALLIN) {
         if (Game::GetInstance()->GetGridControl()->TestPath(
                 Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
-                false) == GridControl::WhatsThere::ALAN ||
-            Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
-                false) == GridControl::WhatsThere::ALAN) {
-            // Change game color pallet
+                false) == GridControl::WhatsThere::ALAN &&
+            movementDirection == Enemy::Direction::RIGHT) {
+        } else if (Game::GetInstance()->GetGridControl()->TestPath(
+                       Vec2(associated.gridPosition.x - 1,
+                            associated.gridPosition.y),
+                       false) == GridControl::WhatsThere::ALAN &&
+                   movementDirection == Enemy::Direction::LEFT) {
         }
     }
 

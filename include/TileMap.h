@@ -29,6 +29,10 @@ class TileMap : public Component {
     void GetDamageGround(int damage, Vec2 posDamage);
     void ClearEnemyFromMap(Vec2 enemyPos);
 
+    void ItemCollected(Vec2 target, int layer) {
+        tileMat[layer][target.y * width + target.x] = 0;
+    }
+
     int GetNextFile();
 
     enum Layers { BASE = 0, BLOCOS, ITENS, INIMIGOS };

@@ -1,5 +1,6 @@
 #include "AlanActionControl.h"
 #include "Alan.h"
+#include "AlanItemCount.h"
 #include "Game.h"
 #include "Interpol.h"
 #include "Sprite.h"
@@ -22,36 +23,36 @@ void AlanActionControl::Fallin(float dt) {
 }
 
 bool AlanActionControl::IsFree() {
-    if (movementDirection == Direction::LEFT) {
-        if (Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
-                true) == GridControl::WhatsThere::FREE)
-            return true;
+    if (movementDirection == Direction::LEFT &&
+        Game::GetInstance()->GetGridControl()->TestPath(
+            Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
+            true) == GridControl::WhatsThere::FREE) {
+        return true;
     }
 
-    if (movementDirection == Direction::RIGHT) {
-        if (Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
-                true) == GridControl::WhatsThere::FREE)
-            return true;
+    if (movementDirection == Direction::RIGHT &&
+        Game::GetInstance()->GetGridControl()->TestPath(
+            Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
+            true) == GridControl::WhatsThere::FREE) {
+        return true;
     }
 
     return false;
 }
 
 bool AlanActionControl::IsBlock() {
-    if (movementDirection == Direction::LEFT) {
-        if (Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
-                true) == GridControl::WhatsThere::ROCK)
-            return true;
+    if (movementDirection == Direction::LEFT &&
+        Game::GetInstance()->GetGridControl()->TestPath(
+            Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
+            true) == GridControl::WhatsThere::ROCK) {
+        return true;
     }
 
-    if (movementDirection == Direction::RIGHT) {
-        if (Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
-                true) == GridControl::WhatsThere::ROCK)
-            return true;
+    if (movementDirection == Direction::RIGHT &&
+        Game::GetInstance()->GetGridControl()->TestPath(
+            Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
+            true) == GridControl::WhatsThere::ROCK) {
+        return true;
     }
     return false;
 }
@@ -67,36 +68,18 @@ bool AlanActionControl::InClimbPosition(AlanAnimation *animation) {
 }
 
 bool AlanActionControl::ClimbPathFree() {
-    if (movementDirection == Direction::UP) {
-        if (Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x, associated.gridPosition.y - 1),
-                true) == GridControl::WhatsThere::FREE)
-            return true;
+    if (movementDirection == Direction::UP &&
+        Game::GetInstance()->GetGridControl()->TestPath(
+            Vec2(associated.gridPosition.x, associated.gridPosition.y - 1),
+            true) == GridControl::WhatsThere::FREE) {
+        return true;
     }
 
-    if (movementDirection == Direction::DOWN) {
-        if (Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x, associated.gridPosition.y + 1),
-                true) == GridControl::WhatsThere::FREE)
-            return true;
-    }
-
-    return false;
-}
-
-bool AlanActionControl::IsEnemy() {
-    if (movementDirection == Direction::LEFT) {
-        if (Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x - 1, associated.gridPosition.y),
-                true) == GridControl::WhatsThere::ENEMY)
-            return true;
-    }
-
-    if (movementDirection == Direction::RIGHT) {
-        if (Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
-                true) == GridControl::WhatsThere::ENEMY)
-            return true;
+    if (movementDirection == Direction::DOWN &&
+        Game::GetInstance()->GetGridControl()->TestPath(
+            Vec2(associated.gridPosition.x, associated.gridPosition.y + 1),
+            true) == GridControl::WhatsThere::FREE) {
+        return true;
     }
 
     return false;
@@ -334,6 +317,10 @@ void AlanActionControl::Update(float dt) {
                     Vec2(associated.gridPosition.x,
                          associated.gridPosition.y - 1),
                     true) == GridControl::WhatsThere::ROCK) {
+                if (Game::GetInstance()->GetGridControl()->IsItem(
+                        Vec2(associated.gridPosition.x,
+                             associated.gridPosition.y - 1))) {
+                }
                 if (!animationOnGoing) {
                     animation->SetAction(AlanAnimation::Transition::DIG_T,
                                          AlanAnimation::Direction::UP);

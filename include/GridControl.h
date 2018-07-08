@@ -28,7 +28,11 @@ class GridControl {
     }
     void ClearEnemyVector() { enemies.clear(); }
 
-    bool WillDestroyBlock();
+    bool WillDestroyBlock() { return (blockLife == 3); }
+
+    int IsItem(Vec2 target) {
+        return tileMap->At(target.x, target.y, TileMap::Layers::ITENS);
+    }
 
     void CheckEnemyAlanCollision(bool isAlan);
 

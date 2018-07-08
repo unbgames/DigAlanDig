@@ -16,7 +16,7 @@ int GridControl::TestPath(Vec2 target, bool isAlan) {
         return WhatsThere::NONE;
     }
 
-    int block = tileMap->At(target.x, target.y, tileMap->Layers::BLOCOS);
+    int block = tileMap->At(target.x, target.y, TileMap::Layers::BLOCOS);
 
     if (isAlan) {
         if (VerifyEnemy(target)) {
@@ -56,8 +56,6 @@ bool GridControl::VerifyEnemy(Vec2 target) {
 
     return false;
 }
-
-bool GridControl::WillDestroyBlock() { return (blockLife == 3); }
 
 void GridControl::CheckEnemyAlanCollision(bool isAlan) {
     for (auto enemy : enemies) {

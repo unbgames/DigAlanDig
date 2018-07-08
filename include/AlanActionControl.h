@@ -32,7 +32,6 @@ class AlanActionControl : public Component {
     bool InClimbPosition(AlanAnimation* animation);
     bool ClimbPathFree();
 
-    bool IsEnemy();
     bool IsBlock();
     bool IsFree();
 

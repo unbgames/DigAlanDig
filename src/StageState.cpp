@@ -6,6 +6,7 @@
 #include "Alan.h"
 #include "AlanActionControl.h"
 #include "AlanAnimation.h"
+#include "AlanItemCount.h"
 #include "BigAlan.h"
 #include "Camera.h"
 #include "EnemySpawn.h"
@@ -189,6 +190,11 @@ void StageState::LoadAssets() {
     counterPetro->box.pos = {148, 264};
     counterPetro->AddComponent(new HudCounter(
         *counterPetro, "assets/hud/item4.png", "assets/hud/petroleoi.png"));
+
+    GameObject *itemCount = new GameObject(Common::Layer::HUD);
+    objectArray.emplace_back(itemCount);
+    counterPetro->worldReference = false;
+    itemCount->AddComponent(new AlanItemCount(*itemCount));
 
     // Music
     music.Open("assets/audio/marmota.ogg");
