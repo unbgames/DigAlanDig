@@ -193,8 +193,9 @@ void StageState::LoadAssets() {
 
     GameObject *itemCount = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(itemCount);
-    counterPetro->worldReference = false;
+    itemCount->worldReference = false;
     itemCount->AddComponent(new AlanItemCount(*itemCount));
+    lilAlan->SetItemCount(itemCount);
 
     // Music
     music.Open("assets/audio/marmota.ogg");

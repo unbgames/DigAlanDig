@@ -16,16 +16,22 @@
 
 class AlanItemCount : public Component {
   public:
-    enum ItemType { HEART = 0, METAL, DIAMOND, PETROLEUM };
+    enum ItemType { METAL = 1, DIAMOND, PETROLEUM };
 
     AlanItemCount(GameObject& associated);
 
     ~AlanItemCount() {}
-    void Update(float dt) {}
+    void Update(float dt) {
+        std::cout << "\n\n\n\n\n\n\nMETAL = " << itemCount[ItemType::METAL]
+                  << std::endl;
+        std::cout << "DIAMOND = " << itemCount[ItemType::DIAMOND] << std::endl;
+        std::cout << "PETROLEUM = " << itemCount[ItemType::PETROLEUM]
+                  << std::endl;
+    }
     void RhythmUpdate() {}
     void RhythmReset() {}
-    void Render(Common::Layer layer) const {}
-    void ItemCollected(ItemType itemType) {
+    void Render(Common::Layer layer) const;
+    void ItemCollected(int itemType) {
         itemCountItem[itemType]->GetComponent<Sprite*>()->SetFrame(
             ++itemCount[itemType]);
     }
@@ -37,12 +43,15 @@ class AlanItemCount : public Component {
 
 class Item : public Component {
   public:
-    Item(GameObject& associated) : Component(associated) {}
+    Item(GameObject& associated) : Component(associated) {
+        bg = new Sprite(associated, "assets/hud/ovocinza.png");
+    }
     void Update(float dt) {}
     void RhythmUpdate() {}
     void RhythmReset() {}
     void Render(Common::Layer layer) const {}
 
+    Sprite* bg;
     int spriteCount = 1;
 };
 

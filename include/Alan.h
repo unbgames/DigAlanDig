@@ -59,7 +59,11 @@ class Alan : public Component {
     void SetDamage(int damage) { this->damage = damage; }
     int GetHP() { return hp; }
 
+    void SetItemCount(GameObject* go) { itemCount = go; }
+    GameObject* GetItemCount() { return itemCount; }
+
   private:
+    GameObject* itemCount;
     int hp = 6;
 
     int maxPosition = 0;

@@ -45,6 +45,7 @@ class GridControl {
     static GridControl *_instance;
 
     int blockLife;
+    int itemType;
 
     GridControl() {}
 };
