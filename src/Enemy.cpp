@@ -213,7 +213,7 @@ void Enemy::Update(float dt) {
     } else {
         if (state != Enemy::State::IDLE_S) {
             state = Enemy::State::IDLE_S;
-            sprite->Open(EState[state], movementDirection);
+            sprite->Open(EState[state], Enemy::Direction::LEFT);
         }
     }
 }
