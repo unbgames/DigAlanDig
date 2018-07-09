@@ -97,6 +97,9 @@ int TileMap::At(int x, int y, int z) {
         GetNextFile();
     }
 
+    if (z == Layers::ITENS) {
+        return tileSet->GetItemType(tileMat[z][y * width + x]);
+    }
     return tileMat[z][y * width + x];
 }
 
@@ -121,7 +124,7 @@ void TileMap::GetDamageGround(int damage, Vec2 posDamage) {
     int valPos = At(posDamage.x, posDamage.y);
     if (valPos == 1) return;
 
-    if (--tileMat[groundLayer][(int)(posDamage.y * width + posDamage.x)] <= 2) {
+    if (tileMat[groundLayer][(int)(posDamage.y * width + posDamage.x)]) {
         tileMat[groundLayer][(int)(posDamage.y * width + posDamage.x)] = 0;
         SpawnDust(posDamage);
     }

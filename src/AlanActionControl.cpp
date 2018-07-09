@@ -155,19 +155,17 @@ void AlanActionControl::Update(float dt) {
         if (Game::GetInstance()->GetGridControl()->TestPath(
                 Vec2(associated.gridPosition.x, associated.gridPosition.y - 1),
                 true) == GridControl::WhatsThere::ROCK) {
-            if (Game::GetInstance()->GetGridControl()->WillDestroyBlock()) {
-                if (int itemType =
-                        Game::GetInstance()->GetGridControl()->IsItem(
-                            Vec2(associated.gridPosition.x,
-                                 associated.gridPosition.y - 1))) {
-                    tileMap->ItemCollected(Vec2(associated.gridPosition.x,
-                                                associated.gridPosition.y - 1),
-                                           TileMap::Layers::ITENS);
-                    alan->GetItemCount()
-                        ->GetComponent<AlanItemCount *>()
-                        ->ItemCollected(itemType);
-                }
+            if (int itemType = Game::GetInstance()->GetGridControl()->IsItem(
+                    Vec2(associated.gridPosition.x,
+                         associated.gridPosition.y - 1))) {
+                tileMap->ItemCollected(Vec2(associated.gridPosition.x,
+                                            associated.gridPosition.y - 1),
+                                       TileMap::Layers::ITENS);
+                alan->GetItemCount()
+                    ->GetComponent<AlanItemCount *>()
+                    ->ItemCollected(itemType);
             }
+
             if (!animationOnGoing) {
                 animation->SetAction(AlanAnimation::Transition::DIG_T,
                                      AlanAnimation::Direction::UP);
@@ -187,17 +185,15 @@ void AlanActionControl::Update(float dt) {
         }
         // Down bate na pedra embaixo dele
     } else if (movementDirection == Direction::DOWN) {
-        if (Game::GetInstance()->GetGridControl()->WillDestroyBlock()) {
-            if (int itemType = Game::GetInstance()->GetGridControl()->IsItem(
-                    Vec2(associated.gridPosition.x,
-                         associated.gridPosition.y + 1))) {
-                tileMap->ItemCollected(Vec2(associated.gridPosition.x,
-                                            associated.gridPosition.y + 1),
-                                       TileMap::Layers::ITENS);
-                alan->GetItemCount()
-                    ->GetComponent<AlanItemCount *>()
-                    ->ItemCollected(itemType);
-            }
+        if (int itemType = Game::GetInstance()->GetGridControl()->IsItem(Vec2(
+                associated.gridPosition.x, associated.gridPosition.y + 1))) {
+            tileMap->ItemCollected(
+                Vec2(associated.gridPosition.x, associated.gridPosition.y + 1),
+                TileMap::Layers::ITENS);
+            alan->GetItemCount()
+                ->GetComponent<AlanItemCount *>()
+                ->ItemCollected(itemType);
+
             animation->SetAction(AlanAnimation::Transition::DIG_T,
                                  AlanAnimation::Direction::DOWN);
 
@@ -224,18 +220,15 @@ void AlanActionControl::Update(float dt) {
         // Testa se o valor do grid a esquerda é uma
         // pedra
         if (!IsFree()) {
-            if (Game::GetInstance()->GetGridControl()->WillDestroyBlock()) {
-                if (int itemType =
-                        Game::GetInstance()->GetGridControl()->IsItem(
-                            Vec2(associated.gridPosition.x - 1,
-                                 associated.gridPosition.y))) {
-                    tileMap->ItemCollected(Vec2(associated.gridPosition.x - 1,
-                                                associated.gridPosition.y),
-                                           TileMap::Layers::ITENS);
-                    alan->GetItemCount()
-                        ->GetComponent<AlanItemCount *>()
-                        ->ItemCollected(itemType);
-                }
+            if (int itemType = Game::GetInstance()->GetGridControl()->IsItem(
+                    Vec2(associated.gridPosition.x - 1,
+                         associated.gridPosition.y))) {
+                tileMap->ItemCollected(Vec2(associated.gridPosition.x - 1,
+                                            associated.gridPosition.y),
+                                       TileMap::Layers::ITENS);
+                alan->GetItemCount()
+                    ->GetComponent<AlanItemCount *>()
+                    ->ItemCollected(itemType);
             }
 
             if (!animationOnGoing) {
@@ -263,18 +256,15 @@ void AlanActionControl::Update(float dt) {
     } else {
         // Mesmo processo anterior para a direita
         if (!IsFree()) {
-            if (Game::GetInstance()->GetGridControl()->WillDestroyBlock()) {
-                if (int itemType =
-                        Game::GetInstance()->GetGridControl()->IsItem(
-                            Vec2(associated.gridPosition.x + 1,
-                                 associated.gridPosition.y))) {
-                    tileMap->ItemCollected(Vec2(associated.gridPosition.x + 1,
-                                                associated.gridPosition.y),
-                                           TileMap::Layers::ITENS);
-                    alan->GetItemCount()
-                        ->GetComponent<AlanItemCount *>()
-                        ->ItemCollected(itemType);
-                }
+            if (int itemType = Game::GetInstance()->GetGridControl()->IsItem(
+                    Vec2(associated.gridPosition.x + 1,
+                         associated.gridPosition.y))) {
+                tileMap->ItemCollected(Vec2(associated.gridPosition.x + 1,
+                                            associated.gridPosition.y),
+                                       TileMap::Layers::ITENS);
+                alan->GetItemCount()
+                    ->GetComponent<AlanItemCount *>()
+                    ->ItemCollected(itemType);
             }
 
             if (!animationOnGoing) {

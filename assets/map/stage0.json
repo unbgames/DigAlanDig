@@ -7,13 +7,13 @@
          "name":"base",
          "opacity":1,
          "type":"tilelayer",
-         "visible":false,
+         "visible":true,
          "width":6,
          "x":0,
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 0, 0, 26, 10, 10, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11],
+         "data":[0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0, 11, 11, 11, 11, 11, 11],
          "height":4,
          "name":"blocos",
          "opacity":1,
@@ -24,7 +24,7 @@
          "y":0
         }, 
         {
-         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "data":[0, 0, 0, 0, 0, 0, 5, 6, 7, 8, 16, 9, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0],
          "height":4,
          "name":"itens",
          "opacity":1,
@@ -40,7 +40,7 @@
          "name":"inimigos",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":6,
          "x":0,
          "y":0

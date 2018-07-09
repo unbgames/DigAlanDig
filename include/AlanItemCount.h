@@ -36,8 +36,6 @@ class Item : public Component {
 
 class AlanItemCount : public Component {
   public:
-    enum ItemType { GOLD = 1, DIAMOND, PETROLEUM };
-
     AlanItemCount(GameObject& associated);
 
     ~AlanItemCount() {
