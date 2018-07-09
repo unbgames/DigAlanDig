@@ -39,6 +39,7 @@ class Alan : public Component {
         }
 
         moved = false;
+        damageTaken = false;
     }
     void Render(Common::Layer layer) const {}
 
@@ -55,7 +56,12 @@ class Alan : public Component {
     }
 
     int GetDamage() { return damage; }
-    void TakeDamage() { hp--; }
+    void TakeDamage() {
+        if (!damageTaken) {
+            hp--;
+            damageTaken = true;
+        }
+    }
     void SetDamage(int damage) { this->damage = damage; }
     int GetHP() { return hp; }
 
