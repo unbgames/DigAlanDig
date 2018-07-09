@@ -21,6 +21,7 @@ int main(int argc, char** argv) {
     std::cout.rdbuf(new androidbuf(ANDROID_LOG_INFO));
     std::cerr.rdbuf(new androidbuf(ANDROID_LOG_ERROR));
 #endif
+    srand(time(0));
 
     Game* game = Game::GetInstance("Groundhog Dig", 1024, 768);
     game->Push(new TitleState());

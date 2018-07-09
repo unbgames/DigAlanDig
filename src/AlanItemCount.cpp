@@ -54,7 +54,15 @@ AlanItemCount::AlanItemCount(GameObject& associated) : Component(associated) {
 void AlanItemCount::Render(Common::Layer layer) const {
     for (auto item : itemCountItem) {
         item.second->box.SetCenter(item.second->GetComponent<Item*>()->center);
+
+        if (!itemCount.at(item.first)) {
+            item.second->GetComponent<Item*>()->bg->SetColor(0, 255, 0);
+        }
+
         item.second->GetComponent<Item*>()->bg->Render(layer);
+
+        item.second->GetComponent<Item*>()->bg->SetColor(255, 255, 255);
+
         item.second->box.SetCenter(
             item.second->GetComponent<Item*>()->numberCenter);
         item.second->RenderOrder(layer);
