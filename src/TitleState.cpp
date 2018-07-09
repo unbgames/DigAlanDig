@@ -74,6 +74,17 @@ void TitleState::LoadAssets() {
     gm->blink = true;
     objectArray.emplace_back(gm);
     gm->AddComponent(sprite);
+
+    gm = new GameObject(Common::Layer::HUD);
+    sprite = new Sprite(*gm, "assets/img/marmozord.png");
+    sprite->SetScaleX(0.175);
+    gm->box.SetCenter(Camera::Center().x + 250, Camera::Center().y);
+    gm->setRect(gm->box);
+    gm->worldReference = false;
+    gm->move = true;
+    objectArray.emplace_back(gm);
+    gm->AddComponent(sprite);
+
     Game::GetInstance()->StartBeatTime();
 
     music.Open("assets/audio/menu.ogg");

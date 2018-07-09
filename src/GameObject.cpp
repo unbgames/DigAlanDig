@@ -7,10 +7,16 @@ GameObject::~GameObject() {
     for (Component* component : components) delete (component);
 
     components.clear();
+    tmp = box;
 }
 
 void GameObject::Update(float dt) {
+    static float sum;
+    sum += dt;
     for (Component* component : components) component->Update(dt);
+    if (move) {
+        box.pos = tmp.pos + Vec2(0, 1) * sin(sum) * 30;
+    }
 }
 
 void GameObject::RhythmUpdate() {

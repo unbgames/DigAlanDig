@@ -53,6 +53,9 @@ class GameObject {
     double angleDeg = 0;
     unsigned int layer;
 
+    void setRect(Rect a) { tmp = a; }
+    Rect tmp;
+
   private:
     std::vector<Component *> components;
     bool isDead;
