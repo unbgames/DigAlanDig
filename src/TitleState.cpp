@@ -60,7 +60,7 @@ void TitleState::LoadAssets() {
 
     gm = new GameObject(Common::Layer::HUD);
     Sprite* sprite = new Sprite(*gm, "assets/img/title.png");
-    sprite->SetScaleX(0.4);
+    sprite->SetScaleX(0.45);
     gm->box.SetCenter(Camera::Center().x / 2, Camera::Center().y - 50);
     gm->worldReference = false;
     objectArray.emplace_back(gm);
@@ -77,8 +77,8 @@ void TitleState::LoadAssets() {
 
     gm = new GameObject(Common::Layer::HUD);
     sprite = new Sprite(*gm, "assets/img/marmozord_fly.png", 2, -1);
-    sprite->SetScaleX(1.2);
-    gm->box.SetCenter(Camera::Center().x + 250, Camera::Center().y);
+    sprite->SetScaleX(1.4);
+    gm->box.SetCenter(Camera::Center().x + 220, Camera::Center().y);
     gm->setRect(gm->box);
     gm->worldReference = false;
     gm->move = true;

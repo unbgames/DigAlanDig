@@ -83,7 +83,7 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY) const {
 
 void TileMap::GetNextFile() {
     currentFile++;
-    currentFile = currentFile % TileMapsFiles.size();
+    currentFile = rand() % TileMapsFiles.size();
 }
 
 int TileMap::At(int x, int y, int z) {
