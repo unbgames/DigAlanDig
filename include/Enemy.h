@@ -46,7 +46,10 @@ class Enemy : public Component {
     Direction GetMovementDirection() { return movementDirection; }
     State GetState() { return state; }
 
-    void SetAsHit() { associated.GetComponent<Interpol*>()->isHit = true; }
+    void SetAsHit() {
+        associated.GetComponent<Interpol*>()->isHit = true;
+        movementAllowed = false;
+    }
 
     bool VerifyDeath(Alan* alan);
 

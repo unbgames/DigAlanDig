@@ -129,9 +129,15 @@ void StageState::LoadAssets() {
 
     // MiniMap
     GameObject *MiniMapTile = new GameObject(Common::Layer::HUD);
-    MiniMapTile->box.pos = {61, 170};
-    TileSet *minitileSet = new TileSet("assets/map/miniground.json");
+    MiniMapTile->worldReference = false;
+    MiniMapTile->box.pos = {30, 180};
+    MiniMapTile->AddComponent(
+        new Sprite(*MiniMapTile, "assets/img/bgminimap.png"));
+    objectArray.emplace_back(MiniMapTile);
 
+    MiniMapTile = new GameObject(Common::Layer::HUD);
+    MiniMapTile->box.pos = {60, 195};
+    TileSet *minitileSet = new TileSet("assets/map/miniground.json");
     MiniTileMap *miniTilemap = new MiniTileMap(*MiniMapTile, minitileSet,
                                                tileMap, GetObjectPrt(alanGO));
     MiniMapTile->AddComponent(miniTilemap);

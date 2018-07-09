@@ -90,7 +90,6 @@ void Enemy::ShouldTakeDamage(Alan *alan) {
             TakeDamage(alan->GetDamage());
             damageTaken = true;
         }
-
     } else if (Game::GetInstance()->GetGridControl()->TestPath(
                    Vec2(associated.gridPosition.x + 1,
                         associated.gridPosition.y),
@@ -121,6 +120,9 @@ void Enemy::Update(float dt) {
         !associated.GetComponent<Interpol *>()->IsMovementDone())
         return;
 
+    Game::GetInstance()->GetGridControl()->CheckEnemyAlanCollision(false);
+    if (associated.GetComponent<Interpol *>()->isHit) return;
+
     Sprite *sprite = associated.GetComponent<Sprite *>();
     Alan *alan = Game::GetInstance()
                      ->GetGridControl()
@@ -142,19 +144,7 @@ void Enemy::Update(float dt) {
         return;
     }
 
-    if (alan->GetAction() != AlanActionControl::Action::CLIMBING &&
-        alan->GetAction() != AlanActionControl::Action::FALLIN) {
-        if (Game::GetInstance()->GetGridControl()->TestPath(
-                Vec2(associated.gridPosition.x + 1, associated.gridPosition.y),
-                false) == GridControl::WhatsThere::ALAN &&
-            movementDirection == Enemy::Direction::RIGHT) {
-        } else if (Game::GetInstance()->GetGridControl()->TestPath(
-                       Vec2(associated.gridPosition.x - 1,
-                            associated.gridPosition.y),
-                       false) == GridControl::WhatsThere::ALAN &&
-                   movementDirection == Enemy::Direction::LEFT) {
-        }
-    }
+    IsSurrounded();
 
     if (movementDirection == Enemy::Direction::LEFT) {
         if (Game::GetInstance()->GetGridControl()->TestPath(
@@ -181,9 +171,6 @@ void Enemy::Update(float dt) {
             steps = 0;
         }
     }
-
-    IsSurrounded();
-    Game::GetInstance()->GetGridControl()->CheckEnemyAlanCollision(false);
 
     if (movementAllowed) {
         if (state != Enemy::State::WALKIN_S) {
