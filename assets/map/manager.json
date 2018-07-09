@@ -33,36 +33,6 @@
         },{
          "name":"stage10.json",
          "level":1
-        },{
-         "name":"stage11.json",
-         "level":1
-        },{
-         "name":"stage12.json",
-         "level":1
-        },{
-         "name":"stage13.json",
-         "level":1
-        },{
-         "name":"stage14.json",
-         "level":1
-        },{
-         "name":"stage15.json",
-         "level":1
-        },{
-         "name":"stage16.json",
-         "level":1
-        },{
-         "name":"stage17.json",
-         "level":1
-        },{
-         "name":"stage18.json",
-         "level":1
-        },{
-         "name":"stage19.json",
-         "level":1
-        },{
-         "name":"stage20.json",
-         "level":1
         }],
  "mode":"random"
 }
