@@ -1,8 +1,11 @@
 Makefile
+extern/androidbuf.h
+extern/json.hpp
 include/Alan.h
 include/AlanActionControl.h
 include/AlanAnimation.h
 include/AlanEnemyCollision.h
+include/AlanItemCount.h
 include/BigAlan.h
 include/Camera.h
 include/Common.h
@@ -38,6 +41,7 @@ include/Vec2.h
 src/Alan.cpp
 src/AlanActionControl.cpp
 src/AlanAnimation.cpp
+src/AlanItemCount.cpp
 src/BigAlan.cpp
 src/Camera.cpp
 src/Common.cpp

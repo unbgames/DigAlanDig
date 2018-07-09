@@ -82,6 +82,11 @@ class InputManager {
     float scaleFactor() const;
 
     float GetDeltaRhythm() const { return deltaRhythm; }
+
+    void Move();
+
+    float Moved();
+
     bool title = true;
     bool shouldShow = true;
 
@@ -116,6 +121,7 @@ class InputManager {
 
     float deltaRhythm = 0;
     float keyAdjust = 0;
+    float score = 10;
 
     bool actionState[Action::ACTION_MAX] = {0};
     int actionUpdate[Action::ACTION_MAX] = {0};

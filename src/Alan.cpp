@@ -36,8 +36,9 @@ void Alan::GetMovement() {
 
     if (associated.GetComponent<AlanActionControl *>()
             ->GetMovementDirection()) {
-        float duty = 0.4;
-        if (std::abs(input.GetDeltaRhythm()) > duty) {
+        float duty = 0.6;
+        input.Move();
+        if (std::abs(input.GetDeltaRhythm()) < duty) {
             std::cout << "\n\nHit: " << input.GetDeltaRhythm() << "\n\n";
             Game::GetInstance()->combo++;
         } else {

@@ -66,7 +66,7 @@ float fixRange(float value, float fix) {
 void InputManager::Update(float deltaRhythm) {
     frame++;
     quitRequested = false;
-    this->deltaRhythm = fixRange(deltaRhythm, 0.6);
+    this->deltaRhythm = fixRange(deltaRhythm, -0.4);
 
     SDL_GetMouseState(&mouseX, &mouseY);
     int id;
@@ -129,6 +129,14 @@ void InputManager::Update(float deltaRhythm) {
         keyAdjust -= 0.05;
         std::cout << "\nKey Adjust = " << keyAdjust << "ms\n";
     }
+}
+
+void InputManager::Move() { score = deltaRhythm; }
+
+float InputManager::Moved() {
+    float tmp = score;
+    score = 10;
+    return tmp;
 }
 
 bool InputManager::AddController(int id) {
