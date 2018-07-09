@@ -16,7 +16,7 @@
 
 class AlanItemCount : public Component {
   public:
-    enum ItemType { METAL = 1, DIAMOND, PETROLEUM };
+    enum ItemType { GOLD = 1, DIAMOND, PETROLEUM };
 
     AlanItemCount(GameObject& associated);
 
@@ -24,13 +24,20 @@ class AlanItemCount : public Component {
         itemCount.clear();
         itemCountItem.clear();
     }
-    void Update(float dt) {}
+
+    void Update(float dt) {
+        for (auto item : itemCount) {
+            if (item.second == 0) {
+            }
+        }
+    }
     void RhythmUpdate() {}
     void RhythmReset() {}
     void Render(Common::Layer layer) const;
     void ItemCollected(int itemType) {
-        itemCountItem[itemType]->GetComponent<Sprite*>()->SetFrame(
-            ++itemCount[itemType]);
+        if (itemCount[itemType] > 0)
+            itemCountItem[itemType]->GetComponent<Sprite*>()->SetFrame(
+                --itemCount[itemType]);
     }
 
   private:
@@ -40,9 +47,13 @@ class AlanItemCount : public Component {
 
 class Item : public Component {
   public:
-    Item(GameObject& associated) : Component(associated) {
+    Item(GameObject& associated, Vec2 newCenter, Vec2 newNumberCenter)
+        : Component(associated),
+          center(newCenter),
+          numberCenter(newNumberCenter) {
         bg = new Sprite(associated, "assets/hud/ovocinza.png");
     }
+
     ~Item() { delete bg; }
     void Update(float dt) {}
     void RhythmUpdate() {}
@@ -50,6 +61,7 @@ class Item : public Component {
     void Render(Common::Layer layer) const {}
 
     Sprite* bg;
+    Vec2 center, numberCenter;
     int spriteCount = 1;
 };
 

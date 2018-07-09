@@ -181,21 +181,21 @@ void StageState::LoadAssets() {
     counterMetal->worldReference = false;
     counterMetal->box.pos = {850, 10};
     counterMetal->AddComponent(new HudCounter(
-        *counterMetal, "assets/hud/item2.png", "assets/hud/metali.png"));
+        *counterMetal, "assets/hud/item1.png", "assets/hud/metali.png"));
 
     GameObject *counterCristal = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(counterCristal);
     counterCristal->worldReference = false;
-    counterCristal->box.pos = {848, 160};
+    counterCristal->box.pos = {850, 160};
     counterCristal->AddComponent(new HudCounter(
-        *counterCristal, "assets/hud/item3.png", "assets/hud/cristali.png"));
+        *counterCristal, "assets/hud/item2.png", "assets/hud/cristali.png"));
 
     GameObject *counterPetro = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(counterPetro);
     counterPetro->worldReference = false;
-    counterPetro->box.pos = {856, 310};
+    counterPetro->box.pos = {850, 310};
     counterPetro->AddComponent(new HudCounter(
-        *counterPetro, "assets/hud/item4.png", "assets/hud/petroleoi.png"));
+        *counterPetro, "assets/hud/item3.png", "assets/hud/petroleoi.png"));
 
     GameObject *itemCount = new GameObject(Common::Layer::HUD);
     objectArray.emplace_back(itemCount);
