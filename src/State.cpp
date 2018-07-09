@@ -68,8 +68,19 @@ void State::RhythmResetArray() {
     for (auto obj : objectArray) obj->RhythmReset();
 }
 
+float fixRange2(float value, float fix) {
+    float ret = value + fix;
+    if (ret > 1.0)
+        ret -= 2;
+    else if (ret < -1.0)
+        ret += 2;
+
+    return ret;
+}
+
 int PulseColor(float dtR, int combo) {
     static const int minColor = 10;
+    dtR = fixRange2(dtR, 1);
     dtR = (dtR > 0) ? 0 : -dtR;
     combo = (combo > 15) ? 15 : combo;
     dtR = dtR * 2 * (combo * 10 + 10) + minColor;
