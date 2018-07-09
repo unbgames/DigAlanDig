@@ -12,8 +12,7 @@ bool AlanActionControl::ShouldFall() {
                  true) == GridControl::WhatsThere::FREE ||
              Game::GetInstance()->GetGridControl()->TestPath(
                  Vec2(associated.gridPosition.x, associated.gridPosition.y + 1),
-                 true) == GridControl::WhatsThere::ENEMY) &&
-            action != Action::CLIMBING);
+                 true) == GridControl::WhatsThere::ENEMY));
 }
 
 void AlanActionControl::Fallin(float dt) {
@@ -148,175 +147,15 @@ void AlanActionControl::Update(float dt) {
         return;
     }
 
-    // 'A' apertado indica que o movimento é de escalada
-    if (CanClimb()) {
-        if (InClimbPosition(animation)) {
-            if (movementDirection == Direction::UP) {
-                if (ClimbPathFree()) {
-                    if (IsClimbDirectionLeft(animation)) {
-                        if (Game::GetInstance()->GetGridControl()->TestPath(
-                                Vec2(associated.gridPosition.x - 1,
-                                     associated.gridPosition.y - 1),
-                                true) == GridControl::WhatsThere::FREE) {
-                            movementDirection = Direction::NONE;
-                            associated.gridPosition.y--;
-                            associated.gridPosition.x--;
-                            animation->SetAction(
-                                AlanAnimation::Transition::NONE_T,
-                                AlanAnimation::Direction::LEFT);
-
-                        } else {
-                            animation->SetAction(
-                                AlanAnimation::Transition::WALK,
-                                AlanAnimation::Direction::UP);
-                            movementDirection = Direction::NONE;
-                            associated.gridPosition.y--;
-                        }
-                        // Verifica se a marmota está em posição de escalada
-                    } else {
-                        if (Game::GetInstance()->GetGridControl()->TestPath(
-                                Vec2(associated.gridPosition.x + 1,
-                                     associated.gridPosition.y - 1),
-                                true) == GridControl::WhatsThere::FREE) {
-                            movementDirection = Direction::NONE;
-                            associated.gridPosition.y--;
-                            associated.gridPosition.x++;
-                            animation->SetAction(
-                                AlanAnimation::Transition::NONE_T,
-                                AlanAnimation::Direction::RIGHT);
-
-                        } else {
-                            animation->SetAction(
-                                AlanAnimation::Transition::WALK,
-                                AlanAnimation::Direction::UP);
-
-                            movementDirection = Direction::NONE;
-                            associated.gridPosition.y--;
-                        }
-                    }
-                } else {
-                    if (!animationOnGoing) {
-                        animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                             AlanAnimation::Direction::UP);
-                        animationOnGoing = true;
-                    }
-                    if (sprite->FrameTimePassed()) {
-                        tileMap->GetDamageGround(
-                            alan->GetDamage(),
-                            Vec2(associated.gridPosition.x,
-                                 associated.gridPosition.y - 1));
-                        movementDirection = Direction::NONE;
-                        animationOnGoing = false;
-                    }
-                }
-
-            } else if (movementDirection == Direction::DOWN) {
-                // Mesmo processo anterior para a baixo (quando a pedra
-                // abaixo do lado onde a marmota estiver escalando for vazia
-                // ela não faz nada)
-
-                if (ClimbPathFree()) {
-                    if (IsClimbDirectionLeft(animation)) {
-                        if (Game::GetInstance()->GetGridControl()->TestPath(
-                                Vec2(associated.gridPosition.x - 1,
-                                     associated.gridPosition.y + 1),
-                                true) == GridControl::WhatsThere::FREE) {
-                            movementDirection = Direction::NONE;
-                        } else {
-                            animation->SetAction(
-                                AlanAnimation::Transition::WALK,
-                                AlanAnimation::Direction::DOWN);
-
-                            movementDirection = Direction::NONE;
-                            associated.gridPosition.y++;
-                        }
-                        // Verifica se a marmota está em posição de
-                        // escalada
-                    } else {
-                        if (Game::GetInstance()->GetGridControl()->TestPath(
-                                Vec2(associated.gridPosition.x + 1,
-                                     associated.gridPosition.y + 1),
-                                true) == GridControl::WhatsThere::FREE) {
-                            movementDirection = Direction::NONE;
-                        } else {
-                            animation->SetAction(
-                                AlanAnimation::Transition::WALK,
-                                AlanAnimation::Direction::DOWN);
-
-                            movementDirection = Direction::NONE;
-                            associated.gridPosition.y++;
-                            animationOnGoing = false;
-                        }
-                    }
-                } else {
-                    if (!animationOnGoing) {
-                        animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                             AlanAnimation::Direction::DOWN);
-                        animationOnGoing = true;
-                    }
-                    if (sprite->FrameTimePassed()) {
-                        tileMap->GetDamageGround(
-                            alan->GetDamage(),
-                            Vec2(associated.gridPosition.x,
-                                 associated.gridPosition.y + 1));
-                        movementDirection = Direction::NONE;
-                        animationOnGoing = false;
-                    }
-                }
-            }
-        } else if (movementDirection == Direction::LEFT) {
-            // Testa se o valor do grid a esquerda é uma pedra
-            if (Game::GetInstance()->GetGridControl()->TestPath(
-                    Vec2(associated.gridPosition.x - 1,
-                         associated.gridPosition.y),
-                    true) == GridControl::WhatsThere::ROCK) {
-                // Se for, entra em posição de escalada
-                if (!animationOnGoing) {
-                    action = Action::CLIMBING;
-                    animation->SetAction(AlanAnimation::Transition::CLIMB,
-                                         AlanAnimation::Direction::LEFT);
-                    animationOnGoing = true;
-                }
-                if (sprite->FrameTimePassed()) {
-                    movementDirection = Direction::NONE;
-                    animationOnGoing = false;
-                }
-
-                return;
-            } else {
-                movementDirection = Direction::NONE;
-            }
-        } else if (movementDirection == Direction::RIGHT) {
-            // Mesmo processo anterior para a direita
-            if (Game::GetInstance()->GetGridControl()->TestPath(
-                    Vec2(associated.gridPosition.x + 1,
-                         associated.gridPosition.y),
-                    true) == GridControl::WhatsThere::ROCK) {
-                if (!animationOnGoing) {
-                    action = Action::CLIMBING;
-                    animation->SetAction(AlanAnimation::Transition::CLIMB,
-                                         AlanAnimation::Direction::RIGHT);
-                    animationOnGoing = true;
-                }
-                if (sprite->FrameTimePassed()) {
-                    movementDirection = Direction::NONE;
-                    animationOnGoing = false;
-                }
-                return;
-            } else {
-                movementDirection = Direction::NONE;
-            }
-        }
-    } else {
-        if (action != Action::WALKIN) {
-            action = Action::WALKIN;
-        }
-        // Up bate na pedra acima dele se houver
-        if (movementDirection == Direction::UP) {
-            if (Game::GetInstance()->GetGridControl()->TestPath(
-                    Vec2(associated.gridPosition.x,
-                         associated.gridPosition.y - 1),
-                    true) == GridControl::WhatsThere::ROCK) {
+    if (action != Action::WALKIN) {
+        action = Action::WALKIN;
+    }
+    // Up bate na pedra acima dele se houver
+    if (movementDirection == Direction::UP) {
+        if (Game::GetInstance()->GetGridControl()->TestPath(
+                Vec2(associated.gridPosition.x, associated.gridPosition.y - 1),
+                true) == GridControl::WhatsThere::ROCK) {
+            if (Game::GetInstance()->GetGridControl()->WillDestroyBlock()) {
                 if (int itemType =
                         Game::GetInstance()->GetGridControl()->IsItem(
                             Vec2(associated.gridPosition.x,
@@ -328,144 +167,141 @@ void AlanActionControl::Update(float dt) {
                         ->GetComponent<AlanItemCount *>()
                         ->ItemCollected(itemType);
                 }
-                if (!animationOnGoing) {
-                    animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                         AlanAnimation::Direction::UP);
-                    animationOnGoing = true;
-                }
-                if (sprite->FrameTimePassed()) {
-                    tileMap->GetDamageGround(
-                        alan->GetDamage(), Vec2(associated.gridPosition.x,
-                                                associated.gridPosition.y - 1));
-                    movementDirection = Direction::NONE;
-                    animationOnGoing = false;
-                }
-
-                return;
-            } else {
-                movementDirection = Direction::NONE;
             }
-            // Down bate na pedra embaixo dele
-        } else if (movementDirection == Direction::DOWN) {
+            if (!animationOnGoing) {
+                animation->SetAction(AlanAnimation::Transition::DIG_T,
+                                     AlanAnimation::Direction::UP);
+                animationOnGoing = true;
+            }
+            if (sprite->FrameTimePassed()) {
+                tileMap->GetDamageGround(alan->GetDamage(),
+                                         Vec2(associated.gridPosition.x,
+                                              associated.gridPosition.y - 1));
+                movementDirection = Direction::NONE;
+                animationOnGoing = false;
+            }
+
+            return;
+        } else {
+            movementDirection = Direction::NONE;
+        }
+        // Down bate na pedra embaixo dele
+    } else if (movementDirection == Direction::DOWN) {
+        if (Game::GetInstance()->GetGridControl()->WillDestroyBlock()) {
+            if (int itemType = Game::GetInstance()->GetGridControl()->IsItem(
+                    Vec2(associated.gridPosition.x,
+                         associated.gridPosition.y + 1))) {
+                tileMap->ItemCollected(Vec2(associated.gridPosition.x,
+                                            associated.gridPosition.y + 1),
+                                       TileMap::Layers::ITENS);
+                alan->GetItemCount()
+                    ->GetComponent<AlanItemCount *>()
+                    ->ItemCollected(itemType);
+            }
+            animation->SetAction(AlanAnimation::Transition::DIG_T,
+                                 AlanAnimation::Direction::DOWN);
+
+            tileMap->GetDamageGround(
+                alan->GetDamage(),
+                Vec2(associated.gridPosition.x, associated.gridPosition.y + 1));
+            movementDirection = Direction::NONE;
+            associated.gridPosition.y++;
+        } else {
+            if (!animationOnGoing) {
+                animation->SetAction(AlanAnimation::Transition::DIG_T,
+                                     AlanAnimation::Direction::DOWN);
+                animationOnGoing = true;
+            }
+            if (sprite->FrameTimePassed()) {
+                tileMap->GetDamageGround(alan->GetDamage(),
+                                         Vec2(associated.gridPosition.x,
+                                              associated.gridPosition.y + 1));
+                movementDirection = Direction::NONE;
+                animationOnGoing = false;
+            }
+        }
+    } else if (movementDirection == Direction::LEFT) {
+        // Testa se o valor do grid a esquerda é uma
+        // pedra
+        if (!IsFree()) {
             if (Game::GetInstance()->GetGridControl()->WillDestroyBlock()) {
                 if (int itemType =
                         Game::GetInstance()->GetGridControl()->IsItem(
-                            Vec2(associated.gridPosition.x,
-                                 associated.gridPosition.y + 1))) {
-                    tileMap->ItemCollected(Vec2(associated.gridPosition.x,
-                                                associated.gridPosition.y + 1),
+                            Vec2(associated.gridPosition.x - 1,
+                                 associated.gridPosition.y))) {
+                    tileMap->ItemCollected(Vec2(associated.gridPosition.x - 1,
+                                                associated.gridPosition.y),
                                            TileMap::Layers::ITENS);
                     alan->GetItemCount()
                         ->GetComponent<AlanItemCount *>()
                         ->ItemCollected(itemType);
                 }
+            }
+
+            if (!animationOnGoing) {
                 animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                     AlanAnimation::Direction::DOWN);
-
-                tileMap->GetDamageGround(alan->GetDamage(),
-                                         Vec2(associated.gridPosition.x,
-                                              associated.gridPosition.y + 1));
-                movementDirection = Direction::NONE;
-                associated.gridPosition.y++;
-            } else {
-                if (!animationOnGoing) {
-                    animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                         AlanAnimation::Direction::DOWN);
-                    animationOnGoing = true;
-                }
-                if (sprite->FrameTimePassed()) {
-                    tileMap->GetDamageGround(
-                        alan->GetDamage(), Vec2(associated.gridPosition.x,
-                                                associated.gridPosition.y + 1));
-                    movementDirection = Direction::NONE;
-                    animationOnGoing = false;
-                }
-            }
-        } else if (movementDirection == Direction::LEFT) {
-            // Testa se o valor do grid a esquerda é uma
-            // pedra
-            if (!IsFree()) {
-                if (Game::GetInstance()->GetGridControl()->WillDestroyBlock()) {
-                    if (int itemType =
-                            Game::GetInstance()->GetGridControl()->IsItem(
-                                Vec2(associated.gridPosition.x - 1,
-                                     associated.gridPosition.y))) {
-                        tileMap->ItemCollected(
-                            Vec2(associated.gridPosition.x - 1,
-                                 associated.gridPosition.y),
-                            TileMap::Layers::ITENS);
-                        alan->GetItemCount()
-                            ->GetComponent<AlanItemCount *>()
-                            ->ItemCollected(itemType);
-                    }
-                }
-                if (!animationOnGoing) {
-                    animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                         AlanAnimation::Direction::LEFT);
-                    animationOnGoing = true;
-                }
-                if (sprite->FrameTimePassed()) {
-                    if (IsBlock()) {
-                        tileMap->GetDamageGround(
-                            alan->GetDamage(),
-                            Vec2(associated.gridPosition.x - 1,
-                                 associated.gridPosition.y));
-                    }
-                    movementDirection = Direction::NONE;
-                    animationOnGoing = false;
-                }
-
-            } else {
-                animation->SetAction(AlanAnimation::Transition::WALK,
                                      AlanAnimation::Direction::LEFT);
-
-                movementDirection = Direction::NONE;
-                associated.gridPosition.x--;
+                animationOnGoing = true;
             }
-        } else {
-            // Mesmo processo anterior para a direita
-            if (!IsFree()) {
-                if (Game::GetInstance()->GetGridControl()->WillDestroyBlock()) {
-                    if (int itemType =
-                            Game::GetInstance()->GetGridControl()->IsItem(
-                                Vec2(associated.gridPosition.x + 1,
-                                     associated.gridPosition.y))) {
-                        tileMap->ItemCollected(
-                            Vec2(associated.gridPosition.x + 1,
-                                 associated.gridPosition.y),
-                            TileMap::Layers::ITENS);
-                        alan->GetItemCount()
-                            ->GetComponent<AlanItemCount *>()
-                            ->ItemCollected(itemType);
-                    }
+            if (sprite->FrameTimePassed()) {
+                if (IsBlock()) {
+                    tileMap->GetDamageGround(alan->GetDamage(),
+                                             Vec2(associated.gridPosition.x - 1,
+                                                  associated.gridPosition.y));
                 }
-                if (!animationOnGoing) {
-                    animation->SetAction(AlanAnimation::Transition::DIG_T,
-                                         AlanAnimation::Direction::RIGHT);
-                    animationOnGoing = true;
-                }
-                if (sprite->FrameTimePassed()) {
-                    if (IsBlock()) {
-                        tileMap->GetDamageGround(
-                            alan->GetDamage(),
-                            Vec2(associated.gridPosition.x + 1,
-                                 associated.gridPosition.y));
-                    }
-                    movementDirection = Direction::NONE;
-                    animationOnGoing = false;
-                }
-
-            } else {
-                animation->SetAction(AlanAnimation::Transition::WALK,
-                                     AlanAnimation::Direction::RIGHT);
-
                 movementDirection = Direction::NONE;
-                associated.gridPosition.x++;
                 animationOnGoing = false;
             }
+
+        } else {
+            animation->SetAction(AlanAnimation::Transition::WALK,
+                                 AlanAnimation::Direction::LEFT);
+
+            movementDirection = Direction::NONE;
+            associated.gridPosition.x--;
         }
-        if (animation->GetCurrentState() == AlanAnimation::State::IDLE) {
+    } else {
+        // Mesmo processo anterior para a direita
+        if (!IsFree()) {
+            if (Game::GetInstance()->GetGridControl()->WillDestroyBlock()) {
+                if (int itemType =
+                        Game::GetInstance()->GetGridControl()->IsItem(
+                            Vec2(associated.gridPosition.x + 1,
+                                 associated.gridPosition.y))) {
+                    tileMap->ItemCollected(Vec2(associated.gridPosition.x + 1,
+                                                associated.gridPosition.y),
+                                           TileMap::Layers::ITENS);
+                    alan->GetItemCount()
+                        ->GetComponent<AlanItemCount *>()
+                        ->ItemCollected(itemType);
+                }
+            }
+
+            if (!animationOnGoing) {
+                animation->SetAction(AlanAnimation::Transition::DIG_T,
+                                     AlanAnimation::Direction::RIGHT);
+                animationOnGoing = true;
+            }
+            if (sprite->FrameTimePassed()) {
+                if (IsBlock()) {
+                    tileMap->GetDamageGround(alan->GetDamage(),
+                                             Vec2(associated.gridPosition.x + 1,
+                                                  associated.gridPosition.y));
+                }
+                movementDirection = Direction::NONE;
+                animationOnGoing = false;
+            }
+
+        } else {
+            animation->SetAction(AlanAnimation::Transition::WALK,
+                                 AlanAnimation::Direction::RIGHT);
+
+            movementDirection = Direction::NONE;
+            associated.gridPosition.x++;
             animationOnGoing = false;
         }
+    }
+    if (animation->GetCurrentState() == AlanAnimation::State::IDLE) {
+        animationOnGoing = false;
     }
 }

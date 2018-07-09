@@ -60,7 +60,7 @@ void TitleState::LoadAssets() {
 
     gm = new GameObject(Common::Layer::HUD);
     Sprite* sprite = new Sprite(*gm, "assets/img/title.png");
-    sprite->SetScaleX(0.8);
+    sprite->SetScaleX(0.6);
     gm->box.SetCenter(Camera::Center().x / 2, Camera::Center().y - 50);
     gm->worldReference = false;
     objectArray.emplace_back(gm);

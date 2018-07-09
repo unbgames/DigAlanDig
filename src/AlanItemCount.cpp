@@ -4,7 +4,7 @@
 AlanItemCount::AlanItemCount(GameObject& associated) : Component(associated) {
     itemCount.emplace(ItemType::METAL, 0);
     itemCountItem.emplace(ItemType::METAL, new GameObject(Common::Layer::HUD));
-    itemCountItem[ItemType::METAL]->box.x = 80;
+    itemCountItem[ItemType::METAL]->box.x = 906;
     itemCountItem[ItemType::METAL]->box.y = 100;
     itemCountItem[ItemType::METAL]->worldReference = false;
     Sprite* sprite = new Sprite(*itemCountItem[ItemType::METAL],
@@ -16,8 +16,8 @@ AlanItemCount::AlanItemCount(GameObject& associated) : Component(associated) {
     itemCount.emplace(ItemType::DIAMOND, 0);
     itemCountItem.emplace(ItemType::DIAMOND,
                           new GameObject(Common::Layer::HUD));
-    itemCountItem[ItemType::DIAMOND]->box.x = 30;
-    itemCountItem[ItemType::DIAMOND]->box.y = 150;
+    itemCountItem[ItemType::DIAMOND]->box.x = 906;
+    itemCountItem[ItemType::DIAMOND]->box.y = 238;
     itemCountItem[ItemType::DIAMOND]->worldReference = false;
     sprite = new Sprite(*itemCountItem[ItemType::DIAMOND],
                         "assets/hud/numbers.png", 10, -2);
@@ -28,8 +28,8 @@ AlanItemCount::AlanItemCount(GameObject& associated) : Component(associated) {
     itemCount.emplace(ItemType::PETROLEUM, 0);
     itemCountItem.emplace(ItemType::PETROLEUM,
                           new GameObject(Common::Layer::HUD));
-    itemCountItem[ItemType::PETROLEUM]->box.x = 80;
-    itemCountItem[ItemType::PETROLEUM]->box.y = 150;
+    itemCountItem[ItemType::PETROLEUM]->box.x = 906;
+    itemCountItem[ItemType::PETROLEUM]->box.y = 395;
     itemCountItem[ItemType::PETROLEUM]->worldReference = false;
     sprite = new Sprite(*itemCountItem[ItemType::PETROLEUM],
                         "assets/hud/numbers.png", 10, -2);
@@ -40,7 +40,7 @@ AlanItemCount::AlanItemCount(GameObject& associated) : Component(associated) {
 
 void AlanItemCount::Render(Common::Layer layer) const {
     for (auto item : itemCountItem) {
-        item.second->GetComponent<Item *>()->bg->Render(layer);
+        item.second->GetComponent<Item*>()->bg->Render(layer);
         item.second->RenderOrder(layer);
     }
 }

@@ -20,14 +20,11 @@ class AlanItemCount : public Component {
 
     AlanItemCount(GameObject& associated);
 
-    ~AlanItemCount() {}
-    void Update(float dt) {
-        std::cout << "\n\n\n\n\n\n\nMETAL = " << itemCount[ItemType::METAL]
-                  << std::endl;
-        std::cout << "DIAMOND = " << itemCount[ItemType::DIAMOND] << std::endl;
-        std::cout << "PETROLEUM = " << itemCount[ItemType::PETROLEUM]
-                  << std::endl;
+    ~AlanItemCount() {
+        itemCount.clear();
+        itemCountItem.clear();
     }
+    void Update(float dt) {}
     void RhythmUpdate() {}
     void RhythmReset() {}
     void Render(Common::Layer layer) const;
@@ -46,6 +43,7 @@ class Item : public Component {
     Item(GameObject& associated) : Component(associated) {
         bg = new Sprite(associated, "assets/hud/ovocinza.png");
     }
+    ~Item() { delete bg; }
     void Update(float dt) {}
     void RhythmUpdate() {}
     void RhythmReset() {}
