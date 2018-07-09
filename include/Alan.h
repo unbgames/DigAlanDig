@@ -80,6 +80,7 @@ class Alan : public Component {
     int damage = 1;
 
     bool moved = false;
+    bool damageTaken = false;
     bool animationOnGoing = false;
 };
 

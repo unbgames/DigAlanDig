@@ -32,7 +32,7 @@ void TileMap::LoadList(const std::string& file) {
                                 it.value().at("name").get<std::string>());
     }
 
-    Load(TileMapsFiles[GetNextFile()]);
+    Load(TileMapsFiles[0]);
 }
 
 void TileMap::Load(const std::string& file) {
@@ -81,10 +81,9 @@ void TileMap::RenderLayer(int layer, int cameraX, int cameraY) const {
                                 col * w - cameraX, line * h - cameraY);
 }
 
-int TileMap::GetNextFile() {
-    static int a = -1;
-    a++;
-    return a % TileMapsFiles.size();
+void TileMap::GetNextFile() {
+    currentFile++;
+    currentFile = currentFile % TileMapsFiles.size();
 }
 
 int TileMap::At(int x, int y, int z) {
@@ -94,7 +93,8 @@ int TileMap::At(int x, int y, int z) {
     while (infinity &&
            ((y >= height) ||
             ((Camera::pos.y + Camera::screenSize.y) / 100) >= height)) {
-        Load(TileMapsFiles[GetNextFile()]);
+        Load(TileMapsFiles[currentFile]);
+        GetNextFile();
     }
 
     return tileMat[z][y * width + x];

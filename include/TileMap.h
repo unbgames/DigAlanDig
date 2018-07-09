@@ -33,8 +33,6 @@ class TileMap : public Component {
         tileMat[layer][target.y * width + target.x] = 0;
     }
 
-    int GetNextFile();
-
     enum Layers { BASE = 0, BLOCOS, ITENS, INIMIGOS };
 
   private:
@@ -45,7 +43,10 @@ class TileMap : public Component {
     int width = 0, height = 0, depth = 0;
     const int groundLayer = 1;
     const int enemyLayer = 3;
-    bool infinity;
+    bool infinity = false;
+    int currentFile = 0;
+
+    void GetNextFile();
 };
 
 #endif  // TILEMAP_H
