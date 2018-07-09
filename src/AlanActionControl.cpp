@@ -99,6 +99,17 @@ void AlanActionControl::Update(float dt) {
     TileMap *tileMap = Game::GetInstance()->GetCurrentState().tileMap;
     Sprite *sprite = associated.GetComponent<Sprite *>();
 
+    if (alan->GetItemCount()
+            ->GetComponent<AlanItemCount *>()
+            ->CollectedAllItens()) {
+        if (animation->GetCurrentState() != AlanAnimation::State::DANCIN) {
+            animation->SetAction(AlanAnimation::Transition::DANCE,
+                                 AlanAnimation::Direction::LEFT);
+        }
+
+        return;
+    }
+
     if (alan->GetHP() <= 0) {
         if (animation->GetCurrentState() != AlanAnimation::State::DEAD) {
             animation->SetAction(AlanAnimation::Transition::DIE,

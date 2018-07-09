@@ -52,6 +52,14 @@ class AlanItemCount : public Component {
             itemCountItem[itemType]->GetComponent<Sprite*>()->SetFrame(
                 --itemCount[itemType]);
     }
+    bool CollectedAllItens() {
+        if (itemCount[Common::ItemType::DIAMOND] == 0 &&
+            itemCount[Common::ItemType::PETROLEUM] == 0 &&
+            itemCount[Common::ItemType::GOLD] == 0)
+            return true;
+
+        return false;
+    }
 
   private:
     std::unordered_map<int, GameObject*> itemCountItem;

@@ -1,12 +1,23 @@
 #include "BigAlan.h"
 #include "Game.h"
+#include "AlanAnimation.h"
 #include "InputManager.h"
+#include "GridControl.h"
+
 
 void BigAlan::Update(float dt) {
     int combo = Game::GetInstance()->combo;
     int diffCombo = std::abs(combo - oldCombo);
     oldCombo = combo;
 
+    if(Game::GetInstance()->GetGridControl()->GetAlan().lock()->GetComponent<AlanAnimation *>()->GetCurrentState() == AlanAnimation::State::DEAD){
+        if(currentState != BAState::TRASH){
+            currentState = BAState::TRASH;
+            sprite->Open(state[currentState], 0);
+        }
+        return;
+    }
+    
     BAState oldState = currentState;
     switch (currentState) {
         case BAState::STARTER:

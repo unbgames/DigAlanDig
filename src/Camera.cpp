@@ -60,7 +60,9 @@ void Camera::Update(float dt) {
             TileMap *tileMap = Game::GetInstance()->GetCurrentState().tileMap;
 
             if (focus->GetComponent<AlanAnimation *>()->GetCurrentState() ==
-                AlanAnimation::State::DEAD) {
+                    AlanAnimation::State::DEAD ||
+                focus->GetComponent<AlanAnimation *>()->GetCurrentState() ==
+                    AlanAnimation::State::DANCIN) {
                 if (offset.y >
                         ((focusGridPos.y + 1) * 100 - screenSize.y / 2) &&
                     offset.y > 0) {

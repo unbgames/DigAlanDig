@@ -76,8 +76,8 @@ void TitleState::LoadAssets() {
     gm->AddComponent(sprite);
 
     gm = new GameObject(Common::Layer::HUD);
-    sprite = new Sprite(*gm, "assets/img/marmozord.png");
-    sprite->SetScaleX(0.175);
+    sprite = new Sprite(*gm, "assets/img/marmozord_fly.png", 2, -1);
+    sprite->SetScaleX(1.2);
     gm->box.SetCenter(Camera::Center().x + 250, Camera::Center().y);
     gm->setRect(gm->box);
     gm->worldReference = false;

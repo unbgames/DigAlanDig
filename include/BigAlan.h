@@ -22,6 +22,7 @@ class BigAlan : public Component {
     }
     void Render(Common::Layer layer) const {}
 
+
   private:
     Sprite::SpriteState state[BAState::MAXSTATE];
     BAState currentState = BAState::STARTER;
