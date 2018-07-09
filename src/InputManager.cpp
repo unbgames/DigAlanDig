@@ -66,7 +66,12 @@ float fixRange(float value, float fix) {
 void InputManager::Update(float deltaRhythm) {
     frame++;
     quitRequested = false;
+
+#ifdef __ANDROID__
+    this->deltaRhythm = fixRange(deltaRhythm, 0.6);
+#else
     this->deltaRhythm = fixRange(deltaRhythm, -0.4);
+#endif
 
     SDL_GetMouseState(&mouseX, &mouseY);
     int id;
