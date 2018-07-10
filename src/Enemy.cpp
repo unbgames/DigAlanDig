@@ -44,7 +44,7 @@ Enemy::Enemy(GameObject &associated, int enemyType)
     associated.AddComponent(interpol);
     sprite->Open(EState[state], Enemy::Direction::LEFT);
 
-    hp = enemyType;
+    hp = 3;
     range = enemyType;
 
     tileMapPos.x = associated.box.x;

@@ -6,7 +6,7 @@
 #include "InputManager.h"
 #include "TileMap.h"
 
-Vec2 Camera::pos, Camera::shake, Camera::speed(40, 40), Camera::screenSize;
+Vec2 Camera::pos, Camera::shake, Camera::speed(60, 60), Camera::screenSize;
 Vec2 Camera::offset;
 Camera::Movement Camera::currentMove = Camera::FRIENDLYSCROLL;
 
