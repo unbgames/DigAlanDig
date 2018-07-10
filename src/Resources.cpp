@@ -7,7 +7,6 @@ std::unordered_map<std::string, std::shared_ptr<Mix_Music>>
     Resources::musicTable;
 std::unordered_map<std::string, std::shared_ptr<Mix_Chunk>>
     Resources::soundTable;
-std::unordered_map<std::string, std::shared_ptr<TTF_Font>> Resources::fontTable;
 
 std::shared_ptr<SDL_Texture> Resources::GetImage(const std::string& file) {
     auto got = imageTable.find(file);
@@ -78,33 +77,8 @@ void Resources::ClearSounds() {
         if (element.second.unique()) soundTable.erase(element.first);
 }
 
-std::shared_ptr<TTF_Font> Resources::GetFont(const std::string& file,
-                                             int ptsize) {
-    std::string key = file + std::to_string(ptsize);
-    auto got = fontTable.find(key);
-
-    if (got == fontTable.end()) {
-        TTF_Font* font = TTF_OpenFont(file.c_str(), ptsize);
-        if (!font) {
-            std::cerr << "TTF_OpenFont: " << TTF_GetError() << std::endl;
-            exit(EXIT_SUCCESS);
-        }
-        std::shared_ptr<TTF_Font> sp(font,
-                                     [](TTF_Font* ptr) { TTF_CloseFont(ptr); });
-        fontTable.emplace(file, sp);
-    }
-
-    return fontTable[file];
-}
-
-void Resources::ClearFonts() {
-    for (auto element : fontTable)
-        if (element.second.unique()) fontTable.erase(element.first);
-}
-
 void Resources::ClearAll() {
     ClearImages();
     ClearMusics();
     ClearSounds();
-    ClearFonts();
 }

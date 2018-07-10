@@ -9,7 +9,6 @@
 #include "Sound.h"
 #include "Sprite.h"
 #include "StageState.h"
-#include "Text.h"
 #include "TileMap.h"
 #include "Vec2.h"
 
