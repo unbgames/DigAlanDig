@@ -12,12 +12,12 @@ RM = rm -f
 # "Flags" para geração automática de dependências
 DEP_FLAGS = -MM -MT $@ -MT $(BIN_PATH)/$(*F).o -MP -MF $@
 # Bibliotecas a serem linkadas
-LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lm
+LIBS = -lSDL2 -lSDL2_image -lSDL2_mixer -lm
 # Caminho dos includes
 INC_PATHS = -I$(INC_PATH) -I$(EXT_PATH) $(addprefix -I,$(SDL_INC_PATH))
 
 # Diretivas de compilacao
-FLAGS = -std=c++11 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self -I/usr/include/SDL2
+FLAGS = -std=c++11 -Wall -pedantic -Wextra -Wno-unused-parameter -Werror=init-self
 # Diretivas extras para debug
 DFLAGS = -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -fsanitize=address,undefined -fno-sanitize-recover -ggdb -O0 -DDEBUG
 # Diretivas extras para release
@@ -26,6 +26,8 @@ RFLAGS = -O3 -mtune=native
 RDFLAGS = -O3 -mtune=native -ggdb -DDEBUG
 # Diretivas extras para release com otimizacoes mais agressivas
 RFFLAGS = -Ofast -flto -mtune=native -s
+# Diretivas extras para binário mais portável
+GFLAGS = -O2 -flto -march=k8 -mtune=generic -s
 
 INC_PATH = include
 EXT_PATH = extern
@@ -80,7 +82,8 @@ UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S), Darwin)
 
-LIBS = -lm -framework SDL2 -framework SDL2_image -framework SDL2_mixer -framework SDL2_ttf
+#LIBS = -lm -framework SDL2 -framework SDL2_image -framework SDL2_mixer
+LIBS = -L/opt/local/lib -lSDL2 -lSDL2_image -lSDL2_mixer -lm
 
 endif
 endif
@@ -94,9 +97,9 @@ CC = x86_64-w64-mingw32-g++
 BIN_PATH = binw
 
 PATH := /usr/local/cross-tools/x86_64-w64-mingw32/bin:$(PATH)
-INC_PATHS = -I$(INC_PATH) -I$(EXT_PATH) -I/usr/local/cross-tools/x86_64-w64-mingw32/include/SDL2 -Dmain=SDL_main
+INC_PATHS = -I$(INC_PATH) -I$(EXT_PATH) -I/usr/local/cross-tools/x86_64-w64-mingw32/include -Dmain=SDL_main
 #LINK_PATH =  $(shell sdl2-config --static-libs) -static-libstdc++ -lz -logg -lvorbis -lpng -ljpeg
-LINK_PATH =  -L/usr/local/cross-tools//x86_64-w64-mingw32/lib  --static -lmingw32 -lSDL2main -lSDL2 -mwindows -Wl,--no-undefined -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid -static-libgcc -static-libstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lfreetype -lm  -ljpeg -lpng -lz -lwinmm -lvorbisfile -lvorbis -logg
+LINK_PATH =  -L/usr/local/cross-tools//x86_64-w64-mingw32/lib  --static -lmingw32 -lSDL2main -lSDL2 -mwindows -Wl,--no-undefined -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid -static-libgcc -static-libstdc++ -lSDL2 -lSDL2_image -lSDL2_mixer -lfreetype -lm  -ljpeg -lpng -lz -lwinmm -lvorbisfile -lvorbis -logg -lm
 
 RC_FILE = jogo.rc
 RES_FILE = jogo.res
@@ -143,6 +146,9 @@ release: $(EXEC)
 #clang++ anterior a 3.9 possui um bug na hora da linkagem com -flto, usar 3.9+
 releasefast: FLAGS += $(RFFLAGS)
 releasefast: $(EXEC)
+
+generic: FLAGS += $(GFLAGS)
+generic: $(EXEC)
 
 debug: FLAGS += $(DFLAGS)
 debug: $(EXEC)

@@ -18,6 +18,8 @@
 extern "C" {
 #ifdef _WIN32
 #include <SDL2/SDL.h>
+#elif __ANDROID__
+#include <SDL.h>
 #elif __APPLE__
 #include <SDL2/SDL.h>
 #include "TargetConditionals.h"
@@ -37,6 +39,8 @@ extern "C" {
 extern "C" {
 #ifdef _WIN32
 #include <SDL2/SDL_image.h>
+#elif __ANDROID__
+#include <SDL_image.h>
 #elif __APPLE__
 #include <SDL2/SDL_image.h>
 #include "TargetConditionals.h"
@@ -56,6 +60,8 @@ extern "C" {
 extern "C" {
 #ifdef _WIN32
 #include <SDL2/SDL_mixer.h>
+#elif __ANDROID__
+#include <SDL_mixer.h>
 #elif __APPLE__
 #include <SDL2/SDL_mixer.h>
 #include "TargetConditionals.h"
