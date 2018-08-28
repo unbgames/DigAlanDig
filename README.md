@@ -1,5 +1,6 @@
-![Img_DigAlanDig](assets/icon/icon256.png)
 # DigAlanDig - TecProg
+![Img_DigAlanDig](assets/icon/icon256.png)
+
 The purpose of this repository is to apply some programming techniques to the game [DigAlanDig](https://github.com/Pedroagaponto/marmota)
 
 # Programming techniques
@@ -37,7 +38,5 @@ $ make
 After that, a binary code is generated. Run the game
 ```
 $ ./JOGO
-```
-
 ```
 
