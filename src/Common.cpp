@@ -1,6 +1,7 @@
 #include "Common.h"
 
-char *Common::file_read(const char *file_name) {
+char *Common::file_read(const char *file_name)
+{
     SDL_RWops *rw = SDL_RWFromFile(file_name, "rb");
     if (rw == nullptr) return nullptr;
 
@@ -24,7 +25,8 @@ char *Common::file_read(const char *file_name) {
     return res;
 }
 
-void Common::readJson(json &j, const std::string &file) {
+void Common::readJson(json &j, const std::string &file)
+{
     char *data = Common::file_read(file.c_str());
     if (data == nullptr) exit(0);
 
