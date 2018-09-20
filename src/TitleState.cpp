@@ -30,116 +30,111 @@
 #define TITLE_PRESS_SPACE "assets/img/pressSpace.png"
 #define SPACESHIP_MENU "assets/img/marmozord_fly.png"
 #define AUDIO_MENU "assets/audio/menu.ogg"
-
+#define SCALE_X_TITLE 0.45
+#define POSITION_X_TITLE Camera::Center().x / 2
+#define POSITION_Y_TITLE Camera::Center().y - 50
+#define SCALE_X_PRESS_SPACE 0.9
+#define POSITION_X_PRESS_SPACE Camera::Center().x
+#define POSITION_Y_PRESS_SPACE Camera::Center().y + 300
+#define SCALE_X_SPACESHIP 1.4
+#define POSITION_X_SPACESHIP Camera::Center().x + 200
+#define POSITION_Y_SPACESHIP Camera::Center().y
+    
 
 TitleState::TitleState() {}
 
-void TitleState::LoadAssets() 
-{
-
-    GameObject* initial_layout = new GameObject(Common::Layer::BG);
-    initial_layout->worldReference = false;
+void TitleState::loadAssets() 
+{   
+    GameObject* initial_layout = new GameObject(Common::Layer::BG);  
+    initial_layout->world_reference = false;    
     objectArray.emplace_back(initial_layout);
     initial_layout->AddComponent(
-        new Sprite(*initial_layout, MENU_SCREEN));
+        new Sprite(*initial_layout, MENU_SCREEN));  
 
     initial_layout = new GameObject(Common::Layer::BG);
-    initial_layout->box.x = POSITION_X_SPACE;
-    initial_layout->box.y = POSITION_Y_SPACE;
-    initial_layout->worldReference = false;
+    initial_layout->box.x = POSITION_X_SPACE;      
+    initial_layout->box.y = POSITION_Y_SPACE;      
+    initial_layout->world_reference = false;
     objectArray.emplace_back(initial_layout);
-    initial_layout->AddComponent(new ParallaxX(*initial_layout, SPACE_VELOCITY));
+    initial_layout->AddComponent(new ParallaxX(*initial_layout, SPACE_VELOCITY));   
     initial_layout->AddComponent(new bgCircularX(
-        *initial_layout, SPACE_SCREEN));
+        *initial_layout, SPACE_SCREEN));    
 
     initial_layout = new GameObject(Common::Layer::BG);
-    initial_layout->box.x = POSITION_X_CLOUD;
-    initial_layout->box.y = POSITION_Y_CLOUD;
-    initial_layout->worldReference = false;
+    initial_layout->box.x = POSITION_X_CLOUD;   
+    initial_layout->box.y = POSITION_Y_CLOUD;   
+    initial_layout->world_reference = false;
     objectArray.emplace_back(initial_layout);
     initial_layout->AddComponent(new ParallaxX(*initial_layout));
     initial_layout->AddComponent(new bgCircularX(
-        *initial_layout, CLOUD_1));
+        *initial_layout, CLOUD_1)); 
 
     initial_layout = new GameObject(Common::Layer::BG);
-    initial_layout->box.x = POSITION_X_CLOUD_2;
-    initial_layout->box.y = POSITION_Y_CLOUD_2;
-    initial_layout->worldReference = false;
+    initial_layout->box.x = POSITION_X_CLOUD_2; 
+    initial_layout->box.y = POSITION_Y_CLOUD_2; 
+    initial_layout->world_reference = false;
     objectArray.emplace_back(initial_layout);
-    initial_layout->AddComponent(new ParallaxX(*initial_layout, CLOUD_2_VELOCITY));
-    initial_layout->AddComponent(new bgCircularX(
-        *initial_layout, CLOUD_2));
+    initial_layout->AddComponent(new ParallaxX(*initial_layout, CLOUD_2_VELOCITY)); 
+    initial_layout->AddComponent(new bgCircularX(*initial_layout, CLOUD_2));    
 
     initial_layout = new GameObject(Common::Layer::BG);
-    initial_layout->box.x = POSITION_X_CLOUD_3;
-    initial_layout->box.y = POSITION_Y_CLOUD_3;
-    initial_layout->worldReference = false;
+    initial_layout->box.x = POSITION_X_CLOUD_3; 
+    initial_layout->box.y = POSITION_Y_CLOUD_3; 
+    initial_layout->world_reference = false;
     objectArray.emplace_back(initial_layout);
-    initial_layout->AddComponent(new ParallaxX(*initial_layout, CLOUD_3_VELOCITY));
-    initial_layout->AddComponent(new bgCircularX(
-        *initial_layout, CLOUD_3));
+    initial_layout->AddComponent(new ParallaxX(*initial_layout, CLOUD_3_VELOCITY)); 
+    initial_layout->AddComponent(new bgCircularX(*initial_layout, CLOUD_3));    
 
     initial_layout = new GameObject(Common::Layer::HUD);
-    Sprite* sprite = new Sprite(*initial_layout, TITLE_MENU);
-    const float scale_x_title = 0.45;
-    const double position_x_title = Camera::Center().x / 2;
-    const double position_y_title = Camera::Center().y - 50;
-    sprite->SetScaleX(scale_x_title);
-    initial_layout->box.SetCenter(position_x_title, position_y_title);
-    initial_layout->worldReference = false;
+    Sprite* sprite = new Sprite(*initial_layout, TITLE_MENU);   
+    sprite->SetScaleX(SCALE_X_TITLE);   
+    initial_layout->box.SetCenter(POSITION_X_TITLE, POSITION_Y_TITLE);  
+    initial_layout->world_reference = false;
     objectArray.emplace_back(initial_layout);
     initial_layout->AddComponent(sprite);
 
     initial_layout = new GameObject(Common::Layer::HUD);
-    sprite = new Sprite(*initial_layout, TITLE_PRESS_SPACE);
-    const float scale_x_press_space = 0.9;
-    const double position_x_press_space = Camera::Center().x;
-    const double position_y_press_space = Camera::Center().y + 300;
-    sprite->SetScaleX(scale_x_press_space);
-    initial_layout->box.SetCenter(position_x_press_space, position_y_press_space);
-    initial_layout->worldReference = false;
+    sprite = new Sprite(*initial_layout, TITLE_PRESS_SPACE);    
+    sprite->SetScaleX(SCALE_X_PRESS_SPACE); 
+    initial_layout->box.SetCenter(POSITION_X_PRESS_SPACE, POSITION_Y_PRESS_SPACE);  
+    initial_layout->world_reference = false;
     initial_layout->blink = true;
     objectArray.emplace_back(initial_layout);
     initial_layout->AddComponent(sprite);
     
     initial_layout = new GameObject(Common::Layer::HUD);
-    sprite = new Sprite(*initial_layout, SPACESHIP_MENU, 2, -1);
-    const float scale_x_spaceship = 1.4;
-    const double position_x_spaceship = Camera::Center().x + 200;
-    const double position_y_spaceship = Camera::Center().y;
-    sprite->SetScaleX(scale_x_spaceship);
-    initial_layout->box.SetCenter(position_x_spaceship, position_y_spaceship);
+    sprite = new Sprite(*initial_layout, SPACESHIP_MENU, 2, -1);    
+    sprite->SetScaleX(SCALE_X_SPACESHIP);   
+    initial_layout->box.SetCenter(POSITION_X_SPACESHIP, POSITION_Y_SPACESHIP);  
     initial_layout->setRect(initial_layout->box);
-    initial_layout->worldReference = false;
+    initial_layout->world_reference = false;
     initial_layout->move = true;
     objectArray.emplace_back(initial_layout);
     initial_layout->AddComponent(sprite);
 
     Game::GetInstance()->StartBeatTime();
-
-    music.Open(AUDIO_MENU);
+    music.Open(AUDIO_MENU); 
 
 }
 
 
-void TitleState::Start() 
+void TitleState::start() 
 {
-    if (!started) LoadAssets();
-
+    if (!started) loadAssets(); 
     StartArray();
 }
 
-void TitleState::Update(float dt) 
+void TitleState::update(float delta_time)  
 {
     input.title = true;
     if (input.ActionPress(input.ENTER))
         Game::GetInstance()->Push(new StageState());
-    UpdateArray(dt);
+    UpdateArray(delta_time);
 }
 
-void TitleState::Render() const { RenderArray(); }
+void TitleState::render() const { RenderArray(); }
 
-void TitleState::RhythmUpdate() 
+void TitleState::rhythmUpdate() 
 {
     if (!musicPlaying) 
     {
